@@ -1,5 +1,5 @@
 package Controlador;
 
 public class AlergenoControlador {
-	int prueba;
+	int prueba2;
 }
