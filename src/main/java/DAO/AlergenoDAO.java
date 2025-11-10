@@ -33,4 +33,8 @@ public class AlergenoDAO {
 	
 	
 	
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
