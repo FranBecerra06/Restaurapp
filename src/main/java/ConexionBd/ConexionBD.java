@@ -13,17 +13,13 @@ public class ConexionBD {
 	public static Connection getConnection() throws SQLException {
 		return DriverManager.getConnection(URL, USER, PASS);
 	}
-	
-	
-	
-	
+
 	public static void main(String[] args) {
 
-	
-	try (Connection conn = ConexionBD.getConnection()) {
-		System.out.println("Conexión establecida");
-	} catch (SQLException e) {
-		e.printStackTrace();
+		try (Connection conn = ConexionBD.getConnection()) {
+			System.out.println("Conexión establecida");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
-}
 }
