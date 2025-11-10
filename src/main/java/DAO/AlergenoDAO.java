@@ -47,12 +47,18 @@ public class AlergenoDAO {
 
 // -- MODIFICAR ALÉRGENO --
 
-	public AlergenoDTO modificarAlergeno (AlergenoDTO a) throws SQLException{
-		
+	public boolean modificarAlergeno(AlergenoDTO a) throws SQLException {
+
 		String sql = "UPDATE alergeno SET nombre = ? WHERE id_alergeno = ?";
-		try (Connection conn = Conexion
-		
-		
+		try (Connection conn = ConexionBD.getConnection();
+				PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+			pst.setId(1, a.getid_alergeno());
+			pst.setString(2, a.getnombre());
+			int filas = pst.executeUpdate();
+			return filas > 0;
+
+		}
 	}
 
 // -- ELIMINAR ALÉRGENO --
