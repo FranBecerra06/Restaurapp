@@ -18,7 +18,7 @@ public class ClienteDTO {
 	
 	
 	public ClienteDTO(Usuario idUsuario, String nombre, String apellidos, String email, LocalDate fechaNacimiento) {
-		this.idUsuario = idUsuario;                          // constructir para crear cliente
+		this.idUsuario = idUsuario;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.email = email;

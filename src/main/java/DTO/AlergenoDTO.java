@@ -1,17 +1,17 @@
 package DTO;
 
-public class AlegenoDTO {
+public class AlergenoDTO {
 	
 	private int id;
 	private String nombre;
 	
 	
-	public AlegenoDTO(int id) {
+	public AlergenoDTO(int id) {
 		this.id = id;
 	}
 	
 	
-	public AlegenoDTO(String nombre) {
+	public AlergenoDTO(String nombre) {
 		this.nombre = nombre;
 	}
 	
