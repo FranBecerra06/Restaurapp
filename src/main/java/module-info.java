@@ -3,6 +3,12 @@ module pack.restaurantegestion {
     requires javafx.fxml;
 
 
-    opens pack.restaurantegestion to javafx.fxml;
+    opens Controlador to javafx.fxml;
+
     exports pack.restaurantegestion;
+    exports Controlador;
+
+
 }
+
+
