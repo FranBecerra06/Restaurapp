@@ -56,13 +56,13 @@ public class AlergenoDAO {
 
 // -- ELIMINAR ALÉRGENO --
 
-	public boolean eliminarAlergeno(int id) throws SQLException {
+	public boolean eliminarAlergeno(String nombre) throws SQLException {
 
 		String sql = "DELETE FROM alergeno WHERE nombre = ?";
 
 		try (Connection conn = ConexionBD.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
-			pst.setInt(1, id);
+			pst.setString(1, nombre);
 			int filas = pst.executeUpdate();
 			return filas > 0;
 
