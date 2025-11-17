@@ -7,8 +7,10 @@ import Modelos.Usuario;
 public class ClienteDTO {
 	
 	private int idCliente;
-	private Usuario idUsuario;
-	private String nombre, apellidos, email;
+	private UsuarioDTO idUsuario;
+	private String nombre;
+	private String apellidos;
+	private String email;
 	private LocalDate fechaNacimiento;
 	
 	
@@ -17,7 +19,7 @@ public class ClienteDTO {
 	}
 	
 	
-	public ClienteDTO(Usuario idUsuario, String nombre, String apellidos, String email, LocalDate fechaNacimiento) {
+	public ClienteDTO(String nombre, String apellidos, String email, LocalDate fechaNacimiento) {
 		this.idUsuario = idUsuario;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -35,11 +37,11 @@ public class ClienteDTO {
 		this.idCliente = idCliente;
 	}
 	
-	public Usuario getIdUsuario() {
+	public UsuarioDTO getIdUsuario() {
 		return idUsuario;
 	}
 	
-	public void setIdUsuario(Usuario idUsuario) {
+	public void setIdUsuario(UsuarioDTO idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 	
