@@ -28,7 +28,7 @@
                   <TextField fx:id="usuarioTF" layoutX="99.0" layoutY="89.0" prefHeight="30.0" prefWidth="221.0" promptText="Nombre de usuario" AnchorPane.leftAnchor="99.0" />
                   <PasswordField fx:id="contraUsuPF" layoutX="99.0" layoutY="165.0" prefHeight="30.0" prefWidth="221.0" promptText="Contraseña" />
                   <Button fx:id="loginBtn" layoutX="236.0" layoutY="237.0" mnemonicParsing="false" onAction="#logInAction" style="-fx-background-color: #222222; -fx-text-fill: white;" text="Iniciar sesión" />
-                  <Button layoutX="99.0" layoutY="237.0" mnemonicParsing="false" onAction="#cambiarASignIn" style="-fx-background-color: #FFFFFF; -fx-text-fill: black;" text="Crear cuenta" />
+                  <Button layoutX="99.0" layoutY="237.0" mnemonicParsing="false" style="-fx-background-color: #FFFFFF; -fx-text-fill: black;" text="Crear cuenta" />
                   <Label fx:id="textoAuxiliar" alignment="CENTER" contentDisplay="CENTER" layoutX="196.0" layoutY="195.0" textFill="RED" />
                </children>
             </AnchorPane>

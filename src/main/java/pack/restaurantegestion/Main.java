@@ -1,11 +1,14 @@
 package pack.restaurantegestion;
 
+import ConexionBd.ConexionBD;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Main extends Application {
 
@@ -15,9 +18,18 @@ public class Main extends Application {
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
+
+
+
+
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
+    /*public static void main(String[] args) {
+
+        try (Connection conn = ConexionBD.getConnection()) {
+            System.out.println("Conexión establecida");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }*/
 }
