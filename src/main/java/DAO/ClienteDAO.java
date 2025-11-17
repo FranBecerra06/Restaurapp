@@ -51,7 +51,7 @@ public class ClienteDAO {
 
 		public boolean modificarCliente(ClienteDTO c) throws SQLException {
 
-			String sql = "UPDATE cliente SET nombre = ?, apellidos = ?, email = ?, fecha_nacimiento = ? WHERE id_usuario = ?";
+			String sql = "UPDATE cliente SET nombre = ?, apellidos = ?, email = ?, fecha_nacimiento = ? WHERE nombre_usuario = ?";
 			try (Connection conn = ConexionBD.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
 				pst.setString(1, c.getNombre());
