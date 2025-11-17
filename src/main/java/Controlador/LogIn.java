@@ -156,6 +156,10 @@ public class LogIn {
     @FXML
     public void cambiarASignIn(ActionEvent event){
         try{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Cambio");
+            alert.setContentText("Se deberia cambiar a signin");
+            Optional<ButtonType> result = alert.showAndWait();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/SignIn.fxml"));
             Parent root = loader.load();
             Stage currentScene = (Stage) loginBtn.getScene().getWindow();
