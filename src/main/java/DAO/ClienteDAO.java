@@ -119,7 +119,6 @@ public class ClienteDAO {
 
 		        while (rs.next()) {
 		         
-
 		            ClienteDTO cliente = new ClienteDTO(
 		                rs.getString("nombre"),
 		                rs.getString("apellidos"),
