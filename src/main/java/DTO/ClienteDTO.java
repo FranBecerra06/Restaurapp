@@ -18,9 +18,8 @@ public class ClienteDTO {
 		this.idCliente = idCliente;
 	}
 	
-	
-	public ClienteDTO(String nombre, String apellidos, String email, LocalDate fechaNacimiento) {
-		this.idUsuario = idUsuario;
+	public ClienteDTO( String nombre, String apellidos, String email, LocalDate fechaNacimiento) {
+
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.email = email;
