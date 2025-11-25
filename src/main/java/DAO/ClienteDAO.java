@@ -22,7 +22,7 @@ public class ClienteDAO {
 
 		public ClienteDTO crearCliente(ClienteDTO c) throws SQLException {
 
-			String sql = "INSERT INTO cliente (nombre, apellidos, email, fecha_nacimiento) VALUES(?,?,?,?)";
+			String sql = "INSERT INTO cliente ( nombre, apellidos, email, fecha_nacimiento) VALUES(?,?,?,?)";
 
 			try (Connection conn = ConexionBD.getConnection();
 					PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -111,15 +111,18 @@ public class ClienteDAO {
 		public List<ClienteDTO> listarClientes() throws SQLException {
 		    List<ClienteDTO> lista = new ArrayList<>();
 
-		    String sql = "SELECT id_usuario, nombre, apellidos, email, fecha_nacimiento FROM cliente";
+		    String sql = "SELECT * FROM cliente";
 
 		    try (Connection conn = ConexionBD.getConnection();
 		         Statement st = conn.createStatement();
 		         ResultSet rs = st.executeQuery(sql)) {
 
 		        while (rs.next()) {
-		         
+		        	/*int idUsuario = rs.getInt("id_usuario");
+		        	UsuarioDTO usuario = new UsuarioDTO (idUsuario);*/
+		        	
 		            ClienteDTO cliente = new ClienteDTO(
+		            	//usuario,
 		                rs.getString("nombre"),
 		                rs.getString("apellidos"),
 		                rs.getString("email"),
