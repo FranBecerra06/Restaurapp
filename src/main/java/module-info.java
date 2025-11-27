@@ -3,6 +3,11 @@ module pack.restaurantegestion {
     requires javafx.fxml;
 	requires java.sql;
 
+	requires java.sql;
+
+	requires mysql.connector.j;
+
+
 
     opens Controlador to javafx.fxml;
 
