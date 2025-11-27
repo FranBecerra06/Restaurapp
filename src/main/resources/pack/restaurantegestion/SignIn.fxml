@@ -35,25 +35,25 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="usuarioTF1" layoutX="21.0" layoutY="226.0" prefHeight="30.0" prefWidth="221.0" promptText="Nombre de usuario" />
+                  <TextField fx:id="usuarioTF1" layoutX="21.0" layoutY="226.0" prefHeight="30.0" prefWidth="221.0" promptText="Nombre" />
                   <Label alignment="CENTER" layoutX="350.0" layoutY="188.0" prefHeight="30.0" prefWidth="130.0" text="APELLIDOS">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="usuarioTF11" layoutX="305.0" layoutY="222.0" prefHeight="30.0" prefWidth="221.0" promptText="Nombre de usuario" />
+                  <TextField fx:id="usuarioTF11" layoutX="305.0" layoutY="222.0" prefHeight="30.0" prefWidth="221.0" promptText="Apellidos" />
                   <Label alignment="CENTER" layoutX="92.0" layoutY="283.0" prefHeight="30.0" prefWidth="79.0" text="EMAIL">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="usuarioTF111" layoutX="21.0" layoutY="323.0" prefHeight="30.0" prefWidth="221.0" promptText="Nombre de usuario" />
+                  <TextField fx:id="usuarioTF111" layoutX="21.0" layoutY="323.0" prefHeight="30.0" prefWidth="221.0" promptText="Correo electrónico" />
                   <Label alignment="CENTER" layoutX="350.0" layoutY="283.0" prefHeight="30.0" prefWidth="131.0" text="TELÉFONO">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="usuarioTF1111" layoutX="304.0" layoutY="323.0" prefHeight="30.0" prefWidth="221.0" promptText="Nombre de usuario" />
+                  <TextField fx:id="usuarioTF1111" layoutX="304.0" layoutY="323.0" prefHeight="30.0" prefWidth="221.0" promptText="Número de teléfono" />
                   <Label alignment="CENTER" layoutX="109.0" layoutY="89.0" prefHeight="30.0" text="BIENVENIDO A RESTAURAPP">
                      <font>
                         <Font name="System Bold" size="24.0" />
