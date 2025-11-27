@@ -4,6 +4,12 @@ module pack.restaurantegestion {
 	requires java.sql;
 
 
-    opens pack.restaurantegestion to javafx.fxml;
+    opens Controlador to javafx.fxml;
+
     exports pack.restaurantegestion;
+    exports Controlador;
+
+
 }
+
+
