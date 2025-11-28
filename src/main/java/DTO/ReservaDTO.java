@@ -8,8 +8,8 @@ import Modelos.Mesa;
 public class ReservaDTO {
 	
 	private int idReserva;
-	private Cliente idCliente;
-	private Mesa idMesa;
+	private ClienteDTO idCliente;
+	private MesaDTO idMesa;
 	private LocalDateTime fechaHora;
 	private int numeroComensales;
 	private String estado;
@@ -20,7 +20,7 @@ public class ReservaDTO {
 	}
 	
 	
-	public ReservaDTO(Cliente idCliente, Mesa idMesa, LocalDateTime fechaHora, int numeroComensales, String estado) {
+	public ReservaDTO(ClienteDTO idCliente, MesaDTO idMesa, LocalDateTime fechaHora, int numeroComensales, String estado) {
 		this.idCliente = idCliente;
 		this.idMesa = idMesa;
 		this.fechaHora = fechaHora;
@@ -38,19 +38,19 @@ public class ReservaDTO {
 		this.idReserva = idReserva;
 	}
 	
-	public Cliente getIdCliente() {
+	public ClienteDTO getIdCliente() {
 		return idCliente;
 	}
 	
-	public void setIdCliente(Cliente idCliente) {
+	public void setIdCliente(ClienteDTO idCliente) {
 		this.idCliente = idCliente;
 	}
 	
-	public Mesa getIdMesa() {
+	public MesaDTO getIdMesa() {
 		return idMesa;
 	}
 	
-	public void setIdMesa(Mesa idMesa) {
+	public void setIdMesa(MesaDTO idMesa) {
 		this.idMesa = idMesa;
 	}
 	

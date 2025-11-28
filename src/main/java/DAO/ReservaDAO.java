@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ConexionBd.ConexionBD;
+import DTO.ClienteDTO;
+import DTO.MesaDTO;
 import DTO.ReservaDTO;
-import Modelos.Cliente;
-import Modelos.Mesa;
 
 public class ReservaDAO {
 
@@ -102,14 +102,14 @@ public class ReservaDAO {
                 // Mapear Objetos FK
                 int idCliente = rs.getInt("id_cliente");
                 if (idCliente > 0) {
-                    Cliente c = new Cliente();
+                    ClienteDTO c = new ClienteDTO(idCliente);
                     c.setIdCliente(idCliente);
                     r.setIdCliente(c);
                 }
 
                 int idMesa = rs.getInt("id_mesa");
                 if (idMesa > 0) {
-                    Mesa m = new Mesa();
+                    MesaDTO m = new MesaDTO(idMesa);
                     m.setIdMesa(idMesa);
                     r.setIdMesa(m);
                 }

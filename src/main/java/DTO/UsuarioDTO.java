@@ -3,7 +3,7 @@ package DTO;
 public class UsuarioDTO {
 	
 	private int idUsuario;
-	private String nombre, apellidos, email, contrasena, telefono, rol;
+	private String nombre, apellidos, email, contrasena, telefono, rol, nombre_usuario;
 	
 	
 	public UsuarioDTO(int idUsuario) {
@@ -11,13 +11,14 @@ public class UsuarioDTO {
 	}
 	
 	
-	public UsuarioDTO(String nombre, String apellidos, String email, String contrasena, String telefono, String rol) {
+	public UsuarioDTO(String nombre, String apellidos, String email, String contrasena, String telefono, String rol, String nombre_usuario) {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.email = email;
 		this.contrasena = contrasena;
 		this.telefono = telefono;
 		this.rol = rol;
+		this.nombre_usuario = nombre_usuario;
 	}
 	
 	
@@ -78,7 +79,13 @@ public class UsuarioDTO {
 		this.rol = rol;
 	}
 	
+	public String getNombre_usuario() {
+		return nombre_usuario;
+	}
 	
+	public void setNombre_usuario(String nombre_usuario) {
+		this.nombre_usuario = nombre_usuario;
+	}
 	
 	
 }

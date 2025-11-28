@@ -27,6 +27,14 @@ public class ClienteDTO {
 	
 	
 	
+	public ClienteDTO(String nombre, String apellidos, String email, LocalDate fechaNacimiento) {
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.email = email;
+		this.fechaNacimiento = fechaNacimiento;
+	}
+	
+	
 	public int getIdCliente() {
 		return idCliente;
 	}
