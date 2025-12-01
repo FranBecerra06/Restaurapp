@@ -109,7 +109,7 @@ public class AdminController implements Initializable {
         }
     }
 
-    // --- MÉTODO AUXILIAR PARA CARGAR VISTAS (NO TOCAR) ---
+    // --- MÉTODO AUXILIAR PARA CARGAR VISTAS ---
     
     private void cargarVista(String nombreArchivo) {
         try {
