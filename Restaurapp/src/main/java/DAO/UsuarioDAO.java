@@ -17,39 +17,37 @@ public class UsuarioDAO {
 	
 	// -- INSERTAR USUARIO -- 
 	
-	public UsuarioDTO crearCliente(UsuarioDTO u) throws SQLException {
+	// -- INSERTAR USUARIO (CORREGIDO) --
+    public UsuarioDTO crearCliente(UsuarioDTO u) throws SQLException {
 
-		String sql = "INSERT INTO usuario (nombre, apellidos, email, contrasena, telefono, nombre_usuario) VALUES(?,?,?,?,?,?)";
 
-		try (Connection conn = ConexionBD.getConnection();
-				PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO usuario (nombre, apellidos, email, contrasena, telefono, nombre_usuario, rol) VALUES(?,?,?,?,?,?,?)";
 
-			pst.setString(1, u.getNombre());
-			pst.setString(2, u.getApellidos());
-			pst.setString(3, u.getEmail());
-			pst.setString(4, u.getContrasena());
-			pst.setString(5, u.getTelefono());
-			pst.setString(6, u.getNombre_usuario());
-			
-			pst.executeUpdate();
+        try (Connection conn = ConexionBD.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-			try (ResultSet rs = pst.getGeneratedKeys()) {
-				if (rs.next()) {
+            // Asignamos los valores
+            pst.setString(1, u.getNombre());
+            pst.setString(2, u.getApellidos());
+            pst.setString(3, u.getEmail());
+            pst.setString(4, u.getContrasena());
+            pst.setString(5, u.getTelefono());
+            pst.setString(6, u.getNombre_usuario());
+            pst.setString(7, "Camarero"); // Asignamos un rol por defecto si tu tabla lo requiere
 
-					u.setNombre(rs.getString(1));
-					u.setApellidos(rs.getString(2));
-					u.setEmail(rs.getString(3));
-					u.setContrasena(rs.getString(4));
-					u.setTelefono(rs.getString(5));
-					u.setNombre_usuario(rs.getString(6));
-				}
+            pst.executeUpdate();
 
-			}
-
-		}
-		return u;
-
-	}
+            // AQUÍ ESTABA EL ERROR:
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                if (rs.next()) {
+                    // Solo leemos la columna 1, que es el ID generado por la BD
+                    int nuevoId = rs.getInt(1);
+                    u.setIdUsuario(nuevoId); 
+                }
+            }
+        }
+        return u;
+    }
 
 // -- MODIFICAR USUARIO --
 
