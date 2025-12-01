@@ -33,4 +33,6 @@ public class AlergenoDTO {
 		this.nombre = nombre;
 	}
 	
+	
+	
 }
