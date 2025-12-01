@@ -50,10 +50,7 @@ public class LogIn {
         if (usuarioTF.getText().equals("Admin") ) {
             casoAdmin = true;
             if(contraUsuPF.getText().equals("1234")){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Admin");
-                alert.setContentText("Admin ha iniciado sesión");
-                Optional<ButtonType> result = alert.showAndWait();
+                cambiarAAdmin();
             }else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Admin");
@@ -145,6 +142,25 @@ public class LogIn {
             currentStage.setHeight(720);
             //currentStage.setResizable(false);
             scene.getStylesheets().add("../resources/EstiloClienteLogged.css/");
+            currentStage.setScene(scene);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void cambiarAAdmin(){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
+            Parent root = loader.load();
+
+            Stage currentStage = (Stage) loginBtn.getScene().getWindow();
+            Scene scene = new Scene(root);
+            //currentStage.setWidth(1280);
+            //currentStage.setHeight(720);
+            //currentStage.setResizable(false);
+            //scene.getStylesheets().add("../resources/EstiloClienteLogged.css/");
             currentStage.setScene(scene);
 
         } catch (IOException e) {
