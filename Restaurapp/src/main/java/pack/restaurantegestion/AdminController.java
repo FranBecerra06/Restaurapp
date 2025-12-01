@@ -92,7 +92,7 @@ public class AdminController implements Initializable {
     void handleLogout(ActionEvent event) {
         System.out.println("Cerrando sesión...");
         try {
-            // Cargar la vista de Login (en tu foto se llamaba SignIn.fxml)
+            // Cargar la vista de Login
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SignIn.fxml"));
             Parent root = loader.load();
             
