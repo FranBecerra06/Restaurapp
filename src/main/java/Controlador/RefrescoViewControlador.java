@@ -1,13 +1,13 @@
 package Controlador;
 
-import DTO.Producto;
+import DTO.ProductoDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 
 public class RefrescoViewControlador {
 
-    private TableView<Producto> tablaProductos;
+    private TableView<ProductoDTO> tablaProductos;
     private CamareroViewControlador camareroController;
 
     // Botones del RefrescoView
@@ -21,7 +21,7 @@ public class RefrescoViewControlador {
     @FXML private Button btnAquariusLimon;
 
     // Pasar la tabla desde CamareroView
-    public void setTablaProductos(TableView<Producto> tablaProductos) {
+    public void setTablaProductos(TableView<ProductoDTO> tablaProductos) {
         this.tablaProductos = tablaProductos;
     }
 
@@ -46,7 +46,7 @@ public class RefrescoViewControlador {
     // Agrega el producto a la tabla
     public void agregarProducto(String nombre, double precio) {
         if (tablaProductos != null) {
-            for (Producto p : tablaProductos.getItems()) {
+            for (ProductoDTO p : tablaProductos.getItems()) {
                 if (p.getNombre().equals(nombre)) {
                     p.setCantidad(p.getCantidad() + 1);
                     tablaProductos.refresh();
@@ -54,7 +54,7 @@ public class RefrescoViewControlador {
                     return;
                 }
             }
-            tablaProductos.getItems().add(new Producto(nombre, 1, precio));
+            tablaProductos.getItems().add(new ProductoDTO(nombre, 1, precio));
             if (camareroController != null) camareroController.actualizarPrecioTotal();
         }
     }

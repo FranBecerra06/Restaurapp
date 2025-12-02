@@ -2,7 +2,7 @@ package Controlador;
 
 import java.io.IOException;
 
-import DTO.Producto;
+import DTO.ProductoDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -15,16 +15,16 @@ import javafx.scene.layout.AnchorPane;
 public class CamareroViewControlador {
 	
     @FXML
-    private TableView<Producto> tablaProductos;
+    private TableView<ProductoDTO> tablaProductos;
     
     @FXML
-    private TableColumn<Producto, String> colProducto;
+    private TableColumn<ProductoDTO, String> colProducto;
     
     @FXML
-    private TableColumn<Producto, Integer> colCantidad;
+    private TableColumn<ProductoDTO, Integer> colCantidad;
    
     @FXML
-    private TableColumn<Producto, Double> colPrecio;
+    private TableColumn<ProductoDTO, Double> colPrecio;
     
     @FXML
     private TextField precioTotal, entregado, devolver;
@@ -44,7 +44,7 @@ public class CamareroViewControlador {
     
     
     public void agregarProducto(String nombre, double precio) {
-        for (Producto p : tablaProductos.getItems()) {
+        for (ProductoDTO p : tablaProductos.getItems()) {
             if (p.getNombre().equals(nombre)) {
                 p.setCantidad(p.getCantidad() + 1);
                 tablaProductos.refresh();
@@ -52,14 +52,14 @@ public class CamareroViewControlador {
                 return;
             }
         }
-        tablaProductos.getItems().add(new Producto(nombre, 1, precio));
+        tablaProductos.getItems().add(new ProductoDTO(nombre, 1, precio));
         actualizarPrecioTotal();
     }
     
     
     public void actualizarPrecioTotal() {
         double total = 0;
-        for (Producto p : tablaProductos.getItems()) {
+        for (ProductoDTO p : tablaProductos.getItems()) {
             total += p.getCantidad() * p.getPrecio();
         }
         precioTotal.setText(total +  "");
@@ -68,7 +68,7 @@ public class CamareroViewControlador {
     // Refresco: carga la vista de refrescos
     @FXML
     public void Refresco() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vista/RefrescoView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/RefrescoView.fxml"));
         AnchorPane view = loader.load();
 
         // Pasar la tabla al controlador de Refresco
@@ -89,7 +89,7 @@ public class CamareroViewControlador {
     @FXML
     public void borrar() {
         // Obtener el producto seleccionado
-        Producto seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
+        ProductoDTO seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
 
         if (seleccionado != null) {
             if (seleccionado.getCantidad() > 1) {

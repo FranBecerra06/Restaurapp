@@ -14,6 +14,7 @@ module pack.restaurantegestion {
     exports pack.restaurantegestion;
     exports Controlador;
 
+    opens DTO to javafx.base;
 
 }
 

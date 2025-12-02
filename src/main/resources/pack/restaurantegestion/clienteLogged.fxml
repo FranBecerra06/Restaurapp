@@ -23,17 +23,17 @@
                   <Image url="@../../../../../Imagenes/logo_restaurante.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="reservarBtn" layoutX="364.0" layoutY="582.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="162.0" styleClass="reservarBtn" stylesheets="@../../EstiloClienteLogged.css" text="RESERVAR" textFill="WHITE">
+            <Button fx:id="reservarBtn" layoutX="364.0" layoutY="582.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="162.0" styleClass="mainBtn" stylesheets="@../../EstiloClienteLogged.css" text="RESERVAR" textFill="WHITE">
                <font>
                   <Font name="Consolas" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="botonPedir" layoutX="594.0" layoutY="582.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="162.0" style="-fx-border-radius: 2px; -fx-border-width: 1px; -fx-border-color: white; -fx-background-color: transparent;" text="PEDIR" textFill="WHITE">
+            <Button fx:id="botonPedir" layoutX="594.0" layoutY="582.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="162.0" styleClass="mainBtn" stylesheets="@../../EstiloClienteLogged.css" text="PEDIR" textFill="WHITE">
                <font>
                   <Font name="Consolas" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="boton11" layoutX="824.0" layoutY="582.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="162.0" style="-fx-border-radius: 2px; -fx-border-width: 1px; -fx-border-color: white; -fx-background-color: transparent;" text="ALÉRGENEOS" textFill="WHITE">
+            <Button fx:id="boton11" layoutX="824.0" layoutY="582.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="162.0" styleClass="mainBtn" stylesheets="@../../EstiloClienteLogged.css" text="ALÉRGENOS" textFill="WHITE">
                <font>
                   <Font name="Consolas" size="13.0" />
                </font>

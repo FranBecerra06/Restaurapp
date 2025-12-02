@@ -11,13 +11,13 @@ public class UsuarioDTO {
 	}
 	
 	
-	public UsuarioDTO(String nombre, String apellidos, String email, String contrasena, String telefono, String rol, String nombre_usuario) {
+	public UsuarioDTO(String nombre, String apellidos, String email, String contrasena, String telefono, String nombre_usuario) {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.email = email;
 		this.contrasena = contrasena;
 		this.telefono = telefono;
-		this.rol = rol;
+		this.rol = "Cliente";
 		this.nombre_usuario = nombre_usuario;
 	}
 	

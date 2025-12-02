@@ -30,11 +30,16 @@ public class LogIn {
     private Label textoAuxiliar;
 
 
+
     @FXML
     private void initialize() {//IMPORTANTE! este metodo ocurre al iniciarse la aplicacion
         loginBtn.disableProperty().bind(//Enlazamos la propiedad isDisabled del boton a la propiedad isEmpty del passwordField
                 contraUsuPF.textProperty().isEmpty()
         );
+    }
+
+    public void recibirNombre(String nombre){
+        usuarioTF.setText(nombre);
     }
 
     //Metoto principal, ocurre al clicar en iniciar sesion
@@ -57,7 +62,19 @@ public class LogIn {
                 alert.setContentText("Contraseña incorrecta");
                 Optional<ButtonType> result = alert.showAndWait();
             }
+        }
 
+        //Control de caso de Camarero
+        if (usuarioTF.getText().equals("Camarero") ) {
+            casoAdmin = true;
+            if(contraUsuPF.getText().equals("1234")){
+                cambiarACamarero();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Admin");
+                alert.setContentText("Contraseña incorrecta");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
         }
 
         //Control de caso de usuario existente
@@ -142,6 +159,25 @@ public class LogIn {
             currentStage.setHeight(720);
             //currentStage.setResizable(false);
             scene.getStylesheets().add("../resources/EstiloClienteLogged.css/");
+            currentStage.setScene(scene);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void cambiarACamarero(){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/CamareroView.fxml"));
+            Parent root = loader.load();
+
+            Stage currentStage = (Stage) loginBtn.getScene().getWindow();
+            Scene scene = new Scene(root);
+            //currentStage.setWidth(1280);
+            //currentStage.setHeight(720);
+            //currentStage.setResizable(false);
+            //scene.getStylesheets().add("../resources/EstiloClienteLogged.css/");
             currentStage.setScene(scene);
 
         } catch (IOException e) {
