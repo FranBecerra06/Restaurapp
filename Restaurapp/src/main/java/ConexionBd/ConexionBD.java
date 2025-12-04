@@ -11,8 +11,15 @@ public class ConexionBD {
 	private static final String PASS = "";
 
 	public static Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(URL, USER, PASS);
-	}
+        try {
+            // ESTA LÍNEA ES OBLIGATORIA PARA ARREGLAR ESE ERROR
+            Class.forName("com.mysql.cj.jdbc.Driver"); 
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        return DriverManager.getConnection(URL, USER, PASS);
+    }
 
 	public static void main(String[] args) {
 

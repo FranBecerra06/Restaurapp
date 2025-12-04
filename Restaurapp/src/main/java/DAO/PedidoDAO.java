@@ -17,7 +17,7 @@ public class PedidoDAO {
 
     // -- INSERTAR PEDIDO --
     public PedidoDTO crearPedido(PedidoDTO p) throws SQLException {
-        String sql = "INSERT INTO pedidos (id_mesa, observaciones) VALUES (?, ?)";
+        String sql = "INSERT INTO pedido (id_mesa, observaciones) VALUES (?, ?)";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -44,7 +44,7 @@ public class PedidoDAO {
 
     // -- MODIFICAR PEDIDO --
     public boolean modificarPedido(PedidoDTO p) throws SQLException {
-        String sql = "UPDATE pedidos SET id_mesa = ?, observaciones = ? WHERE id_pedido = ?";
+        String sql = "UPDATE pedido SET id_mesa = ?, observaciones = ? WHERE id_pedido = ?";
         
         try (Connection conn = ConexionBD.getConnection(); 
              PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -65,7 +65,7 @@ public class PedidoDAO {
 
     // -- ELIMINAR PEDIDO --
     public boolean eliminarPedido(int idPedido) throws SQLException {
-        String sql = "DELETE FROM pedidos WHERE id_pedido = ?";
+        String sql = "DELETE FROM pedido WHERE id_pedido = ?";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -79,7 +79,7 @@ public class PedidoDAO {
     // -- LISTAR PEDIDOS --
     public List<PedidoDTO> listarPedidos() throws SQLException {
         List<PedidoDTO> lista = new ArrayList<>();
-        String sql = "SELECT * FROM pedidos";
+        String sql = "SELECT * FROM pedido";
 
         try (Connection conn = ConexionBD.getConnection();
              Statement st = conn.createStatement();

@@ -33,7 +33,7 @@ public class UsuarioDAO {
             pst.setString(4, u.getContrasena());
             pst.setString(5, u.getTelefono());
             pst.setString(6, u.getNombre_usuario());
-            pst.setString(7, "Camarero"); // Asignamos un rol por defecto si tu tabla lo requiere
+            pst.setString(7, u.getRol());
 
             pst.executeUpdate();
 
