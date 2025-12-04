@@ -1,0 +1,54 @@
+/* EstilosAdmin.css - TEMA NARANJA */
+
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* --- FONDO NARANJA PARA TODAS LAS PANTALLAS --- */
+.fondo-naranja {
+    -fx-background-color: #D16B36; /* Color corporativo */
+}
+
+/* --- MENÚ LATERAL --- */
+.sidebar {
+    -fx-background-color: #D16B36; /* Ahora la barra es naranja */
+}
+
+/* --- BOTONES DEL MENÚ --- */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white; /* Texto blanco siempre para que se lea sobre naranja */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-alignment: BASELINE_LEFT;
+    -fx-padding: 10 0 10 20; 
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #A04000; /* Naranja oscuro al pasar el ratón */
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-width: 0 0 0 4; 
+}
+
+/* --- BOTONES ROJOS (Cerrar Sesión) --- */
+.btn-rojo {
+    -fx-background-color: #c0392b;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}
+.btn-rojo:hover {
+    -fx-background-color: #e74c3c;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 1);
+}
+
+/* --- TARJETAS DASHBOARD --- */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);
+}
