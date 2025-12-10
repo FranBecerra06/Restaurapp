@@ -314,9 +314,9 @@ public class CamareroViewControlador {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/EditarRefrescoView.fxml"));
     	AnchorPane root = loader.load();
     	
-    	EditarRefrescoViewControlador ervc = loader.getController();
+    	EditarProductoTablaViewControlador eptvc = loader.getController();
     	
-    	ervc.setProductos(p);
+    	eptvc.setProductos(p);
     	
     	Stage stage = new Stage();
 		stage.setScene(new Scene(root));
