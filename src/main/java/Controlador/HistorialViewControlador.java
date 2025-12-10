@@ -8,7 +8,6 @@ import java.util.List;
 
 import DAO.PedidoDAO;
 import DTO.PedidoDTO;
-import DTO.VentaDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,22 +21,22 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class HistorialViewControlador {
 	
 	@FXML
-	private TableView<VentaDTO> tablaVentas;
+	private TableView<PedidoDTO> tablaVentas;
 	
 	@FXML
 	private DatePicker fechaInicio, fechaFin;
 	
 	@FXML
-	private TableColumn<VentaDTO, Integer> colId;
+	private TableColumn<PedidoDTO, Integer> colId;
 	
 	@FXML
-	private TableColumn<VentaDTO, LocalDateTime> colFecha;
+	private TableColumn<PedidoDTO, LocalDateTime> colFecha;
 	
 	@FXML
-	private TableColumn<VentaDTO, Double> colTotal;
+	private TableColumn<PedidoDTO, Double> colTotal;
 	
 	@FXML
-	private TableColumn<VentaDTO, String> colCamarero;
+	private TableColumn<PedidoDTO, String> colCamarero;
 	
 	@FXML
 	private Label lblVentas;
@@ -50,7 +49,7 @@ public class HistorialViewControlador {
 		
 		pedidoDAO = new PedidoDAO();
 		
-		colId.setCellValueFactory(new PropertyValueFactory<>("idVenta"));
+		colId.setCellValueFactory(new PropertyValueFactory<>("idPedido"));
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
 		colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
 		colCamarero.setCellValueFactory(new PropertyValueFactory<>("camarero"));
@@ -66,14 +65,9 @@ public class HistorialViewControlador {
 		try {
 	        PedidoDAO pDAO = new PedidoDAO();
 	        List<PedidoDTO> pedidos = pDAO.listarPedidos();
-	        ObservableList<VentaDTO> ventas = FXCollections.observableArrayList();
+	        ObservableList<PedidoDTO> lista = FXCollections.observableArrayList(pedidos);
 
-	        for(PedidoDTO p : pedidos) {
-	            String nombreCamarero = "Camarero " + p.getIdCamarero(); // o buscar nombre real si tienes tabla usuario
-	            ventas.add(new VentaDTO(p.getIdPedido(), p.getFecha(), p.getTotal(), nombreCamarero));
-	        }
-
-	        tablaVentas.setItems(ventas);
+	        tablaVentas.setItems(lista);
 
 	    } catch(SQLException e) {
 	        e.printStackTrace();
@@ -123,12 +117,7 @@ public class HistorialViewControlador {
 	    List<PedidoDTO> filtrados = pedidoDAO.listarPedidosPorFecha(fechaSQLInicio, fechaSQLFin);
 	    
 	    // Convertimos PedidoDTO → VentaDTO
-	    ObservableList<VentaDTO> ventasFiltradas = FXCollections.observableArrayList();
-	    
-	    for (PedidoDTO p : filtrados) {
-	        String nombreCamarero = "Camarero " + p.getIdCamarero();
-	        ventasFiltradas.add(new VentaDTO(p.getIdPedido(), p.getFecha(), p.getTotal(), nombreCamarero));
-	    }
+	    ObservableList<PedidoDTO> lista = FXCollections.observableArrayList(filtrados);
 	    
         // Sumar total real
         double suma = 0;
@@ -139,7 +128,7 @@ public class HistorialViewControlador {
         lblVentas.setText(String.format("%.2f €", suma));
         
         // Si tienes tabla:
-        tablaVentas.setItems(ventasFiltradas);
+        tablaVentas.setItems(lista);
 		
 	}
 	
