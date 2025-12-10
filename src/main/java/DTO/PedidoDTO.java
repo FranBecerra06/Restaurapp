@@ -72,4 +72,9 @@ public class PedidoDTO {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
+    
+    
+    public String getCamarero() {
+    	return "Camarero" + idCamarero;
+    }
 }
