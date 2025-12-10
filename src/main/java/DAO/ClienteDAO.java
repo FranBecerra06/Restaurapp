@@ -1,7 +1,6 @@
 package DAO;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,13 +10,11 @@ import java.util.List;
 
 import ConexionBd.ConexionBD;
 import DTO.ClienteDTO;
-import DTO.UsuarioDTO;
-import Modelos.Usuario;
 
 public class ClienteDAO {
-	
+
 		//CRUD ClienteDAO
-		
+
 		// -- INSERTAR CLIENTE --
 
 		public ClienteDTO crearCliente(ClienteDTO c) throws SQLException {
@@ -31,7 +28,7 @@ public class ClienteDAO {
 				pst.setString(2, c.getApellidos());
 				pst.setString(3, c.getEmail());
 				pst.setDate(4, java.sql.Date.valueOf(c.getFechaNacimiento()));
-				
+
 				pst.executeUpdate();
 
 				try (ResultSet rs = pst.getGeneratedKeys()) {
@@ -70,7 +67,7 @@ public class ClienteDAO {
 
 			String sql = "DELETE FROM usuario WHERE nombre_usuario = ?";
 
-			try (Connection conn = ConexionBD.getConnection(); 
+			try (Connection conn = ConexionBD.getConnection();
 					PreparedStatement pst = conn.prepareStatement(sql)) {
 
 				pst.setString(1, nombreUsuario);
@@ -101,13 +98,13 @@ public class ClienteDAO {
 				}
 
 			}
-			
+
 			return listaNombres;
 
 		}
-		
+
 		// -- LISTAR CLIENTES --
-		
+
 		public List<ClienteDTO> listarClientes() throws SQLException {
 		    List<ClienteDTO> lista = new ArrayList<>();
 
@@ -120,7 +117,7 @@ public class ClienteDAO {
 		        while (rs.next()) {
 		        	/*int idUsuario = rs.getInt("id_usuario");
 		        	UsuarioDTO usuario = new UsuarioDTO (idUsuario);*/
-		        	
+
 		            ClienteDTO cliente = new ClienteDTO(
 		            	//usuario,
 		                rs.getString("nombre"),
@@ -135,6 +132,6 @@ public class ClienteDAO {
 
 		    return lista;
 		}
-		
+
 
 	}

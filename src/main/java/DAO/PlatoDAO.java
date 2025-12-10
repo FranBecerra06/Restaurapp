@@ -15,7 +15,7 @@ public class PlatoDAO {
 
     // -- INSERTAR PLATO --
     public PlatoDTO crearPlato(PlatoDTO p) throws SQLException {
-        String sql = "INSERT INTO platos (nombre, descripcion, precio, disponible) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO plato (nombre, descripcion, precio, disponible) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -38,7 +38,7 @@ public class PlatoDAO {
 
     // -- MODIFICAR PLATO --
     public boolean modificarPlato(PlatoDTO p) throws SQLException {
-        String sql = "UPDATE platos SET nombre = ?, descripcion = ?, precio = ?, disponible = ? WHERE id_plato = ?";
+        String sql = "UPDATE plato SET nombre = ?, descripcion = ?, precio = ?, disponible = ? WHERE id_plato = ?";
         
         try (Connection conn = ConexionBD.getConnection(); 
              PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -56,7 +56,7 @@ public class PlatoDAO {
 
     // -- ELIMINAR PLATO --
     public boolean eliminarPlato(int idPlato) throws SQLException {
-        String sql = "DELETE FROM platos WHERE id_plato = ?";
+        String sql = "DELETE FROM plato WHERE id_plato = ?";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -70,7 +70,7 @@ public class PlatoDAO {
     // -- LISTAR PLATOS --
     public List<PlatoDTO> listarPlatos() throws SQLException {
         List<PlatoDTO> lista = new ArrayList<>();
-        String sql = "SELECT * FROM platos";
+        String sql = "SELECT * FROM plato";
 
         try (Connection conn = ConexionBD.getConnection();
              Statement st = conn.createStatement();

@@ -1,18 +1,16 @@
 package pack.restaurantegestion;
 
-import ConexionBd.ConexionBD;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 public class Main extends Application {
 
-    public void start(Stage stage) throws IOException {
+    @Override
+	public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
@@ -24,12 +22,7 @@ public class Main extends Application {
 
     }
 
-    /*public static void main(String[] args) {
-
-        try (Connection conn = ConexionBD.getConnection()) {
-            System.out.println("Conexión establecida");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

@@ -22,7 +22,7 @@
         <!-- Usuario (TextField fijo) -->
         <Label text="Usuario" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="50.0">
             <font>
-                <Font name="Georgia" size="20.0" />
+                <Font name="Serif Regular" size="20.0" />
             </font>
         </Label>
 
@@ -65,18 +65,18 @@
                   <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btn1" mnemonicParsing="false" prefHeight="74.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="1" textFill="WHITE">
+                  <Button fx:id="btn1" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="74.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="1" textFill="WHITE">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font>
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin></Button>
-                  <Button fx:id="btn2" mnemonicParsing="false" prefHeight="73.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="2" textFill="WHITE" GridPane.columnIndex="1">
+                  <Button fx:id="btn2" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="73.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="2" textFill="WHITE" GridPane.columnIndex="1">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font></Button>
-                  <Button fx:id="btn3" mnemonicParsing="false" prefHeight="84.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="3" textFill="WHITE" GridPane.columnIndex="2">
+                  <Button fx:id="btn3" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="84.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="3" textFill="WHITE" GridPane.columnIndex="2">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font></Button>
@@ -87,67 +87,67 @@
                      <GridPane.margin>
                         <Insets right="10.0" />
                      </GridPane.margin></Button>
-                  <Button fx:id="btn4" mnemonicParsing="false" prefHeight="112.0" prefWidth="143.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="4" textFill="WHITE" GridPane.rowIndex="1">
+                  <Button fx:id="btn4" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="112.0" prefWidth="143.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="4" textFill="WHITE" GridPane.rowIndex="1">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font>
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin></Button>
-                  <Button fx:id="btn5" mnemonicParsing="false" prefHeight="111.0" prefWidth="97.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="5" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button fx:id="btn5" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="111.0" prefWidth="97.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="5" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font></Button>
-                  <Button fx:id="btn6" mnemonicParsing="false" prefHeight="106.0" prefWidth="173.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="6" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Button fx:id="btn6" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="106.0" prefWidth="173.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="6" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font></Button>
-                  <Button fx:id="btn7" mnemonicParsing="false" prefHeight="93.0" prefWidth="100.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="7" textFill="WHITE" GridPane.rowIndex="2">
+                  <Button fx:id="btn7" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="93.0" prefWidth="100.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="7" textFill="WHITE" GridPane.rowIndex="2">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font>
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin></Button>
-                  <Button fx:id="btnCobrar" maxHeight="128.0" mnemonicParsing="false" prefHeight="101.0" prefWidth="81.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="COBRAR" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                  <Button fx:id="btnCobrar" maxHeight="128.0" mnemonicParsing="false" onAction="#cobrar" prefHeight="101.0" prefWidth="81.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="COBRAR" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="2">
                      <font>
                         <Font name="Serif Bold" size="10.0" />
                      </font>
                      <GridPane.margin>
                         <Insets right="10.0" />
                      </GridPane.margin></Button>
-                  <Button fx:id="btn8" mnemonicParsing="false" prefHeight="80.0" prefWidth="92.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="8" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="btn8" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="80.0" prefWidth="92.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="8" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font></Button>
-                  <Button fx:id="btn9" mnemonicParsing="false" prefHeight="75.0" prefWidth="89.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="9" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <Button fx:id="btn9" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="75.0" prefWidth="89.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="9" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font></Button>
-                  <Button fx:id="btnComa" mnemonicParsing="false" prefHeight="81.0" prefWidth="80.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="," GridPane.rowIndex="3">
+                  <Button fx:id="btnComa" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="81.0" prefWidth="80.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="." GridPane.rowIndex="3">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font>
                      <GridPane.margin>
                         <Insets bottom="5.0" left="10.0" />
                      </GridPane.margin></Button>
-                  <Button fx:id="btn0" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="0" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <Button fx:id="btn0" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="70.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="0" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font>
                      <GridPane.margin>
                         <Insets bottom="5.0" />
                      </GridPane.margin></Button>
-                  <Button fx:id="btnClear" mnemonicParsing="false" prefHeight="74.0" prefWidth="80.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="C" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <Button fx:id="btnClear" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="74.0" prefWidth="80.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="C" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font>
                      <GridPane.margin>
                         <Insets bottom="5.0" />
                      </GridPane.margin></Button>
-                  <Button fx:id="btnDelete" mnemonicParsing="false" prefHeight="86.0" prefWidth="105.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="&lt;" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#onNumeroPress" prefHeight="86.0" prefWidth="105.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="&lt;" GridPane.columnIndex="3" GridPane.rowIndex="3">
                      <font>
-                        <Font name="Serif Bold" size="24.0" />
+                        <Font name="Serif Bold" size="28.0" />
                      </font>
                      <GridPane.margin>
                         <Insets bottom="5.0" right="10.0" />
@@ -160,7 +160,7 @@
          <children>
             <VBox layoutY="1.0" prefHeight="154.0" prefWidth="86.0">
                <children>
-                  <Button fx:id="btnEditar" mnemonicParsing="false" prefHeight="42.0" prefWidth="66.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="EDITAR">
+                  <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#editar" prefHeight="42.0" prefWidth="66.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="EDITAR">
                      <VBox.margin>
                         <Insets bottom="12.0" left="10.0" right="10.0" top="18.0" />
                      </VBox.margin>
@@ -201,7 +201,7 @@
                         <Font name="Serif Bold" size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnDividirCuenta" layoutX="10.0" layoutY="84.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="DIVIDIR CUENTA" textAlignment="CENTER" wrapText="true">
+                  <Button fx:id="btnDividirCuenta" layoutX="10.0" layoutY="84.0" mnemonicParsing="false" onAction="#dividirCuenta" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="DIVIDIR CUENTA" textAlignment="CENTER" wrapText="true">
                      <VBox.margin>
                         <Insets bottom="14.0" left="12.0" right="12.0" top="14.0" />
                      </VBox.margin>
@@ -318,12 +318,12 @@
             <AnchorPane fx:id="productoAnchorPane" prefHeight="336.0" prefWidth="351.0" />
          </children>
       </Pane>
-      <TextField fx:id="entregado" alignment="CENTER" layoutX="469.0" layoutY="475.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 10; -fx-text-fill: #ffffff;">
+      <TextField fx:id="entregado" alignment="CENTER_RIGHT" layoutX="469.0" layoutY="475.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 10; -fx-text-fill: #ffffff;">
          <font>
-            <Font name="Serif Regular" size="18.0" />
+            <Font name="Serif Regular" size="30.0" />
          </font>
       </TextField>
-      <TextField fx:id="devolver" alignment="CENTER" layoutX="469.0" layoutY="565.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 10; -fx-text-fill: #ffffff;">
+      <TextField fx:id="devolver" alignment="CENTER_RIGHT" layoutX="469.0" layoutY="565.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 10; -fx-text-fill: #ffffff;">
          <font>
             <Font name="Serif Regular" size="30.0" />
          </font>
@@ -344,19 +344,19 @@
          </font>
       </Text>
       <Line endX="61.79998779296875" layoutX="551.0" layoutY="552.0" startX="-87.0" />
-      <Label alignment="CENTER" layoutX="359.0" layoutY="575.0" prefHeight="39.0" prefWidth="98.0" text="DEVOLVER">
+      <Label alignment="CENTER" layoutX="343.0" layoutY="575.0" prefHeight="39.0" prefWidth="114.0" text="DEVOLVER">
          <font>
-            <Font name="Serif Regular" size="16.0" />
+            <Font name="Serif Bold" size="16.0" />
          </font>
       </Label>
-      <Button fx:id="btnSalir1" layoutX="497.0" layoutY="50.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="142.0" style="-fx-background-color: FF9500; -fx-background-radius: 20;" text="SALIR">
+      <Button fx:id="btnSalir1" layoutX="497.0" layoutY="50.0" mnemonicParsing="false" onAction="#salir" prefHeight="26.0" prefWidth="142.0" style="-fx-background-color: FF9500; -fx-background-radius: 20;" text="SALIR">
          <font>
             <Font name="Serif Bold" size="14.0" />
          </font>
       </Button>
-      <Label alignment="CENTER" layoutX="359.0" layoutY="484.0" prefHeight="39.0" prefWidth="98.0" text="ENTREGADO">
+      <Label alignment="CENTER" layoutX="343.0" layoutY="484.0" prefHeight="39.0" prefWidth="114.0" text="ENTREGADO">
          <font>
-            <Font name="Serif Regular" size="16.0" />
+            <Font name="Serif Bold" size="16.0" />
          </font>
       </Label>
     </children>
