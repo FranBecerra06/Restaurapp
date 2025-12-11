@@ -54,7 +54,6 @@ public class MesaCamareroViewControlador {
                 btnMesa.setPrefHeight(120);
             }else {
             	btnMesa.setContentDisplay(javafx.scene.control.ContentDisplay.TOP);
-                btnMesa.setStyle("-fx-background-radius: 15;" + "-fx-font-family: 'Serif';");
                 btnMesa.setPrefWidth(120);
                 btnMesa.setPrefHeight(120);
                 
@@ -62,10 +61,12 @@ public class MesaCamareroViewControlador {
                 
                 boolean tieneProductos = mpDAO.obtenerPlatoPorMesa(idMesa).size() > 0;
                 
+                String estiloBase = "-fx-background-radius: 15; -fx-font-family: 'Serif';";
+                
                 if(tieneProductos) {
-                	btnMesa.setStyle("-fx-background-color: #E57373;");  //color rojo
+                	btnMesa.setStyle(estiloBase + "-fx-background-color: #E57373;");  //color rojo
                 }else {
-                	btnMesa.setStyle("-fx-background-color: #81C784;");  //color verde
+                	btnMesa.setStyle(estiloBase + "-fx-background-color: #81C784;");  //color verde
                 }
                 
                 btnMesa.setOnAction(e -> {
