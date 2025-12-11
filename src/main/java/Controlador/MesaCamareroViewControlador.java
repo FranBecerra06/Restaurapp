@@ -46,30 +46,36 @@ public class MesaCamareroViewControlador {
             imagen.setFitHeight(80);
 
             Button btnMesa = new Button("Mesa " + idMesa, imagen);
-            btnMesa.setContentDisplay(javafx.scene.control.ContentDisplay.TOP);
-            btnMesa.setStyle("-fx-background-radius: 15;" + "-fx-font-family: 'Serif';");
-            btnMesa.setPrefWidth(120);
-            btnMesa.setPrefHeight(120);
             
-            Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
-            
-            boolean tieneProductos = mpDAO.obtenerPlatoPorMesa(idMesa).size() > 0;
-            
-            if(tieneProductos) {
-            	btnMesa.setStyle("-fx-background-color: #E57373;");
+            if(mesa.getDisponibilidad().equalsIgnoreCase("No Disponible")) {
+            	btnMesa.setContentDisplay(javafx.scene.control.ContentDisplay.TOP);
+            	btnMesa.setStyle("-fx-background-radius: 15;" + "-fx-font-family: 'Serif';" + "-fx-background-color: grey;");
+                btnMesa.setPrefWidth(120);
+                btnMesa.setPrefHeight(120);
             }else {
-            	btnMesa.setStyle("-fx-background-color: #81C784;");
+            	btnMesa.setContentDisplay(javafx.scene.control.ContentDisplay.TOP);
+                btnMesa.setStyle("-fx-background-radius: 15;" + "-fx-font-family: 'Serif';");
+                btnMesa.setPrefWidth(120);
+                btnMesa.setPrefHeight(120);
+                
+                Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+                
+                boolean tieneProductos = mpDAO.obtenerPlatoPorMesa(idMesa).size() > 0;
+                
+                if(tieneProductos) {
+                	btnMesa.setStyle("-fx-background-color: #E57373;");  //color rojo
+                }else {
+                	btnMesa.setStyle("-fx-background-color: #81C784;");  //color verde
+                }
+                
+                btnMesa.setOnAction(e -> {
+    				try {
+    					seleccionarMesa(idMesa);
+    				} catch (Exception e1) {
+    					e1.printStackTrace();
+    				}
+    			});
             }
-            
-            btnMesa.setOnAction(e -> {
-				try {
-					seleccionarMesa(idMesa);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-			});
             
             if (contador == 1) {
                 vboxCol1.getChildren().add(btnMesa);
@@ -87,7 +93,7 @@ public class MesaCamareroViewControlador {
 	}
 	
 	
-	public void seleccionarMesa(int numMesa) throws IOException, SQLException {
+	public void seleccionarMesa(int numMesa) throws IOException, SQLException{
 		 FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/PedidoMesaView.fxml"));
 	     Parent root = loader.load();
 
