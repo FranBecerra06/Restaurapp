@@ -278,22 +278,24 @@ public class CamareroViewControlador {
     
     @FXML
     public void dividirCuenta(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/DividirCuentaView.fxml"));
-        AnchorPane root = loader.load(); // Cargar vista
-        DividirCuentaViewControlador dcvc = loader.getController();
-        
-        
-        // Crear nueva ventana
-        Stage stage = new Stage();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show(); // Mostrar nueva ventana
-        
-        String total = precioTotal.getText();
-        
-        dcvc.setCamareroController(this);
-        dcvc.mostrarCuentaPrincipal(tablaProductos.getItems(), total);
-        
+    	
+    	if(!tablaProductos.getItems().isEmpty()) {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/DividirCuentaView.fxml"));
+            AnchorPane root = loader.load(); // Cargar vista
+            DividirCuentaViewControlador dcvc = loader.getController();
+            
+            
+            // Crear nueva ventana
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show(); // Mostrar nueva ventana
+            
+            String total = precioTotal.getText();
+            
+            dcvc.setCamareroController(this);
+            dcvc.mostrarCuentaPrincipal(tablaProductos.getItems(), total);
+    	}
         
     }
     
