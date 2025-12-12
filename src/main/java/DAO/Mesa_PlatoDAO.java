@@ -8,10 +8,7 @@ import ConexionBd.ConexionBD;
 import DTO.Mesa_PlatoDTO;
 
 public class Mesa_PlatoDAO {
-
-    // ---------------------------------------------------------
-    // INSERTAR PLATO EN MESA
-    // ---------------------------------------------------------
+	
     public Mesa_PlatoDTO crearMesaPlato(Mesa_PlatoDTO mp) throws SQLException {
         String sql = "INSERT INTO mesa_plato (id_mesa, id_plato, cantidad) VALUES (?, ?, ?)";
 
@@ -26,11 +23,8 @@ public class Mesa_PlatoDAO {
 
         return mp;
     }
-
-
-    // ---------------------------------------------------------
-    // OBTENER TODOS LOS PLATOS DE UNA MESA
-    // ---------------------------------------------------------
+    
+    
     public List<Mesa_PlatoDTO> obtenerPlatoPorMesa(int idMesa) throws SQLException {
         List<Mesa_PlatoDTO> lista = new ArrayList<>();
         String sql = "SELECT * FROM mesa_plato WHERE id_mesa = ?";
@@ -52,11 +46,8 @@ public class Mesa_PlatoDAO {
         }
         return lista;
     }
-
-
-    // ---------------------------------------------------------
-    // OBTENER CANTIDAD DE UN PLATO EN UNA MESA (CLAVE PARA DIVIDIR CUENTA)
-    // ---------------------------------------------------------
+    
+    
     public int obtenerCantidad(int idMesa, int idPlato) throws SQLException {
         String sql = "SELECT cantidad FROM mesa_plato WHERE id_mesa = ? AND id_plato = ?";
 
@@ -73,11 +64,8 @@ public class Mesa_PlatoDAO {
         }
         return 0; // No existe ese plato en la mesa
     }
-
-
-    // ---------------------------------------------------------
-    // ACTUALIZAR CANTIDAD DE UN PLATO EN MESA
-    // ---------------------------------------------------------
+    
+    
     public boolean actualizarCantidad(int idMesa, int idPlato, int nuevaCantidad) throws SQLException {
         String sql = "UPDATE mesa_plato SET cantidad = ? WHERE id_mesa = ? AND id_plato = ?";
 
@@ -106,11 +94,8 @@ public class Mesa_PlatoDAO {
     		return false; 
     	} 
     }
-
-
-    // ---------------------------------------------------------
-    // ELIMINAR PLATO DE UNA MESA
-    // ---------------------------------------------------------
+    
+    
     public boolean eliminarMesaPlato(int idMesa, int idPlato) throws SQLException {
         String sql = "DELETE FROM mesa_plato WHERE id_mesa = ? AND id_plato = ?";
 
@@ -123,11 +108,8 @@ public class Mesa_PlatoDAO {
             return pst.executeUpdate() > 0;
         }
     }
-
-
-    // ---------------------------------------------------------
-    // ELIMINAR TODO LO DE UNA MESA (por ejemplo al cerrar mesa)
-    // ---------------------------------------------------------
+    
+    
     public boolean eliminarPorMesa(int idMesa) throws SQLException {
         String sql = "DELETE FROM mesa_plato WHERE id_mesa = ?";
 
