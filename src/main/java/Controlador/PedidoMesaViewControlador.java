@@ -343,7 +343,7 @@ public class PedidoMesaViewControlador {
         
         String total = precioTotal.getText();
         
-        dcvc.setPedidoController(this);
+        dcvc.setPedidoController(this, numeroMesa);
         dcvc.mostrarCuentaPrincipal(tablaProductos.getItems(), total);
         
         

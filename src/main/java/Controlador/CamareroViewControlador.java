@@ -311,7 +311,7 @@ public class CamareroViewControlador {
     	
     	PlatoDTO p = tablaProductos.getSelectionModel().getSelectedItem();
     	
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/EditarRefrescoView.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/EditarProductoTablaView.fxml"));
     	AnchorPane root = loader.load();
     	
     	EditarProductoTablaViewControlador eptvc = loader.getController();
