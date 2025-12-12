@@ -35,37 +35,53 @@ public class EditarProductoTablaViewControlador {
 	
 	@FXML
 	public void guardar(ActionEvent event) {
-		
-		try {
-			p.setNombre(txtProducto.getText());
-			p.setCantidad(Integer.parseInt(txtCantidad.getText()));
+
+	    boolean valido = true;
+
+	    textoErrorProducto.setVisible(false);
+	    textoErrorCantidad.setVisible(false);
+	    textoErrorPrecio.setVisible(false);
+
+	    if (txtProducto.getText().isEmpty()) {
+	        textoErrorProducto.setText("Este campo es obligatorio");
+	        textoErrorProducto.setVisible(true);
+	        valido = false;
+	    }
+
+	    if (txtCantidad.getText().isEmpty()) {
+	        textoErrorCantidad.setText("Este campo es obligatorio");
+	        textoErrorCantidad.setVisible(true);
+	        valido = false;
+	    }
+
+	    if (txtPrecio.getText().isEmpty()) {
+	        textoErrorPrecio.setText("Este campo es obligatorio");
+	        textoErrorPrecio.setVisible(true);
+	        valido = false;
+	    }
+
+	    // Si falta algún campo → NO seguir
+	    if (!valido) return;
+
+	    try {
+	        p.setNombre(txtProducto.getText());
+	        p.setCantidad(Integer.parseInt(txtCantidad.getText()));
 	        p.setPrecio(Double.parseDouble(txtPrecio.getText()));
-			
-			
-			Stage st = (Stage) txtProducto.getScene().getWindow();
-			st.close();
-		}catch(NumberFormatException e) {
-			
-			/*Alert alert = new Alert(Alert.AlertType.WARNING);
-			alert.setContentText("Este campo es obligatorio");
-		    alert.showAndWait();*/
-		    
-			if(txtProducto.getText().isEmpty()) {
-				textoErrorProducto.setText("Este campo es obligatorio");
-				textoErrorProducto.setVisible(true);
-			}
-			
-			if(txtCantidad.getText().isEmpty()) {
-				textoErrorCantidad.setText("Este campo es obligatorio");
-				textoErrorCantidad.setVisible(true);
-			}
-			
-			if(txtPrecio.getText().isEmpty()) {
-				textoErrorPrecio.setText("Este campo es obligatorio");
-				textoErrorPrecio.setVisible(true);
-			}
-		}
+
+	        Stage st = (Stage) txtProducto.getScene().getWindow();
+	        st.close();
+
+	    } catch (NumberFormatException e) {
+
+	        // valida formato numérico incorrecto
+	        textoErrorCantidad.setText("Debe ser un número");
+	        textoErrorCantidad.setVisible(true);
+
+	        textoErrorPrecio.setText("Debe ser un número");
+	        textoErrorPrecio.setVisible(true);
+	    }
 	}
+
 	
 	
 	@FXML

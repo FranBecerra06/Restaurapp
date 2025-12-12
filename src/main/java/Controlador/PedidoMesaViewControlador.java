@@ -23,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
@@ -202,26 +203,27 @@ public class PedidoMesaViewControlador {
     
     
     @FXML
-    public void borrar() throws SQLException {
+    public void borrar() {
+
         // Obtener el producto seleccionado
-    	PlatoDTO seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
-
-        if (seleccionado != null) {
-            if (seleccionado.getCantidad() > 1) {
-                // Reducir la cantidad en 1
-                seleccionado.setCantidad(seleccionado.getCantidad() - 1);
-                tablaProductos.refresh(); // Refrescar la tabla para actualizar la cantidad
-            } else {
-                // Si solo queda 1, eliminar la fila
-                tablaProductos.getItems().remove(seleccionado);
-                
-                Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
-                mpDAO.eliminarPorMesa(numeroMesa);
-            }
-
-            // Actualizar el total
-            actualizarPrecioTotal();
+        PlatoDTO seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
+        
+        if (seleccionado == null) {
+            return;
         }
+
+        // Si la cantidad es mayor que 1, restamos 1
+        if (seleccionado.getCantidad() > 1) {
+            seleccionado.setCantidad(seleccionado.getCantidad() - 1);
+            tablaProductos.refresh();  // Actualizar la tabla
+        } 
+        // Si la cantidad es 1, eliminamos toda la fila
+        else {
+            tablaProductos.getItems().remove(seleccionado);
+        }
+
+        // Actualizar el precio total
+        actualizarPrecioTotal();
     }
     
     
@@ -263,64 +265,75 @@ public class PedidoMesaViewControlador {
             double pago = Double.parseDouble(entregado.getText().trim());
 
             double cambio = pago - total;
-
-            devolver.setText(String.format(Locale.US, "%.2f", cambio));
             
-            
-            //añadir panel: quiere añadir alguna observacion?
-            
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Observaciones");
-            dialog.setHeaderText("¿Desea añadir alguna observación al pedido?");
-            dialog.setContentText("Observación:");
-
-            Optional<String> result = dialog.showAndWait();
-            String observacion = result.orElse("");
-            
-            
-            PedidoDTO pDTO = new PedidoDTO();
-            
-            MesaDTO m = new MesaDTO(numeroMesa);
-            
-            pDTO.setIdCamarero(1);
-            pDTO.setIdMesa(m);
-            pDTO.setTotal(total);
-            pDTO.setObservaciones("");
-            pDTO.setFecha(LocalDateTime.now());
-            pDTO.setObservaciones(observacion);
-            
-            PedidoDAO p = new PedidoDAO();
-            
-            p.crearPedido(pDTO);
-            
-            
-            int idUltimoPedido = p.obtenerUltimoIdPedido();
-            
-            System.out.println(idUltimoPedido);
-            
-            Pedido_PlatoDAO ppDAO = new Pedido_PlatoDAO();
-            
-            for (PlatoDTO plato : tablaProductos.getItems()) {
-            	
-            	PlatoDAO pDAO = new PlatoDAO();
-            	
-            	int id_plato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
-            	
-                Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
+            if(pago < total) {
+            	Alert alerta = new Alert(Alert.AlertType.WARNING);
+            	alerta.setTitle("Advertencia");
+                alerta.setHeaderText("No se ha realizado el cobro");
+                alerta.setContentText("La cantidad entregada es menor que el total");
+                alerta.showAndWait();
                 
-                System.out.println(ppDTO.getId_pedido() + "" + ppDTO.getId_plato() + "" + ppDTO.getCantidad());
+                entregado.clear();
                 
-                ppDAO.crearPedidoPlato(ppDTO);
+                return;
+            }else {
+            	devolver.setText(String.format(Locale.US, "%.2f", cambio));
+                
+                
+                //añadir panel: quiere añadir alguna observacion?
+                
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Observaciones");
+                dialog.setHeaderText("¿Desea añadir alguna observación al pedido?");
+                dialog.setContentText("Observación:");
+
+                Optional<String> result = dialog.showAndWait();
+                String observacion = result.orElse("");
+                
+                
+                PedidoDTO pDTO = new PedidoDTO();
+                
+                MesaDTO m = new MesaDTO(numeroMesa);
+                
+                pDTO.setIdCamarero(1);
+                pDTO.setIdMesa(m);
+                pDTO.setTotal(total);
+                pDTO.setObservaciones("");
+                pDTO.setFecha(LocalDateTime.now());
+                pDTO.setObservaciones(observacion);
+                
+                PedidoDAO p = new PedidoDAO();
+                
+                p.crearPedido(pDTO);
+                
+                
+                int idUltimoPedido = p.obtenerUltimoIdPedido();
+                
+                System.out.println(idUltimoPedido);
+                
+                Pedido_PlatoDAO ppDAO = new Pedido_PlatoDAO();
+                
+                for (PlatoDTO plato : tablaProductos.getItems()) {
+                	
+                	PlatoDAO pDAO = new PlatoDAO();
+                	
+                	int id_plato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
+                	
+                    Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
+                    
+                    System.out.println(ppDTO.getId_pedido() + "" + ppDTO.getId_plato() + "" + ppDTO.getCantidad());
+                    
+                    ppDAO.crearPedidoPlato(ppDTO);
+                }
+                
+                tablaProductos.getItems().clear();
+                precioTotal.clear();
+                entregado.clear();
+                
+                Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+                mpDAO.eliminarPorMesa(numeroMesa);
+                
             }
-            
-            tablaProductos.getItems().clear();
-            precioTotal.clear();
-            entregado.clear();
-            
-            Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
-            mpDAO.eliminarPorMesa(numeroMesa);
-            
-            
             
         } catch (NumberFormatException e) {
             devolver.setText("ERROR");
@@ -361,22 +374,28 @@ public class PedidoMesaViewControlador {
     @FXML
     public void editar(ActionEvent event) throws IOException {
     	
-    	PlatoDTO p = tablaProductos.getSelectionModel().getSelectedItem();
+    	PlatoDTO seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
     	
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/EditarRefrescoView.fxml"));
-    	AnchorPane root = loader.load();
-    	
-    	EditarProductoTablaViewControlador ervc = loader.getController();
-    	
-    	ervc.setProductos(p);
-    	
-    	Stage stage = new Stage();
-		stage.setScene(new Scene(root));
-		stage.showAndWait();
-		
-		tablaProductos.refresh();
-    	
-		actualizarPrecioTotal();
+        if (seleccionado == null) {
+            return;
+        }else {
+        	PlatoDTO p = tablaProductos.getSelectionModel().getSelectedItem();
+        	
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/EditarProductoTablaView.fxml"));
+        	AnchorPane root = loader.load();
+        	
+        	EditarProductoTablaViewControlador eptvc = loader.getController();
+        	
+        	eptvc.setProductos(p);
+        	
+        	Stage stage = new Stage();
+    		stage.setScene(new Scene(root));
+    		stage.showAndWait();
+    		
+    		tablaProductos.refresh();
+        	
+    		actualizarPrecioTotal();
+        }
     	
     }
     
