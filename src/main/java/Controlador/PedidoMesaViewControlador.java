@@ -22,6 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -32,7 +33,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class PedidoMesaViewControlador {
@@ -59,7 +61,7 @@ public class PedidoMesaViewControlador {
     private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnComa, btnDelete, btnClear, btnCambiarMesa, btnDividirCuenta, btnSalir;
     
     @FXML
-    private GridPane gridCategorias;
+    private FlowPane flowCategorias;
     
     private int numeroMesa;
     
@@ -106,25 +108,30 @@ public class PedidoMesaViewControlador {
     
     
     public void cargarCategorias() {
+
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         List<CategoriaDTO> categorias = categoriaDAO.obtenerCategorias();
 
-        gridCategorias.getChildren().clear();
-        int fila = 0;
-        int columna = 0;
+        flowCategorias.getChildren().clear();
 
         for (CategoriaDTO categoria : categorias) {
+
             Button btn = new Button(categoria.getNombre());
-            btn.setPrefWidth(150);
+
+            btn.setPrefWidth(105);
+            btn.setMinHeight(45);
+            btn.setWrapText(true);
+            btn.setTextAlignment(TextAlignment.CENTER); // centra las líneas dentro del texto
+            btn.setAlignment(Pos.CENTER);
+
             btn.setStyle(
-            		"-fx-background-color: linear-gradient(to bottom, #FFB84D, #FF9500);" + // gradiente naranja
-            	    "-fx-text-fill: white;" + // texto blanco
-            	    "-fx-font-size: 18px;" + // tamaño de fuente más grande
-            	    "-fx-font-weight: bold;" + // texto en negrita
-            	    "-fx-background-radius: 15;" + // bordes redondeados
-            	    "-fx-border-width: 2;" +
-            	    "-fx-border-radius: 15;"
-            	    );
+                "-fx-background-color: linear-gradient(to bottom, #FFB84D, #FF9500);" +
+                "-fx-text-fill: white;" +
+                "-fx-font-size: 16px;" +
+                "-fx-font-weight: bold;" +
+                "-fx-background-radius: 20;"
+            );
+
             btn.setOnAction(e -> {
                 try {
                     Refresco(categoria.getIdCategoria());
@@ -133,12 +140,7 @@ public class PedidoMesaViewControlador {
                 }
             });
 
-            gridCategorias.add(btn, columna, fila);
-            columna++;
-            if (columna > 1) { // tu GridPane tiene 2 columnas
-                columna = 0;
-                fila++;
-            }
+            flowCategorias.getChildren().add(btn);
         }
     }
     
