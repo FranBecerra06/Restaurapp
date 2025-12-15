@@ -138,6 +138,7 @@ public class LogIn {
 
     public void iniciarSesionUsuario(String contrasena,String nombreUsuario){
         if(contraUsuPF.getText().equals(contrasena)){
+            System.out.println("Problema iniciando sesion");
             cambiarAClienteLogged();
         }else{
             textoAuxiliar.setText("Contraseña incorrecta");
@@ -150,9 +151,9 @@ public class LogIn {
     @FXML
     public void cambiarAClienteLogged(){
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/clienteLogged.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Landing.fxml"));
             Parent root = loader.load();
-
+            System.out.println("problema en metodo");
             Stage currentStage = (Stage) loginBtn.getScene().getWindow();
             Scene scene = new Scene(root);
             currentStage.setWidth(1280);
