@@ -108,27 +108,31 @@ public class DividirCuentaViewControlador {
         String numeroPulsado = boton.getText();
         String actual = totalEntregado.getText();
 
-        switch (numeroPulsado) {
-        case "C":
-            totalEntregado.clear();
-            break;
+        if(!totalDividir.getText().isEmpty()) {
+        	switch (numeroPulsado) {
+            case "C":
+                totalEntregado.clear();
+                break;
 
-        case "<":
-            if (!actual.isEmpty()) {
-                totalEntregado.setText(actual.substring(0, actual.length() - 1));
+            case "<":
+                if (!actual.isEmpty()) {
+                    totalEntregado.setText(actual.substring(0, actual.length() - 1));
+                }
+                break;
+
+            case ".":
+                if (!actual.contains(".")) {
+                    totalEntregado.setText(actual + ".");
+                }
+                break;
+
+            default:
+                // Aquí entran 0-9 u otros números
+                totalEntregado.setText(actual + numeroPulsado);
+                break;
             }
-            break;
-
-        case ".":
-            if (!actual.contains(".")) {
-                totalEntregado.setText(actual + ".");
-            }
-            break;
-
-        default:
-            // Aquí entran 0-9 u otros números
-            totalEntregado.setText(actual + numeroPulsado);
-            break;
+        }else {
+        	return;
         }
 	}
 
@@ -469,6 +473,12 @@ public class DividirCuentaViewControlador {
 
 
 	public void actualizarPrecioTotalDividir() {
+		
+		if(tablaDividir.getItems().isEmpty()) {
+			totalDividir.clear();
+			totalEntregado.clear();
+		}
+		
         double total = 0;
         for (PlatoDTO p : tablaDividir.getItems()) {
             total += p.getCantidad() * p.getPrecio();

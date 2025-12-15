@@ -73,7 +73,7 @@ public class PedidoMesaViewControlador {
         
         cargarCategorias(); 
     }
-	
+    
     
     public TableView<PlatoDTO> getTablaProductos() {
         return tablaProductos;
@@ -178,6 +178,13 @@ public class PedidoMesaViewControlador {
     
     
     public void actualizarPrecioTotal() {
+    	
+    	if(tablaProductos.getItems().isEmpty()) {
+    		precioTotal.clear();
+    		entregado.clear();
+    		return;
+    	}
+    	
         double total = 0;
         for (PlatoDTO p : tablaProductos.getItems()) {
             total += p.getCantidad() * p.getPrecio();
@@ -203,10 +210,11 @@ public class PedidoMesaViewControlador {
     
     
     @FXML
-    public void borrar() {
+    public void borrar() throws SQLException {
 
         // Obtener el producto seleccionado
         PlatoDTO seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
+        Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
         
         if (seleccionado == null) {
             return;
@@ -215,10 +223,13 @@ public class PedidoMesaViewControlador {
         // Si la cantidad es mayor que 1, restamos 1
         if (seleccionado.getCantidad() > 1) {
             seleccionado.setCantidad(seleccionado.getCantidad() - 1);
+            
+            mpDAO.actualizarCantidad(numeroMesa, seleccionado.getIdPlato(), seleccionado.getCantidad());
             tablaProductos.refresh();  // Actualizar la tabla
         } 
         // Si la cantidad es 1, eliminamos toda la fila
         else {
+        	mpDAO.eliminarPorMesa(numeroMesa);
             tablaProductos.getItems().remove(seleccionado);
         }
 
@@ -233,27 +244,31 @@ public class PedidoMesaViewControlador {
         String numeroPulsado = boton.getText();
         String actual = entregado.getText();
         
-        switch (numeroPulsado) {
-        case "C":
-            entregado.clear();
-            break;
+        if(!precioTotal.getText().isEmpty()) {
+        	switch (numeroPulsado) {
+            case "C":
+                entregado.clear();
+                break;
 
-        case "<":
-            if (!actual.isEmpty()) {
-                entregado.setText(actual.substring(0, actual.length() - 1));
+            case "<":
+                if (!actual.isEmpty()) {
+                    entregado.setText(actual.substring(0, actual.length() - 1));
+                }
+                break;
+
+            case ".":
+                if (!actual.contains(".")) { 
+                    entregado.setText(actual + ".");
+                }
+                break;
+
+            default:  
+                // Aquí entran 0-9 u otros números
+                entregado.setText(actual + numeroPulsado);
+                break;
             }
-            break;
-
-        case ".":
-            if (!actual.contains(".")) { 
-                entregado.setText(actual + ".");
-            }
-            break;
-
-        default:  
-            // Aquí entran 0-9 u otros números
-            entregado.setText(actual + numeroPulsado);
-            break;
+        }else {
+        	return;
         }
     }
     
