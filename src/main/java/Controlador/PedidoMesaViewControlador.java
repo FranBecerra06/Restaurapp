@@ -58,7 +58,8 @@ public class PedidoMesaViewControlador {
     private AnchorPane productoAnchorPane, mesaAnchorPane;
     
     @FXML
-    private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnComa, btnDelete, btnClear, btnCambiarMesa, btnDividirCuenta, btnSalir;
+    private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnComa, btnDelete, btnClear, btnCambiarMesa, btnDividirCuenta, 
+    btnSalir, btnLimpiar;
     
     @FXML
     private FlowPane flowCategorias;
@@ -431,5 +432,11 @@ public class PedidoMesaViewControlador {
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.show();
+    }
+    
+    
+    @FXML
+    public void limpiar(ActionEvent event) {
+    	devolver.clear();
     }
 }

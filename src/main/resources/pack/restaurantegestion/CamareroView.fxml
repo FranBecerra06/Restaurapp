@@ -293,5 +293,10 @@
             <Font name="Serif Bold" size="16.0" />
          </font>
       </Label>
+      <Button fx:id="btnLimpiar" alignment="CENTER" layoutX="369.0" layoutY="612.0" mnemonicParsing="false" onAction="#limpiar" prefWidth="69.0" style="-fx-background-color: #81C784; -fx-background-radius: 12;" text="Limpiar" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Serif Bold" size="14.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>
