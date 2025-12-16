@@ -185,7 +185,7 @@
          <children>
             <VBox prefHeight="374.0" prefWidth="148.0">
                <children>
-                  <Button fx:id="btnCambiarMesa" mnemonicParsing="false" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="CAMBIAR MESA" textAlignment="CENTER" wrapText="true">
+                  <Button fx:id="btnCambiarMesa" mnemonicParsing="false" onAction="#cambiarMesa" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="CAMBIAR MESA" textAlignment="CENTER" wrapText="true">
                      <VBox.margin>
                         <Insets bottom="14.0" left="12.0" right="12.0" top="30.0" />
                      </VBox.margin>

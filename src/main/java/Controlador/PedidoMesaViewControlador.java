@@ -23,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -438,5 +439,14 @@ public class PedidoMesaViewControlador {
     @FXML
     public void limpiar(ActionEvent event) {
     	devolver.clear();
+    }
+    
+    
+    @FXML
+    public void cambiarMesa(ActionEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/MesaCamareroView.fxml"));
+        Parent root = loader.load();
+
+        mesaAnchorPane.getChildren().setAll(root);
     }
 }
