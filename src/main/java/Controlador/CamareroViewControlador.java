@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import javafx.scene.text.TextAlignment;
-import javafx.geometry.Pos;
 
 import DAO.CategoriaDAO;
 import DAO.PedidoDAO;
@@ -21,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -31,8 +30,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class CamareroViewControlador {
@@ -62,6 +64,9 @@ public class CamareroViewControlador {
     @FXML
     private FlowPane flowCategorias;
     
+    @FXML
+    private ImageView imagenLogo;
+    
     
     @FXML
     public void initialize() {
@@ -69,7 +74,11 @@ public class CamareroViewControlador {
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         
-        cargarCategorias(); 
+        cargarCategorias();
+        
+        Image image = new Image(getClass().getResourceAsStream("/imagenes/logoRestaurapp.png"));
+    	imagenLogo.setImage(image);
+        
     }
     
     
