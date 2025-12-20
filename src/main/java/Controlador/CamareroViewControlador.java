@@ -415,5 +415,28 @@ public class CamareroViewControlador {
     public void limpiar(ActionEvent event) {
     	devolver.clear();
     }
+    
+    
+    @FXML
+    public void anadirPago(ActionEvent event) throws IOException {
+    	
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AnadirPagoView.fxml"));
+        Parent root = loader.load();
+        
+        AnadirPagoViewControlador apc = loader.getController();
+        
+        Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.showAndWait();
+		
+		PlatoDTO extra = apc.getProductoCreado();
+		
+		if(extra != null) {
+			tablaProductos.getItems().add(extra);
+			tablaProductos.refresh();
+			actualizarPrecioTotal();
+		}
+		
+    }
 
 }
