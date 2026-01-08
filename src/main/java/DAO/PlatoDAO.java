@@ -86,22 +86,23 @@ public class PlatoDAO {
     }
 
     // -- LISTAR PLATOS POR CATEGORÍA --
-    public List<PlatoDTO> obtenerPlatosPorCategoria(String nombreCategoria) throws SQLException {
+    public List<PlatoDTO> obtenerPlatosPorCategoria(int categoriaId) throws SQLException {
         List<PlatoDTO> lista = new ArrayList<>();
-        String sql = "SELECT * FROM plato WHERE nombre = ?";
+        String sql = "SELECT * FROM plato WHERE categoria_id = ?";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            pst.setString(1, nombreCategoria);
+            pst.setInt(1, categoriaId);
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     PlatoDTO p = new PlatoDTO(
                             rs.getInt("id_plato"),
-                            rs.getInt("id_categoria"),
+                            rs.getInt("categoria_id"),
                             rs.getString("nombre"),
                             rs.getString("descripcion"),
-                            rs.getDouble("precio")
+                            rs.getDouble("precio"),
+                            rs.getString("imgUrl")
                     );
                     lista.add(p);
                 }

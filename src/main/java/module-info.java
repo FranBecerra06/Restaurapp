@@ -10,6 +10,6 @@ module pack.restaurantegestion {
 	requires javafx.controls;
 	requires java.sql;
 
-    opens DTO to javafx.base;
+
 
 }

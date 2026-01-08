@@ -1,8 +1,12 @@
 package Controlador;
 
 import javafx.animation.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
@@ -10,8 +14,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +72,36 @@ public class LandingControlador {
         imgPrincipal.setClip(clip);
     }
 
+    @FXML
+    public void goToPedir(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Pedir.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
 
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @FXML
+    public void cerrarSesion(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Main.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 

@@ -47,7 +47,7 @@
                            </HBox.margin>
                         </ImageView>
                         <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="closeButton" alignment="CENTER" prefHeight="77.0" prefWidth="131.0" styleClass="nav-button" stylesheets="@Estilo.css" text="Cerrar sesión">
+                        <Button fx:id="closeButton" alignment="CENTER" onAction="#cerrarSesion" prefHeight="77.0" prefWidth="131.0" styleClass="nav-button" stylesheets="@Estilo.css" text="Cerrar sesión">
                            <padding>
                               <Insets top="10.0" />
                            </padding>
@@ -63,7 +63,7 @@
                         <Insets />
                      </opaqueInsets>
                      <children>
-                        <Button fx:id="pedirButton" styleClass="nav-button" stylesheets="@Estilo.css" text="Pedir" />
+                        <Button fx:id="pedirButton" onAction="#goToPedir" styleClass="nav-button" stylesheets="@Estilo.css" text="Pedir" />
                         <Button fx:id="menuButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Menu" />
                         <Button fx:id="alergenosButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Alérgenos" />
                         <Button fx:id="reservarButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Reservar" />
