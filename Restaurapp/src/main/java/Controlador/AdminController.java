@@ -1,4 +1,4 @@
-package pack.restaurantegestion;
+package Controlador;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,6 +34,7 @@ public class AdminController implements Initializable {
     @FXML private Button btnDashboard;
     @FXML private Button btnGestionPersonal;
     @FXML private Button btnGestionMenu;
+    @FXML private Button btnCategoria;
     @FXML private Button btnGestionMesas;
     @FXML private Button btnHistorial;
     @FXML private Button btnLogout;
@@ -85,11 +86,15 @@ public class AdminController implements Initializable {
 
             // C) VENTAS EN DINERO (€)
             List<PedidoDTO> pedidos = pedidoDAO.listarPedidos();
+            double totalEstimado = 0;
+            
             if (lblVentas != null) {
-                // COMO NO TENEMOS PRECIOS EN LA TABLA PEDIDOS AÚN:
-                // Simulamos un ticket medio de 15€ por pedido para que veas el efecto visual
-                double totalEstimado = pedidos.size() * 15.00; 
-                lblVentas.setText(String.format("%.2f €", totalEstimado));
+                for(PedidoDTO p : pedidos) {
+                	totalEstimado += p.getTotal();
+                	
+                	lblVentas.setText(String.format("%.2f €", totalEstimado));
+                	
+                }
             }
 
         } catch (SQLException e) {
@@ -119,9 +124,15 @@ public class AdminController implements Initializable {
         lblTituloSeccion.setText("Edición de Menú");
         cargarVista("Menu.fxml");
     }
-
+    
     @FXML
-    void handleGestionMesas(ActionEvent event) {
+    void handleCategoria(ActionEvent event) {
+        lblTituloSeccion.setText("Categoria Producto");
+        cargarVista("CategoriaProducto.fxml");
+    }
+    
+    @FXML
+    void handleHistorialMesas(ActionEvent event) {
         lblTituloSeccion.setText("Layout de Mesas");
         cargarVista("GestionMesas.fxml");
     }
@@ -135,7 +146,7 @@ public class AdminController implements Initializable {
     @FXML
     void handleLogout(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("SignIn.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Main.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) btnLogout.getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -148,7 +159,7 @@ public class AdminController implements Initializable {
     
     private void cargarVista(String nombreArchivo) {
         try {
-            URL url = getClass().getResource(nombreArchivo);
+            URL url = getClass().getResource("/pack/restaurantegestion/" + nombreArchivo);
             if (url == null) {
                 System.err.println("ERROR: No encuentro: " + nombreArchivo);
                 return;

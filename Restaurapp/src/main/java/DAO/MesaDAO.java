@@ -82,4 +82,21 @@ public class MesaDAO {
         }
         return lista;
     }
+    
+    
+ // -- OBTENER TOTAL DE MESAS --
+    public int obtenerTotalMesas() throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM mesa";
+
+        try (Connection conn = ConexionBD.getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        }
+        return 0; // Si no hay resultados
+    }
+    
 }

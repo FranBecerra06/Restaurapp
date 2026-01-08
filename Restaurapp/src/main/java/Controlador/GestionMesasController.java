@@ -1,11 +1,11 @@
-package pack.restaurantegestion;
-
+package Controlador;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import DAO.MesaDAO;
+import DAO.Mesa_PlatoDAO;
 import DTO.MesaDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -125,8 +125,21 @@ public class GestionMesasController implements Initializable {
             return;
         }
         try {
-            mesaDAO.eliminarMesa(seleccionada.getIdMesa());
+        	Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+        	
+        	boolean tienePlatos = !mpDAO.obtenerPlatoPorMesa(seleccionada.getIdMesa()).isEmpty();
+        	
+        	if(tienePlatos) {
+        		Alert a = new Alert(Alert.AlertType.ERROR);
+    			a.setTitle("ERROR");
+    			a.setContentText("No se pudo eliminar mesa porque hay platos en su tabla");
+    			a.show();
+    			return;
+    		}
+        	
+        	mesaDAO.eliminarMesa(seleccionada.getIdMesa());
             cargarMesas();
+        	
         } catch (SQLException e) {
             mostrarAlerta("Error", "No se pudo eliminar: " + e.getMessage());
         }

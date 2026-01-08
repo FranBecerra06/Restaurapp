@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: FCFCB8;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.CamareroViewControlador">
+    <children>
+        <Label text="Usuario" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="50.0">
+            <font>
+                <Font name="Georgia" size="20.0" />
+            </font>
+        </Label>
+        <TextField fx:id="txtUsuario" prefWidth="180.0" style="-fx-background-radius: 20;" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="50.0" />
+        <TableView fx:id="tablaProductos" layoutX="124.0" layoutY="103.0" prefHeight="282.0" prefWidth="515.0" style="-fx-background-color: #ffca80;" AnchorPane.leftAnchor="124.0" AnchorPane.topAnchor="103.0">
+            <columns>
+                <TableColumn fx:id="colProducto" prefWidth="305.6000213623047" text="Producto" />
+                <TableColumn fx:id="colCantidad" minWidth="0.0" prefWidth="108.0" text="Cantidad" />
+                <TableColumn fx:id="colPrecio" minWidth="0.79998779296875" prefWidth="100.79998779296875" text="Precio" />
+            </columns>
+        </TableView>
+        <Label layoutX="224.0" layoutY="405.0" text="Precio Total:" AnchorPane.leftAnchor="224.0" AnchorPane.topAnchor="405.0">
+            <font>
+                <Font name="Serif Regular" size="40.0" />
+            </font>
+        </Label>
+        <TextField fx:id="precioTotal" alignment="CENTER_RIGHT" layoutX="468.0" layoutY="398.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;" AnchorPane.leftAnchor="468.0" AnchorPane.topAnchor="398.0">
+            <font>
+                <Font name="Serif Regular" size="30.0" />
+            </font>
+        </TextField>
+      <Pane layoutX="22.0" layoutY="476.0" prefHeight="270.0" prefWidth="306.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="22.0" AnchorPane.topAnchor="476.0">
+         <children>
+            <GridPane fx:id="gridNumeros" hgap="10.0" layoutY="8.0" prefHeight="255.0" prefWidth="306.0" vgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="btn1" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="74.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="1" textFill="WHITE">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin></Button>
+                  <Button fx:id="btn2" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="73.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="2" textFill="WHITE" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font></Button>
+                  <Button fx:id="btn3" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="84.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="3" textFill="WHITE" GridPane.columnIndex="2">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font></Button>
+                  <Button fx:id="btnAddPago" mnemonicParsing="false" prefHeight="70.0" prefWidth="81.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="AÑADIR PAGO" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3">
+                     <font>
+                        <Font name="Serif Bold" size="11.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin></Button>
+                  <Button fx:id="btn4" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="112.0" prefWidth="143.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="4" textFill="WHITE" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin></Button>
+                  <Button fx:id="btn5" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="111.0" prefWidth="97.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="5" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font></Button>
+                  <Button fx:id="btn6" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="106.0" prefWidth="173.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="6" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font></Button>
+                  <Button fx:id="btn7" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="93.0" prefWidth="100.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="7" textFill="WHITE" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin></Button>
+                  <Button fx:id="btnCobrar" maxHeight="128.0" mnemonicParsing="false" onAction="#cobrar" prefHeight="101.0" prefWidth="81.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="COBRAR" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                     <font>
+                        <Font name="Serif Bold" size="10.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin></Button>
+                  <Button fx:id="btn8" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="80.0" prefWidth="92.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="8" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font></Button>
+                  <Button fx:id="btn9" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="75.0" prefWidth="89.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="9" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font></Button>
+                  <Button fx:id="btnComa" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="81.0" prefWidth="80.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="." GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="10.0" />
+                     </GridPane.margin></Button>
+                  <Button fx:id="btn0" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="70.0" prefWidth="80.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 12;" text="0" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" />
+                     </GridPane.margin></Button>
+                  <Button fx:id="btnClear" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="74.0" prefWidth="80.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="C" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Serif Bold" size="28.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" />
+                     </GridPane.margin></Button>
+                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#numeroPulsado" prefHeight="86.0" prefWidth="105.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="&lt;" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Serif Bold" size="24.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" right="10.0" />
+                     </GridPane.margin></Button>
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </GridPane>
+         </children>
+      </Pane>
+      <Pane layoutX="22.0" layoutY="167.0" prefHeight="153.0" prefWidth="86.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="22.0" AnchorPane.topAnchor="167.0">
+         <children>
+            <VBox layoutY="1.0" prefHeight="154.0" prefWidth="86.0">
+               <children>
+                  <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#editar" prefHeight="42.0" prefWidth="66.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="EDITAR">
+                     <VBox.margin>
+                        <Insets bottom="12.0" left="10.0" right="10.0" top="18.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Serif Bold" size="11.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnBorrar" layoutX="15.0" layoutY="20.0" mnemonicParsing="false" onAction="#borrar" prefHeight="41.0" prefWidth="66.0" style="-fx-background-color: FF9500; -fx-background-radius: 20;" text="BORRAR">
+                     <VBox.margin>
+                        <Insets bottom="12.0" left="10.0" right="10.0" top="12.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Serif Bold" size="11.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+      <Pane layoutX="820.0" prefHeight="374.0" prefWidth="445.0" style="-fx-background-color: FCFCB8; -fx-border-color: FFE478; -fx-border-width: 5;" AnchorPane.leftAnchor="825.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <AnchorPane fx:id="mesaAnchorPane" prefHeight="374.0" prefWidth="445.0" />
+         </children></Pane>
+      <Pane layoutX="657.0" prefHeight="374.0" prefWidth="148.0" style="-fx-background-color: FFE478;" AnchorPane.leftAnchor="670.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <VBox prefHeight="374.0" prefWidth="148.0">
+               <children>
+                  <Button fx:id="btnCambiarUsuario" mnemonicParsing="false" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="CAMBIAR USUARIO" textAlignment="CENTER" wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="14.0" left="12.0" right="12.0" top="30.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Serif Bold" size="15.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="btnMesas" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#mesa" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="MESAS" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets bottom="14.0" left="12.0" right="12.0" top="14.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Serif Bold" size="15.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="btnDividirCuenta" layoutX="10.0" layoutY="84.0" mnemonicParsing="false" onAction="#dividirCuenta" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="DIVIDIR CUENTA" textAlignment="CENTER" wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="14.0" left="12.0" right="12.0" top="14.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Serif Bold" size="15.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="btnAjustes" layoutX="10.0" layoutY="138.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="AJUSTES" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets bottom="18.0" left="12.0" right="12.0" top="14.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Serif Bold" size="15.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+      <Pane layoutX="670.0" layoutY="410.0" prefHeight="336.0" prefWidth="249.0" style="-fx-background-color: FCFCB8;" AnchorPane.leftAnchor="670.0" AnchorPane.rightAnchor="361.0" AnchorPane.topAnchor="410.0">
+         <children>
+            <Pane layoutX="238.0" prefHeight="336.0" prefWidth="10.0" style="-fx-background-color: FFE478;" />
+            <ScrollPane fitToWidth="true" prefHeight="336.0" prefWidth="238.0" style="-fx-background-color: FCFCB8;">
+               <content>
+                  <FlowPane fx:id="flowCategorias" hgap="10.0" prefWidth="228.0" style="-fx-background-color: FCFCB8;" vgap="12.0" />
+               </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+      <Pane layoutX="919.0" layoutY="410.0" prefHeight="336.0" prefWidth="351.0" style="-fx-background-color: FCFCB8;" AnchorPane.leftAnchor="919.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="410.0">
+         <children>
+            <AnchorPane fx:id="productoAnchorPane" prefHeight="336.0" prefWidth="351.0" />
+         </children>
+      </Pane>
+      <TextField fx:id="entregado" alignment="CENTER_RIGHT" layoutX="469.0" layoutY="475.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;">
+         <font>
+            <Font name="Serif Regular" size="30.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="devolver" alignment="CENTER_RIGHT" layoutX="469.0" layoutY="565.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;">
+         <font>
+            <Font name="Serif Regular" size="30.0" />
+         </font>
+      </TextField>
+      <Text layoutX="612.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€" wrappingWidth="26.93670654296875">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Text>
+      <Text layoutX="613.0" layoutY="521.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€" wrappingWidth="26.93670654296875">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Text>
+      <Text layoutX="613.0" layoutY="610.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€" wrappingWidth="26.93670654296875">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Text>
+      <Line endX="61.79998779296875" layoutX="551.0" layoutY="552.0" startX="-87.0" />
+      <Label alignment="CENTER" layoutX="351.0" layoutY="575.0" prefHeight="39.0" prefWidth="106.0" text="DEVOLVER">
+         <font>
+            <Font name="Serif Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnSalir" layoutX="497.0" layoutY="50.0" mnemonicParsing="false" onAction="#salir" prefHeight="26.0" prefWidth="142.0" style="-fx-background-color: FF9500; -fx-background-radius: 20;" text="SALIR">
+         <font>
+            <Font name="Serif Bold" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Label alignment="CENTER" layoutX="351.0" layoutY="484.0" prefHeight="39.0" prefWidth="106.0" text="ENTREGADO">
+         <font>
+            <Font name="Serif Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnLimpiar" alignment="CENTER" layoutX="369.0" layoutY="612.0" mnemonicParsing="false" onAction="#limpiar" prefWidth="69.0" style="-fx-background-color: #81C784; -fx-background-radius: 12;" text="Limpiar" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Serif Bold" size="14.0" />
+         </font>
+      </Button>
+    </children>
+</AnchorPane>

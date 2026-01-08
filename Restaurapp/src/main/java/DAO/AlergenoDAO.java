@@ -1,6 +1,6 @@
 package DAO;
 
-import java.sql.Connection;	
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -56,13 +56,13 @@ public class AlergenoDAO {
 
 // -- ELIMINAR ALÉRGENO --
 
-	public boolean eliminarAlergeno(String nombre) throws SQLException {
+	public boolean eliminarAlergeno(int id) throws SQLException {
 
 		String sql = "DELETE FROM alergeno WHERE nombre = ?";
 
 		try (Connection conn = ConexionBD.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
-			pst.setString(1, nombre);
+			pst.setInt(1, id);
 			int filas = pst.executeUpdate();
 			return filas > 0;
 
