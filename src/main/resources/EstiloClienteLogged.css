@@ -1,0 +1,21 @@
+.mainBtn {
+    -fx-background-color: transparent;       /* fondo transparente */
+    -fx-text-fill: white;        /* color del texto */
+    -fx-font-size: 18px;                      /* tamaño de fuente */
+    -fx-font-weight: bold;                    /* font-weight 600 */
+    -fx-border-color: white;     /* color del borde */
+    -fx-border-width: 2px;                    /* grosor del borde */
+    -fx-border-radius: 34px;                  /* bordes redondeados */
+    -fx-background-radius: 34px;              /* coincide con border-radius */
+    -fx-padding: 10 24 10 24;                 /* padding */
+}
+
+.mainBtn:hover {
+                       /* color texto al hover */
+    -fx-effect: dropshadow(gaussian, rgba(193, 163, 98, 0.4), 20, 0.5, 0, 0);
+}
+
+.mainBtn:pressed {
+    -fx-scale-x: 1;                           /* efecto de click simple */
+    -fx-scale-y: 1;
+}

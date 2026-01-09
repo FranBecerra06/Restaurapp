@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="336.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.PlatosViewControlador">
+    <content>
+        <GridPane fx:id="gridRefrescos" hgap="10" prefHeight="336.0" prefWidth="600.0" style="-fx-background-color: FCFCB8;" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="33.33" />
+                <ColumnConstraints percentWidth="33.33" />
+                <ColumnConstraints percentWidth="33.33" />
+            </columnConstraints>
+            <VBox fx:id="vboxCol1" alignment="TOP_CENTER" spacing="10" GridPane.columnIndex="0" />
+            <VBox fx:id="vboxCol2" alignment="TOP_CENTER" spacing="10" GridPane.columnIndex="1" />
+            <VBox fx:id="vboxCol3" alignment="TOP_CENTER" spacing="10" GridPane.columnIndex="2" />
+         <rowConstraints>
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+    </content>
+</ScrollPane>

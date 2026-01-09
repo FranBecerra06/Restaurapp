@@ -2,82 +2,79 @@ package DTO;
 
 import java.time.LocalDateTime;
 
-import Modelos.Cliente;
-import Modelos.Mesa;
-
 public class ReservaDTO {
-	
+
 	private int idReserva;
-	private Cliente idCliente;
-	private Mesa idMesa;
+	private ClienteDTO idCliente;
+	private MesaDTO idMesa;
 	private LocalDateTime fechaHora;
 	private int numeroComensales;
 	private String estado;
-	
-	
+
+
 	public ReservaDTO(int idReserva) {
 		this.idReserva = idReserva;
 	}
-	
-	
-	public ReservaDTO(Cliente idCliente, Mesa idMesa, LocalDateTime fechaHora, int numeroComensales, String estado) {
+
+
+	public ReservaDTO(ClienteDTO idCliente, MesaDTO idMesa, LocalDateTime fechaHora, int numeroComensales, String estado) {
 		this.idCliente = idCliente;
 		this.idMesa = idMesa;
 		this.fechaHora = fechaHora;
 		this.numeroComensales = numeroComensales;
 		this.estado = estado;
 	}
-	
-	
-	
+
+
+
 	public int getIdReserva() {
 		return idReserva;
 	}
-	
+
 	public void setIdReserva(int idReserva) {
 		this.idReserva = idReserva;
 	}
-	
-	public Cliente getIdCliente() {
+
+	public ClienteDTO getIdCliente() {
 		return idCliente;
 	}
-	
-	public void setIdCliente(Cliente idCliente) {
+
+	public void setIdCliente(ClienteDTO idCliente) {
 		this.idCliente = idCliente;
 	}
-	
-	public Mesa getIdMesa() {
+
+	public MesaDTO getIdMesa() {
 		return idMesa;
 	}
-	
-	public void setIdMesa(Mesa idMesa) {
+
+	public void setIdMesa(MesaDTO idMesa) {
 		this.idMesa = idMesa;
 	}
-	
+
 	public LocalDateTime getFechaHora() {
 		return fechaHora;
 	}
-	
+
 	public void setFechaHora(LocalDateTime fechaHora) {
 		this.fechaHora = fechaHora;
 	}
-	
+
 	public int getNumeroComensales() {
 		return numeroComensales;
 	}
-	
+
 	public void setNumeroComensales(int numeroComensales) {
 		this.numeroComensales = numeroComensales;
 	}
-	
+
 	public String getEstado() {
 		return estado;
 	}
-	
+
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
-	
-	
+
+
+
 }

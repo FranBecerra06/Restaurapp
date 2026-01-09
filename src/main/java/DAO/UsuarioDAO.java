@@ -16,13 +16,13 @@ public class UsuarioDAO {
 	//CRUD COMPLETO
 	
 	// -- INSERTAR USUARIO -- 
-	
+
 	public UsuarioDTO crearCliente(UsuarioDTO u) throws SQLException {
 
 		String sql = "INSERT INTO usuario (nombre, apellidos, email, contrasena, telefono, nombre_usuario) VALUES(?,?,?,?,?,?)";
 
 		try (Connection conn = ConexionBD.getConnection();
-				PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			 PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 			pst.setString(1, u.getNombre());
 			pst.setString(2, u.getApellidos());
@@ -30,25 +30,17 @@ public class UsuarioDAO {
 			pst.setString(4, u.getContrasena());
 			pst.setString(5, u.getTelefono());
 			pst.setString(6, u.getNombre_usuario());
-			
+
 			pst.executeUpdate();
 
-			try (ResultSet rs = pst.getGeneratedKeys()) {
+			/*try (ResultSet rs = pst.getGeneratedKeys()) {
 				if (rs.next()) {
-
-					u.setNombre(rs.getString(1));
-					u.setApellidos(rs.getString(2));
-					u.setEmail(rs.getString(3));
-					u.setContrasena(rs.getString(4));
-					u.setTelefono(rs.getString(5));
-					u.setNombre_usuario(rs.getString(6));
+					u.setIdUsuario(rs.getInt(1));  // SOLO el ID autogenerado
 				}
-
-			}
-
+			}*/
 		}
-		return u;
 
+		return u;
 	}
 
 // -- MODIFICAR USUARIO --
@@ -110,8 +102,26 @@ public class UsuarioDAO {
 		return listaNombres;
 
 	}
-	
-	
-	
-	
+	public List<String> listarEmailClientes() throws SQLException {
+		String email;
+
+		List<String> emails = new ArrayList<>();
+		String sql = "SELECT email FROM usuario";
+		try (Connection conn = ConexionBD.getConnection();
+
+			 Statement st = conn.createStatement();
+			 ResultSet rs = st.executeQuery(sql)) {
+
+			while (rs.next()) {
+
+				email= rs.getString("email");
+				emails.add(email);
+
+			}
+
+		}
+
+		return emails;
+
+	}
 }

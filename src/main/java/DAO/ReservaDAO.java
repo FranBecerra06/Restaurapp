@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ConexionBd.ConexionBD;
+import DTO.ClienteDTO;
+import DTO.MesaDTO;
 import DTO.ReservaDTO;
-import Modelos.Cliente;
-import Modelos.Mesa;
 
 public class ReservaDAO {
 
@@ -24,16 +24,25 @@ public class ReservaDAO {
              PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             // FK Cliente
-            if (r.getIdCliente() != null) pst.setInt(1, r.getIdCliente().getIdCliente());
-            else pst.setNull(1, java.sql.Types.INTEGER);
+            if (r.getIdCliente() != null) {
+				pst.setInt(1, r.getIdCliente().getIdCliente());
+			} else {
+				pst.setNull(1, java.sql.Types.INTEGER);
+			}
 
             // FK Mesa
-            if (r.getIdMesa() != null) pst.setInt(2, r.getIdMesa().getIdMesa());
-            else pst.setNull(2, java.sql.Types.INTEGER);
+            if (r.getIdMesa() != null) {
+				pst.setInt(2, r.getIdMesa().getIdMesa());
+			} else {
+				pst.setNull(2, java.sql.Types.INTEGER);
+			}
 
             // Fecha (LocalDateTime -> Timestamp)
-            if (r.getFechaHora() != null) pst.setTimestamp(3, Timestamp.valueOf(r.getFechaHora()));
-            else pst.setNull(3, java.sql.Types.TIMESTAMP);
+            if (r.getFechaHora() != null) {
+				pst.setTimestamp(3, Timestamp.valueOf(r.getFechaHora()));
+			} else {
+				pst.setNull(3, java.sql.Types.TIMESTAMP);
+			}
 
             pst.setInt(4, r.getNumeroComensales());
             pst.setString(5, r.getEstado());
@@ -52,18 +61,27 @@ public class ReservaDAO {
     // -- MODIFICAR RESERVA --
     public boolean modificarReserva(ReservaDTO r) throws SQLException {
         String sql = "UPDATE reservas SET id_cliente = ?, id_mesa = ?, fecha_hora = ?, numero_comensales = ?, estado = ? WHERE id_reserva = ?";
-        
-        try (Connection conn = ConexionBD.getConnection(); 
+
+        try (Connection conn = ConexionBD.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            if (r.getIdCliente() != null) pst.setInt(1, r.getIdCliente().getIdCliente());
-            else pst.setNull(1, java.sql.Types.INTEGER);
+            if (r.getIdCliente() != null) {
+				pst.setInt(1, r.getIdCliente().getIdCliente());
+			} else {
+				pst.setNull(1, java.sql.Types.INTEGER);
+			}
 
-            if (r.getIdMesa() != null) pst.setInt(2, r.getIdMesa().getIdMesa());
-            else pst.setNull(2, java.sql.Types.INTEGER);
+            if (r.getIdMesa() != null) {
+				pst.setInt(2, r.getIdMesa().getIdMesa());
+			} else {
+				pst.setNull(2, java.sql.Types.INTEGER);
+			}
 
-            if (r.getFechaHora() != null) pst.setTimestamp(3, Timestamp.valueOf(r.getFechaHora()));
-            else pst.setNull(3, java.sql.Types.TIMESTAMP);
+            if (r.getFechaHora() != null) {
+				pst.setTimestamp(3, Timestamp.valueOf(r.getFechaHora()));
+			} else {
+				pst.setNull(3, java.sql.Types.TIMESTAMP);
+			}
 
             pst.setInt(4, r.getNumeroComensales());
             pst.setString(5, r.getEstado());
@@ -98,18 +116,18 @@ public class ReservaDAO {
 
             while (rs.next()) {
                 ReservaDTO r = new ReservaDTO(rs.getInt("id_reserva"));
-                
+
                 // Mapear Objetos FK
                 int idCliente = rs.getInt("id_cliente");
                 if (idCliente > 0) {
-                    Cliente c = new Cliente();
+                    ClienteDTO c = new ClienteDTO(idCliente);
                     c.setIdCliente(idCliente);
                     r.setIdCliente(c);
                 }
 
                 int idMesa = rs.getInt("id_mesa");
                 if (idMesa > 0) {
-                    Mesa m = new Mesa();
+                    MesaDTO m = new MesaDTO(idMesa);
                     m.setIdMesa(idMesa);
                     r.setIdMesa(m);
                 }
