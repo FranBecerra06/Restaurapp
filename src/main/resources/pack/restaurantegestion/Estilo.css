@@ -32,8 +32,4 @@
 
 }
 
-.scroll-pane:focused {
-    -fx-background-color: transparent, -fx-background;
-    -fx-background-insets: -1.4, 0;
-    -fx-background-radius: 0.4, 0;
-}
+

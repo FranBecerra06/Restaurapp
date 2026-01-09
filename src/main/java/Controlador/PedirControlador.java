@@ -4,10 +4,7 @@ import DAO.CategoriaDAO;
 import DAO.PlatoDAO;
 import DTO.CategoriaDTO;
 import DTO.PlatoDTO;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
@@ -37,9 +35,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.security.PublicKey;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class PedirControlador {
     @FXML
@@ -61,7 +57,13 @@ public class PedirControlador {
     @FXML
     private ScrollPane  scrollPane;
     @FXML
+    private ScrollPane  scrollPanePedido;
+    @FXML
     private HBox btnsHbox;
+    @FXML
+    private VBox pedidosContainer;
+    @FXML
+    private Label totalPedidos;
 
     private Button botonCategoriaActivo = null;
 
@@ -71,14 +73,30 @@ public class PedirControlador {
     private List<Button> listaBotones = new ArrayList<>();
     private List<Button> listaBotonesCategoria = new ArrayList<>();
     private List<CategoriaDTO> listaCategoria;
+    private Map<PlatoDTO, Integer> mapaPedidos = new HashMap<>();
+    private Map<PlatoDTO, HBox> mapaCards = new HashMap<>();
 
     private PlatoDAO platoDAO = new PlatoDAO();
 
 
     @FXML
     public void initialize(){
-        scrollPane.setFocusTraversable(false);
-        //redondearImagen(iv);
+        scrollPane.setStyle("""
+                -fx-focus-color: transparent;
+                -fx-faint-focus-color: transparent;
+                -fx-border-width: 0;
+                -fx-border-insets: 0;
+                -fx-background-insets: 0;
+                -fx-background-color: transparent;
+                """);
+        scrollPanePedido.setStyle("""
+                -fx-focus-color: transparent;
+                -fx-faint-focus-color: transparent;
+                -fx-border-width: 0;
+                -fx-border-insets: 0;
+                -fx-background-insets: 0;
+                -fx-background-color: transparent;
+                """);
         listaBotones.add(pedirButton);
         listaBotones.add(menuButton);
         listaBotones.add(alergenosButton);
@@ -90,6 +108,7 @@ public class PedirControlador {
         for(Button b : listaBotones){
             aplicarAnimacionBoton(b);
         }
+
 
         listaCategoria=mostrarBotones();
 
@@ -106,17 +125,12 @@ public class PedirControlador {
         }
         try {
             listaPlatos = platoDAO.obtenerPlatosPorCategoria(id);
-            for(PlatoDTO p: listaPlatos){
-                System.out.println("Tenemos "+p.getNombre());
-            }
             List<HBox> listaFilas = crearEstructura(listaPlatos);
             List<VBox> cards = crearCard(listaPlatos);
-            System.out.println("Mostrar platos ocurre");
             int filaActual = 1;
             int contCards = 0;
             for(HBox hbox: listaFilas){
                 contenedorCards.getChildren().add(hbox);
-                System.out.println("Se ha añadido un hbox");
                 for (int i = 0;i<3 && contCards< cards.size();i++){
                     VBox cardToDraw = cards.get(i+filaActual-1);
                     hbox.getChildren().add(cardToDraw);
@@ -144,10 +158,306 @@ public class PedirControlador {
         return filas;
     }
 
+
+    public HBox crearCardPedido(PlatoDTO plato) {
+        HBox hbox = new HBox();
+        hbox.setStyle("""
+        -fx-background-color: white;
+        -fx-background-radius: 12;
+        -fx-border-radius: 12;
+        -fx-border-color: #e0e0e0;
+        -fx-border-width: 1;
+        -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 2);
+        -fx-min-height: 100px;
+        -fx-pref-height: 100px;
+        -fx-min-width: 100px;
+        -fx-pref-width: 100px;
+        -fx-spacing: 15px;
+        -fx-padding: 15px;
+    """);
+
+        VBox contentBox = new VBox();
+        contentBox.setSpacing(8);
+        contentBox.setPrefWidth(250);
+        HBox.setHgrow(contentBox, Priority.ALWAYS);
+
+
+        HBox topRow = new HBox();
+        topRow.setAlignment(Pos.CENTER_LEFT);
+        topRow.setSpacing(10);
+
+        Label platoNombre = new Label(plato.getNombre());
+        platoNombre.setStyle("""
+        -fx-font-weight: bold;
+        -fx-font-size: 16px;
+        -fx-text-fill: #2d3748;
+    """);
+        platoNombre.setMaxWidth(180);
+        platoNombre.setWrapText(true);
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Label platoPrecio = new Label(String.format("%,.2f€", plato.getPrecio()));
+        platoPrecio.setStyle("""
+        -fx-font-weight: bold;
+        -fx-font-size: 16px;
+        -fx-text-fill: #ce6a2e;
+        -fx-background-color: #eef2ff;
+        -fx-background-radius: 6;
+        -fx-padding: 4px 8px;
+    """);
+
+        topRow.getChildren().addAll(platoNombre, spacer, platoPrecio);
+
+
+        HBox bottomRow = new HBox();
+        bottomRow.setAlignment(Pos.CENTER_LEFT);
+        bottomRow.setSpacing(15);
+
+
+        HBox counterBox = new HBox();
+        counterBox.setSpacing(5);
+        counterBox.setAlignment(Pos.CENTER_LEFT);
+        counterBox.setStyle("""
+        -fx-background-color: #f3f4f6;
+        -fx-background-radius: 20;
+        -fx-padding: 3px;
+    """);
+
+
+
+        Button botonMenos = new Button("-");
+        botonMenos.setStyle("""
+        -fx-background-color: #ffffff;
+        -fx-background-radius: 50%;
+        -fx-min-width: 28px;
+        -fx-min-height: 28px;
+        -fx-font-weight: bold;
+        -fx-font-size: 14px;
+        -fx-text-fill: #4b5563;
+        -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
+        -fx-cursor: hand;
+    """);
+
+        Label numPedidos = new Label("1");
+        numPedidos.setStyle("""
+        -fx-font-weight: bold;
+        -fx-font-size: 14px;
+        -fx-text-fill: #1f2937;
+        -fx-min-width: 30px;
+        -fx-alignment: center;
+    """);
+
+        Button botonMas = new Button("+");
+        botonMas.setStyle("""
+        -fx-background-color: #ce6a2e;
+        -fx-background-radius: 50%;
+        -fx-min-width: 28px;
+        -fx-min-height: 28px;
+        -fx-font-weight: bold;
+        -fx-font-size: 14px;
+        -fx-text-fill: white;
+        -fx-effect: dropshadow(one-pass-box, rgba(79,70,229,0.3), 2, 0, 0, 1);
+        -fx-cursor: hand;
+    """);
+
+        counterBox.getChildren().addAll(botonMenos, numPedidos, botonMas);
+
+
+        HBox subtotalBox = new HBox();
+        subtotalBox.setSpacing(5);
+        subtotalBox.setAlignment(Pos.CENTER_LEFT);
+
+        Label subtotalLabel = new Label("Subtotal:");
+        subtotalLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #6b7280;");
+
+        Label subtotalValue = new Label(String.format("%,.2f€", plato.getPrecio()));
+        subtotalValue.setId("subtotalVLabel");
+        subtotalValue.setStyle("""
+        -fx-font-weight: bold;
+        -fx-font-size: 14px;
+        -fx-text-fill: #059669;
+    """);
+
+        subtotalBox.getChildren().addAll(subtotalLabel, subtotalValue);
+
+        bottomRow.getChildren().addAll(counterBox, subtotalBox);
+
+        // Botón eliminar (X)
+        Button eliminarBtn = new Button("✕");
+        eliminarBtn.setStyle("""
+        -fx-background-color: transparent;
+        -fx-text-fill: #9ca3af;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-min-width: 30px;
+        -fx-min-height: 30px;
+        -fx-cursor: hand;
+        -fx-padding: 0;
+    """);
+
+        // Efecto hover para el botón eliminar
+        eliminarBtn.setOnMouseEntered(e -> eliminarBtn.setStyle("""
+        -fx-background-color: #fee2e2;
+        -fx-text-fill: #dc2626;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-min-width: 30px;
+        -fx-min-height: 30px;
+        -fx-background-radius: 50%;
+        -fx-cursor: hand;
+        -fx-padding: 0;
+    """));
+
+        eliminarBtn.setOnMouseExited(e -> eliminarBtn.setStyle("""
+        -fx-background-color: transparent;
+        -fx-text-fill: #9ca3af;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-min-width: 30px;
+        -fx-min-height: 30px;
+        -fx-cursor: hand;
+        -fx-padding: 0;
+    """));
+
+        // Acción para eliminar la card
+        eliminarBtn.setOnAction(e -> {
+            Parent parent = eliminarBtn.getParent();
+            while (parent != null && !(parent instanceof HBox)) {
+                parent = parent.getParent();
+            }
+            if (parent != null && parent.getParent() instanceof Pane) {
+                ((Pane) parent.getParent()).getChildren().remove(parent);
+            }
+        });
+
+        numPedidos.setText("1");
+
+
+        botonMenos.setOnAction(e -> {
+
+            PlatoDTO platoEnMapa = null;
+            for(PlatoDTO p : mapaPedidos.keySet()){
+                if(p.getNombre().equals(plato.getNombre())){
+                    platoEnMapa = p;
+                    break;
+                }
+            }
+            if(platoEnMapa != null){
+                int cantidadActual = mapaPedidos.get(platoEnMapa);
+                if(cantidadActual>1){
+                    int nuevaCantidad = cantidadActual -1;
+                    mapaPedidos.put(platoEnMapa,nuevaCantidad);
+                    numPedidos.setText(String.valueOf(nuevaCantidad));
+
+                    double subtotal = nuevaCantidad * platoEnMapa.getPrecio();
+                    subtotalValue.setText(String.format("%,.2f€", subtotal));
+                }else{
+                    mapaPedidos.remove(platoEnMapa);
+                    mapaCards.remove(platoEnMapa);
+                    if (hbox.getParent() instanceof Pane) {
+                        ((Pane) hbox.getParent()).getChildren().remove(hbox);
+                    }
+                }
+            }
+        });
+
+        botonMas.setOnAction(e -> {
+            PlatoDTO platoEnMapa = null;
+            for (PlatoDTO p : mapaPedidos.keySet()) {
+                if (p.getNombre().equals(plato.getNombre())) {
+                    platoEnMapa = p;
+                    break;
+                }
+            }
+
+            if (platoEnMapa != null) {
+                int nuevaCantidad = mapaPedidos.get(platoEnMapa) + 1;
+                mapaPedidos.put(platoEnMapa, nuevaCantidad);
+
+                numPedidos.setText(String.valueOf(nuevaCantidad));
+                double subtotal = nuevaCantidad * platoEnMapa.getPrecio();
+                subtotalValue.setText(String.format("%,.2f€", subtotal));
+            }
+        });
+
+        eliminarBtn.setOnAction(e -> {
+
+            PlatoDTO platoAEliminar = null;
+            for (PlatoDTO p : mapaPedidos.keySet()) {
+                if (p.getNombre().equals(plato.getNombre())) {
+                    platoAEliminar = p;
+                    break;
+                }
+            }
+
+            if (platoAEliminar != null) {
+                mapaPedidos.remove(platoAEliminar);
+                mapaCards.remove(platoAEliminar);
+            }
+
+
+            if (hbox.getParent() instanceof Pane) {
+                ((Pane) hbox.getParent()).getChildren().remove(hbox);
+            }
+
+
+        });
+
+        contentBox.getChildren().addAll(topRow, bottomRow);
+        hbox.getChildren().addAll(contentBox, eliminarBtn);
+
+        return hbox;
+    }
+
+
+    private void buscarYActualizarLabels(Node node, int nuevaCantidad, double precio) {
+        if (node instanceof Label) {
+            Label label = (Label) node;
+            String texto = label.getText();
+
+            // Si el label contiene solo números, es el label de cantidad
+            if (texto.matches("\\d+")) {
+                label.setText(String.valueOf(nuevaCantidad));
+            }
+            // Si el label contiene "€", es el label de subtotal
+            else if (texto.contains("€")) {
+                if ("subtotalVLabel".equals(label.getId())) {
+                    double subtotal = nuevaCantidad * precio;
+                    label.setText(String.format("%,.2f€", subtotal));
+                }
+            }
+        }
+
+        // Buscar recursivamente en los hijos
+        if (node instanceof Parent) {
+            Parent parent = (Parent) node;
+            for (Node child : parent.getChildrenUnmodifiable()) {
+                buscarYActualizarLabels(child, nuevaCantidad, precio);
+            }
+        }
+    }
+
+    private void actualizarCardPedido(PlatoDTO plato, int nuevaCantidad) {
+        HBox card = mapaCards.get(plato);
+        if (card != null) {
+            buscarYActualizarLabels(card, nuevaCantidad, plato.getPrecio());
+        }
+    }
+
+    @FXML
+    private void tramitarPedido(ActionEvent event){
+        for(PlatoDTO p: mapaPedidos.keySet()){
+            System.out.println(p.getNombre() + ", cantidad: "+ mapaPedidos.get(p));
+        }
+    }
+
     public List<VBox> crearCard(List<PlatoDTO> platos){
         List<VBox> cards = new ArrayList<>();
         for(PlatoDTO p: platos){
             VBox card = new VBox();
+            card.setId(p.getNombre());
             card.setStyle(
                     "-fx-background-color: white;\n" +
                             "    -fx-background-radius: 10;\n" +
@@ -193,7 +503,8 @@ public class PedirControlador {
             sp.getChildren().add(iv);
             Button cardBtn = new Button("+");
             cardBtn.setStyle("""
-                        -fx-background-color: white;
+                        -fx-background-color: #ce6a2e;
+                        -fx-text-fill: white;
                         -fx-font-size: 15px;
                         -fx-font-weight: bold;
                         -fx-pref-width: 35px;
@@ -220,7 +531,7 @@ public class PedirControlador {
             Label precio = new Label(String.valueOf(p.getPrecio())+"€");
             precio.setStyle("""
                     -fx-font-weight: bold;
-                    -fx-text-fill: #1132d4;
+                    -fx-text-fill: #ce6a2e;
                     -fx-font-size: 18px;                      
             """);
             hb.getChildren().addAll(nombre,region,precio);
@@ -263,6 +574,7 @@ public class PedirControlador {
                 -fx-text-fill: black;  
                 -fx-font-weight: bold;          
             """);
+
             btn.setOnAction(this::mostrarCategoria);
             listaBotonesCategoria.add(btn);
             hbox.getChildren().add(btn);
@@ -271,30 +583,70 @@ public class PedirControlador {
 
     public void mostrarCategoria(ActionEvent event){
         Button boton = (Button) event.getSource();
+        String estiloNormal = """
+            -fx-background-radius: 10px;
+            -fx-background-color: #e7e9f3;
+            -fx-text-fill: black;
+            -fx-font-weight: bold;
+            """;
+
+        String estiloActivo = """
+            -fx-background-radius: 20px;
+            -fx-background-color: #ce6a2e;
+            -fx-text-fill: white;
+            -fx-font-weight: bold;
+            """;
+
         if (botonCategoriaActivo != null) {
-            botonCategoriaActivo.setStyle(
-                    "-fx-background-color: #e7e9f3;" +
-                            "-fx-text-fill: black;" +
-                            "-fx-font-weight: bold;" +
-                            "-fx-background-radius: 10px;"
-            );
+            botonCategoriaActivo.setStyle(estiloNormal);
         }
-        boton.setStyle(
-                "-fx-background-color: #1132d4;"+
-                "-fx-text-fill: white;"+
-                "-fx-font-weight: bold"+
-                "-fx-background-radius: 20px;"
-        );
+
+        boton.setStyle(estiloActivo);
         botonCategoriaActivo = boton;
-        String categoria = boton.getText().toString();
+
+        String categoria = boton.getText();
         mostrarPlatos(categoria);
     }
 
     public void pedirPlato(ActionEvent event){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Pedido");
-        alert.setContentText("Se ha pedido este plato");
-        Optional<ButtonType> result = alert.showAndWait();
+        System.out.println("Deberia crearse un pedido");
+        Node nodoActual = (Button) event.getSource();
+        String nombrePlato = "";
+
+        while (nodoActual.getParent()!=null){
+            nodoActual = nodoActual.getParent();
+            if(nodoActual instanceof VBox){
+                nombrePlato = nodoActual.getId();
+                break;
+            }
+        }
+
+        PlatoDTO platoAPedir = null;
+        platoAPedir = platoDAO.obtenerPlatoPorId(platoDAO.obtenerIdPlatoPorNombre(nombrePlato));
+
+        boolean platoPedido = false;
+        PlatoDTO platoEnMapa = null;
+
+        for(PlatoDTO p : mapaPedidos.keySet()){
+            if (p.getNombre().equals(nombrePlato)) {
+                platoPedido = true;
+                platoEnMapa = p;
+                break;
+            }
+        }
+
+        if(platoPedido && platoEnMapa!=null){
+            int nuevaCantidad = mapaPedidos.get(platoEnMapa)+1;
+            mapaPedidos.put(platoEnMapa,nuevaCantidad);
+            //Actualizar UI
+            actualizarCardPedido(platoEnMapa, nuevaCantidad);
+        }else{
+            mapaPedidos.put(platoAPedir,1);
+            HBox nuevaCard = crearCardPedido(platoAPedir);
+            mapaCards.put(platoAPedir, nuevaCard);
+
+            pedidosContainer.getChildren().add(nuevaCard);
+        }
     }
 
     private void aplicarAnimacionBoton(Button button) {

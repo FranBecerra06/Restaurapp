@@ -80,25 +80,56 @@
                <right>
                   <VBox prefHeight="587.0" prefWidth="334.0" BorderPane.alignment="CENTER">
                      <children>
-                        <StackPane prefHeight="250.0" prefWidth="302.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 5);">
+                        <StackPane prefHeight="466.0" prefWidth="324.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 5);">
                            <VBox.margin>
                               <Insets right="10.0" top="20.0" />
                            </VBox.margin>
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="290.0">
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tu cesta">
-                                       <font>
-                                          <Font name="System Bold" size="22.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets left="20.0" top="5.0" />
-                                       </VBox.margin>
-                                    </Text>
-                                 </children>
-                              </VBox>
+                              <ScrollPane fx:id="scrollPanePedido" prefHeight="200.0" prefWidth="324.0" stylesheets="@Estilo.css">
+                                 <content>
+                                    <VBox fx:id="pedidosContainer" prefHeight="266.0" prefWidth="308.0" spacing="5.0">
+                                       <children>
+                                          <HBox maxHeight="50.0" prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tu pedido">
+                                                   <font>
+                                                      <Font name="System Bold" size="22.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" top="10.0" />
+                                                   </HBox.margin>
+                                                </Text>
+                                                <Region maxHeight="30.0" prefHeight="30.0" prefWidth="305.0" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets left="5.0" />
+                                             </VBox.margin>
+                                             <padding>
+                                                <Insets left="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <Separator prefHeight="0.0" prefWidth="261.0">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Separator>
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" />
+                                       </padding>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
                            </children>
                         </StackPane>
+                        <Button mnemonicParsing="false" onAction="#tramitarPedido" prefHeight="64.0" prefWidth="326.0" style="-fx-background-color: #ce6a2e; -fx-background-radius: 25;" text="Tramitar pedido" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Ebrima Bold" size="24.0" />
+                           </font>
+                        </Button>
                      </children>
                   </VBox>
                </right>
@@ -147,7 +178,7 @@
                               <Insets bottom="20.0" />
                            </VBox.margin>
                         </VBox>
-                        <ScrollPane fx:id="scrollPane" prefHeight="415.0" prefWidth="0.0">
+                        <ScrollPane fx:id="scrollPane" prefHeight="415.0" prefWidth="0.0" style="-fx-border-color: transparent; -fx-background-insets: 0; -fx-background-color: transparent;" stylesheets="@Estilo.css">
                            <content>
                               <VBox fx:id="contenedorCards" prefHeight="200.0" prefWidth="805.0" spacing="20.0" styleClass="scroll-pane" stylesheets="@Estilo.css">
                                  <padding>
