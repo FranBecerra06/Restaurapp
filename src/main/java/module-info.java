@@ -1,9 +1,15 @@
 module pack.restaurantegestion {
-    requires javafx.controls;
-    requires javafx.fxml;
+
+
+    opens Controlador to javafx.fxml;
+    opens DTO to javafx.base;
+
+    exports pack.restaurantegestion;
+    exports Controlador;
+	requires javafx.fxml;
+	requires javafx.controls;
 	requires java.sql;
 
 
-    opens pack.restaurantegestion to javafx.fxml;
-    exports pack.restaurantegestion;
+
 }
