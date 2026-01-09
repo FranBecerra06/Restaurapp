@@ -69,7 +69,8 @@ public class CamareroViewControlador {
     
     
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
+        
         colProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
@@ -78,13 +79,8 @@ public class CamareroViewControlador {
         
         Image image = new Image(getClass().getResourceAsStream("/imagenes/logoRestaurapp.png"));
     	imagenLogo.setImage(image);
-        
-    }
-    
-    
-    /*public void mostrarUsuarioCamarero() {
     	
-    }*/
+    }
     
     
     public TableView<PlatoDTO> getTablaProductos() {
@@ -269,15 +265,17 @@ public class CamareroViewControlador {
                 Optional<String> result = dialog.showAndWait();
                 String observacion = result.orElse("");
                 
+                LocalDateTime fecha = LocalDateTime.now();
                 
-                PedidoDTO pDTO = new PedidoDTO();
                 
-                pDTO.setIdCamarero(1);
+                PedidoDTO pDTO = new PedidoDTO(1, null, fecha, total, observacion);
+                
+                /*pDTO.setIdCamarero(1);
                 pDTO.setIdMesa(null);
                 pDTO.setTotal(total);
                 pDTO.setObservaciones("");
                 pDTO.setFecha(LocalDateTime.now());
-                pDTO.setObservaciones(observacion);
+                pDTO.setObservaciones(observacion);*/
                 
                 PedidoDAO p = new PedidoDAO();
                 
@@ -294,13 +292,16 @@ public class CamareroViewControlador {
                 	
                 	PlatoDAO pDAO = new PlatoDAO();
                 	
-                	int id_plato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
-                	
-                    Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
-                    
-                    System.out.println(ppDTO.getId_pedido() + "" + ppDTO.getId_plato() + "" + ppDTO.getCantidad());
-                    
-                    ppDAO.crearPedidoPlato(ppDTO);
+                	if(!plato.getNombre().isEmpty()) {
+                		
+                		int id_plato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
+                    	
+                        Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
+                        
+                        System.out.println(ppDTO.getId_pedido() + "" + ppDTO.getId_plato() + "" + ppDTO.getCantidad());
+                        
+                        ppDAO.crearPedidoPlato(ppDTO);
+                	}
                 }
                 
                 tablaProductos.getItems().clear();
@@ -437,6 +438,40 @@ public class CamareroViewControlador {
 			actualizarPrecioTotal();
 		}
 		
+    }
+    
+    
+    @FXML
+    public void ajustes(ActionEvent event) throws IOException {
+    	
+    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
+         Parent root = loader.load();
+         
+         TextInputDialog dialog = new TextInputDialog();
+         dialog.setTitle("Ajustes");
+         dialog.setHeaderText("Introduzca la contraseña del administrador");
+         dialog.setContentText("Contraseña:");
+
+         Optional<String> result = dialog.showAndWait();
+         
+         if(result.isPresent()) {
+        	 String contrasena = result.get();
+        	 if(contrasena.equals("1234")) {
+            	 Stage stage = (Stage) btnSalir.getScene().getWindow();
+                 stage.setScene(new Scene(root));
+                 stage.show();
+             }else {
+            	 Alert alert = new Alert(Alert.AlertType.WARNING);
+                 alert.setTitle("Advertencia");
+                 alert.setHeaderText("Contraseña incorrecta");
+                 alert.setContentText("No se ha podido cambiar a la vista camarero debido a que la contraseña no coincide");
+                 alert.showAndWait();
+                 return;
+             }
+         }else {
+        	 return;
+         }
+    	
     }
 
 }

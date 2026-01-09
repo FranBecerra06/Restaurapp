@@ -10,21 +10,26 @@ public class PedidoDTO {
     private LocalDateTime fecha;
     private double total;
     private String observaciones;
-
-    public PedidoDTO() {}
-
+    
+    
+    public PedidoDTO() {
+    }
+    
     public PedidoDTO(int idPedido) {
         this.idPedido = idPedido;
     }
-
-    public PedidoDTO(int idCamarero, MesaDTO idMesa, double total, String observaciones) {
+    
+    
+    public PedidoDTO(int idCamarero, MesaDTO idMesa, LocalDateTime fecha, double total, String observaciones) {
         this.idCamarero = idCamarero;
         this.idMesa = idMesa;
+        this.fecha = fecha;
         this.total = total;
         this.observaciones = observaciones;
-        this.fecha = LocalDateTime.now();
     }
-
+    
+    
+    
     public int getIdPedido() {
         return idPedido;
     }

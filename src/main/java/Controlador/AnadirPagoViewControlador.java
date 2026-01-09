@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 public class AnadirPagoViewControlador {
 	
 	@FXML
-	private TextField txtProducto, txtCantidad, txtPrecio;
+	private TextField txtPrecio;
 	
 	@FXML
 	private Button btnCancelar, btnGuardar;
@@ -21,22 +21,13 @@ public class AnadirPagoViewControlador {
 	@FXML
 	public void guardar(ActionEvent event) {
 		
-		String producto = txtProducto.getText();
-		String cantidadS = txtCantidad.getText();
 		String precioS = txtPrecio.getText();
 		
-		int cantidad;
-		
-		if(cantidadS.isEmpty()) {
-			cantidad = 1;
-		}else {
-			cantidad = Integer.parseInt(cantidadS);
-		}
 		double precio = Double.parseDouble(precioS);
 		
-		plato = new PlatoDTO(producto, cantidad, precio);
+		plato = new PlatoDTO("", 1, precio);
 		
-		Stage st = (Stage) txtProducto.getScene().getWindow();
+		Stage st = (Stage) txtPrecio.getScene().getWindow();
         st.close();
 		
 	}
@@ -45,7 +36,7 @@ public class AnadirPagoViewControlador {
 	@FXML
 	public void cancelar(ActionEvent event) {
 		
-		Stage st = (Stage) txtProducto.getScene().getWindow();
+		Stage st = (Stage) txtPrecio.getScene().getWindow();
 		st.close();
 		
 	}

@@ -33,6 +33,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.TextAlignment;
@@ -65,6 +67,9 @@ public class PedidoMesaViewControlador {
     @FXML
     private FlowPane flowCategorias;
     
+    @FXML
+    private ImageView imagenLogo;
+    
     private int numeroMesa;
     
     
@@ -75,7 +80,10 @@ public class PedidoMesaViewControlador {
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         
-        cargarCategorias(); 
+        cargarCategorias();
+        
+        Image image = new Image(getClass().getResourceAsStream("/imagenes/logoRestaurapp.png"));
+    	imagenLogo.setImage(image);
     }
     
     
@@ -88,7 +96,7 @@ public class PedidoMesaViewControlador {
         this.numeroMesa = numMesa;
 
         if (txtNumeroMesa != null) {
-            txtNumeroMesa.setText("Numero: " + numMesa);
+            txtNumeroMesa.setText(numMesa + "");
         }
 
         // Cargar productos de la BD para esta mesa
@@ -310,16 +318,12 @@ public class PedidoMesaViewControlador {
                 String observacion = result.orElse("");
                 
                 
-                PedidoDTO pDTO = new PedidoDTO();
+                LocalDateTime fecha = LocalDateTime.now();
                 
                 MesaDTO m = new MesaDTO(numeroMesa);
                 
-                pDTO.setIdCamarero(1);
-                pDTO.setIdMesa(m);
-                pDTO.setTotal(total);
-                pDTO.setObservaciones("");
-                pDTO.setFecha(LocalDateTime.now());
-                pDTO.setObservaciones(observacion);
+                PedidoDTO pDTO = new PedidoDTO(1, m, fecha, total, observacion);
+                
                 
                 PedidoDAO p = new PedidoDAO();
                 
@@ -336,13 +340,16 @@ public class PedidoMesaViewControlador {
                 	
                 	PlatoDAO pDAO = new PlatoDAO();
                 	
-                	int id_plato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
-                	
-                    Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
-                    
-                    System.out.println(ppDTO.getId_pedido() + "" + ppDTO.getId_plato() + "" + ppDTO.getCantidad());
-                    
-                    ppDAO.crearPedidoPlato(ppDTO);
+                	if(!plato.getNombre().isEmpty()) {
+                		
+                		int id_plato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
+                    	
+                        Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
+                        
+                        System.out.println(ppDTO.getId_pedido() + "" + ppDTO.getId_plato() + "" + ppDTO.getCantidad());
+                        
+                        ppDAO.crearPedidoPlato(ppDTO);
+                	}
                 }
                 
                 tablaProductos.getItems().clear();
@@ -421,16 +428,11 @@ public class PedidoMesaViewControlador {
     
     @FXML
     public void salir(ActionEvent event) throws IOException {
-        // Cerrar la ventana actual
-    	Stage stageActual = (Stage) btnSalir.getScene().getWindow();
-        stageActual.close();
 
-        // 2. Cargar la vista de CamareroView
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/CamareroView.fxml"));
-        AnchorPane root = loader.load();
+        Parent root = loader.load();
 
-        // 3. Crear un nuevo Stage
-        Stage stage = new Stage();
+        Stage stage = (Stage) btnSalir.getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
     }
@@ -448,5 +450,28 @@ public class PedidoMesaViewControlador {
         Parent root = loader.load();
 
         mesaAnchorPane.getChildren().setAll(root);
+    }
+    
+    
+    @FXML
+    public void anadirPago(ActionEvent event) throws IOException {
+    	
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AnadirPagoView.fxml"));
+        Parent root = loader.load();
+        
+        AnadirPagoViewControlador apc = loader.getController();
+        
+        Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.showAndWait();
+		
+		PlatoDTO extra = apc.getProductoCreado();
+		
+		if(extra != null) {
+			tablaProductos.getItems().add(extra);
+			tablaProductos.refresh();
+			actualizarPrecioTotal();
+		}
+		
     }
 }

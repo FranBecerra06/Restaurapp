@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
@@ -25,11 +26,11 @@
                 <Font name="Georgia" size="20.0" />
             </font>
         </Label>
-        <TextField fx:id="txtNumeroMesa" layoutX="202.0" layoutY="49.0" prefWidth="180.0" style="-fx-background-radius: 20;" AnchorPane.leftAnchor="202.0" AnchorPane.topAnchor="49.0">
+        <TextField fx:id="txtNumeroMesa" alignment="CENTER" editable="false" focusTraversable="false" layoutX="206.0" layoutY="40.0" prefHeight="28.0" prefWidth="106.0" style="-fx-background-radius: 20;" AnchorPane.leftAnchor="206.0" AnchorPane.topAnchor="40.0">
          <font>
-            <Font name="Serif Regular" size="15.0" />
+            <Font name="Serif Bold" size="25.0" />
          </font></TextField>
-        <TableView fx:id="tablaProductos" layoutX="124.0" layoutY="103.0" prefHeight="282.0" prefWidth="515.0" style="-fx-background-color: #ffca80;" AnchorPane.leftAnchor="124.0" AnchorPane.topAnchor="103.0">
+        <TableView fx:id="tablaProductos" focusTraversable="false" layoutX="124.0" layoutY="103.0" prefHeight="282.0" prefWidth="515.0" style="-fx-background-color: #ffca80;" AnchorPane.leftAnchor="124.0" AnchorPane.topAnchor="103.0">
             <columns>
                 <TableColumn fx:id="colProducto" prefWidth="305.6000213623047" text="Producto" />
                 <TableColumn fx:id="colCantidad" minWidth="0.0" prefWidth="108.0" text="Cantidad" />
@@ -41,7 +42,7 @@
                 <Font name="Serif Regular" size="40.0" />
             </font>
         </Label>
-        <TextField fx:id="precioTotal" alignment="CENTER_RIGHT" layoutX="469.0" layoutY="397.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;" AnchorPane.leftAnchor="469.0" AnchorPane.topAnchor="397.0">
+        <TextField fx:id="precioTotal" alignment="CENTER_RIGHT" focusTraversable="false" layoutX="469.0" layoutY="397.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;" AnchorPane.leftAnchor="469.0" AnchorPane.topAnchor="397.0">
             <font>
                 <Font name="Serif Regular" size="30.0" />
             </font>
@@ -77,7 +78,7 @@
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font></Button>
-                  <Button fx:id="btnAddPago" mnemonicParsing="false" prefHeight="70.0" prefWidth="81.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="AÑADIR PAGO" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3">
+                  <Button fx:id="btnAddPago" mnemonicParsing="false" onAction="#anadirPago" prefHeight="70.0" prefWidth="81.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="AÑADIR PAGO" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3">
                      <font>
                         <Font name="Serif Bold" size="11.0" />
                      </font>
@@ -208,7 +209,7 @@
       <Pane layoutX="670.0" layoutY="410.0" prefHeight="336.0" prefWidth="249.0" style="-fx-background-color: FCFCB8;" AnchorPane.leftAnchor="670.0" AnchorPane.rightAnchor="361.0" AnchorPane.topAnchor="410.0">
          <children>
             <Pane layoutX="238.0" prefHeight="336.0" prefWidth="10.0" style="-fx-background-color: FFE478;" />
-            <ScrollPane prefHeight="336.0" prefWidth="238.0" style="-fx-background-color: FCFCB8;">
+            <ScrollPane prefHeight="336.0" prefWidth="238.0" style="-fx-background: FCFCB8; -fx-background-color: FCFCB8;">
                <content>
                   <FlowPane fx:id="flowCategorias" hgap="10.0" prefWidth="228.0" style="-fx-background-color: FCFCB8;" vgap="12.0" />
                </content>
@@ -220,12 +221,12 @@
             <AnchorPane fx:id="productoAnchorPane" prefHeight="336.0" prefWidth="351.0" />
          </children>
       </Pane>
-      <TextField fx:id="entregado" alignment="CENTER_RIGHT" layoutX="469.0" layoutY="475.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;">
+      <TextField fx:id="entregado" alignment="CENTER_RIGHT" focusTraversable="false" layoutX="469.0" layoutY="475.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;">
          <font>
             <Font name="Serif Regular" size="30.0" />
          </font>
       </TextField>
-      <TextField fx:id="devolver" alignment="CENTER_RIGHT" layoutX="469.0" layoutY="565.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;">
+      <TextField fx:id="devolver" alignment="CENTER_RIGHT" focusTraversable="false" layoutX="469.0" layoutY="565.0" prefHeight="60.0" prefWidth="134.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;">
          <font>
             <Font name="Serif Regular" size="30.0" />
          </font>
@@ -266,5 +267,6 @@
             <Font name="Serif Bold" size="14.0" />
          </font>
       </Button>
+      <ImageView fx:id="imagenLogo" fitHeight="86.0" fitWidth="278.0" layoutX="358.0" layoutY="660.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="660.0" />
     </children>
 </AnchorPane>

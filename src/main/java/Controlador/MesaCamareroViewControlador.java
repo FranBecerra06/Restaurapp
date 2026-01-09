@@ -21,7 +21,7 @@ public class MesaCamareroViewControlador {
 	
 	@FXML
     private VBox vboxCol1, vboxCol2, vboxCol3;
-	
+	private static int mesaActual = 0;
 	
 	public void initialize() throws SQLException {
         generarMesas();
@@ -95,6 +95,13 @@ public class MesaCamareroViewControlador {
 	
 	
 	public void seleccionarMesa(int numMesa) throws IOException, SQLException{
+		
+		if(numMesa == mesaActual) {
+			return;
+		}
+		
+		mesaActual = numMesa;
+		
 		 FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/PedidoMesaView.fxml"));
 	     Parent root = loader.load();
 
