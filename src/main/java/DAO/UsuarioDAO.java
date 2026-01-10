@@ -110,7 +110,28 @@ public class UsuarioDAO {
 
 	}
 	
-	
+	public List<String> listarEmailClientes() throws SQLException {
+		String email;
+
+		List<String> emails = new ArrayList<>();
+		String sql = "SELECT email FROM usuario";
+		try (Connection conn = ConexionBD.getConnection();
+
+			 Statement st = conn.createStatement();
+			 ResultSet rs = st.executeQuery(sql)) {
+
+			while (rs.next()) {
+
+				email= rs.getString("email");
+				emails.add(email);
+
+			}
+
+		}
+
+		return emails;
+
+	}
 	
 	
 }

@@ -77,7 +77,7 @@ public class CamareroViewControlador {
         
         cargarCategorias();
         
-        Image image = new Image(getClass().getResourceAsStream("/imagenes/logoRestaurapp.png"));
+        Image image = new Image(getClass().getResourceAsStream("/Imagenes/logoRestaurapp.png"));
     	imagenLogo.setImage(image);
     	
     }

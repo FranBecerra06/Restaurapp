@@ -8,6 +8,7 @@ public class PlatoDTO {
     private String descripcion;
     private int cantidad;
     private double precio;
+	private String imgUrl;
     
     
     
@@ -16,21 +17,57 @@ public class PlatoDTO {
     }
     
     
-    public PlatoDTO(int idPlato, int idCategoria, String nombre, String descripcion, double precio) {
+    public PlatoDTO(int idPlato, int idCategoria, String nombre, String descripcion, double precio, String imgUrl) {
         this.idPlato = idPlato;
         this.idCategoria = idCategoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
+		this.imgUrl = imgUrl;
     }
-    
-    
-    public PlatoDTO(int idCategoria, String nombre, String descripcion, double precio) {
+
+	public PlatoDTO(int idPlato, int idCategoria, String nombre, String descripcion, double precio) {
+		this.idPlato = idPlato;
+		this.idCategoria = idCategoria;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.precio = precio;
+	}
+
+	public PlatoDTO(int idPlato, int idCategoria, String nombre, String descripcion, int cantidad, double precio, String imgUrl) {
+		this.idPlato = idPlato;
+		this.idCategoria = idCategoria;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.cantidad = cantidad;
+		this.precio = precio;
+		this.imgUrl = imgUrl;
+	}
+
+	public PlatoDTO(int idPlato, int idCategoria, String nombre, String descripcion, int cantidad, double precio) {
+		this.idPlato = idPlato;
+		this.idCategoria = idCategoria;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.cantidad = cantidad;
+		this.precio = precio;
+		this.imgUrl = null;
+	}
+
+	public PlatoDTO(int idCategoria, String nombre, String descripcion, double precio, String imgUrl) {
         this.idCategoria = idCategoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
+		this.imgUrl = imgUrl;
     }
+	public PlatoDTO(int idCategoria, String nombre, String descripcion, double precio) {
+		this.idCategoria = idCategoria;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.precio = precio;
+		this.imgUrl = null;
+	}
     
     
     public PlatoDTO(String nombre, int cantidad, double precio) {
@@ -38,9 +75,16 @@ public class PlatoDTO {
         this.cantidad = cantidad;
         this.precio = precio;
     }
-    
-    
-    
+
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
 	public int getIdPlato() {
 		return idPlato;
 	}

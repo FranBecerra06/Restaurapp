@@ -39,7 +39,7 @@ public class MesaCamareroViewControlador {
 
 		    int idMesa = mesa.getIdMesa();
 
-            Image imgMesa = new Image(getClass().getResourceAsStream("/imagenes/ImagenMesas.png"));
+            Image imgMesa = new Image(getClass().getResourceAsStream("/Imagenes/ImagenMesas.png"));
 
             ImageView imagen = new ImageView(imgMesa);
             imagen.setFitWidth(80);
