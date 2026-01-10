@@ -87,7 +87,7 @@
                            <children>
                               <ScrollPane fx:id="scrollPanePedido" prefHeight="200.0" prefWidth="324.0" stylesheets="@Estilo.css">
                                  <content>
-                                    <VBox fx:id="pedidosContainer" prefHeight="266.0" prefWidth="308.0" spacing="5.0">
+                                    <VBox prefHeight="266.0" prefWidth="308.0" spacing="5.0">
                                        <children>
                                           <HBox maxHeight="50.0" prefHeight="100.0" prefWidth="200.0">
                                              <children>
@@ -113,6 +113,11 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Separator>
+                                          <VBox fx:id="pedidosContainer" prefHeight="266.0" prefWidth="308.0" spacing="5.0">
+                                             <padding>
+                                                <Insets left="5.0" />
+                                             </padding>
+                                          </VBox>
                                        </children>
                                        <padding>
                                           <Insets left="5.0" />

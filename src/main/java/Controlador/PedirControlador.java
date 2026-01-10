@@ -1,8 +1,10 @@
 package Controlador;
 
 import DAO.CategoriaDAO;
+import DAO.MesaDAO;
 import DAO.PlatoDAO;
 import DTO.CategoriaDTO;
+import DTO.MesaDTO;
 import DTO.PlatoDTO;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -65,6 +67,7 @@ public class PedirControlador {
     @FXML
     private Label totalPedidos;
 
+
     private Button botonCategoriaActivo = null;
 
     @FXML
@@ -77,6 +80,7 @@ public class PedirControlador {
     private Map<PlatoDTO, HBox> mapaCards = new HashMap<>();
 
     private PlatoDAO platoDAO = new PlatoDAO();
+    private MesaDAO mesaDAO = new MesaDAO();
 
 
     @FXML
@@ -157,7 +161,6 @@ public class PedirControlador {
 
         return filas;
     }
-
 
     public HBox crearCardPedido(PlatoDTO plato) {
         HBox hbox = new HBox();
@@ -297,7 +300,6 @@ public class PedirControlador {
         -fx-padding: 0;
     """);
 
-        // Efecto hover para el botón eliminar
         eliminarBtn.setOnMouseEntered(e -> eliminarBtn.setStyle("""
         -fx-background-color: #fee2e2;
         -fx-text-fill: #dc2626;
@@ -411,7 +413,6 @@ public class PedirControlador {
         return hbox;
     }
 
-
     private void buscarYActualizarLabels(Node node, int nuevaCantidad, double precio) {
         if (node instanceof Label) {
             Label label = (Label) node;
@@ -448,9 +449,64 @@ public class PedirControlador {
 
     @FXML
     private void tramitarPedido(ActionEvent event){
+        if(mapaPedidos.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Pedido Vacío");
+            alert.setHeaderText("No se puede tramitar un pedido vacío.");
+            alert.setContentText("Por favor, ordene algo antes de tramitar un pedido.");
+            alert.showAndWait();
+        }else{
+            TextInputDialog pedirNum = new TextInputDialog();
+            pedirNum.setTitle("Solicitud Mesa");
+            pedirNum.setHeaderText("Índique el número de mesa.");
+            pedirNum.setContentText("Por favor, introduzca el número escrito en su mesa:");
+
+            Optional<String> numMesa = pedirNum.showAndWait();
+
+            numMesa.ifPresent(data -> {
+                try {
+                    // Intentar convertir a entero
+                    int numeroCorrecto = Integer.parseInt(data);
+                    List<MesaDTO> mesas = mesaDAO.listarMesas();
+                    boolean mesaIncorrecta = true;
+                    for(MesaDTO m: mesas){
+                        if (m.getIdMesa()==numeroCorrecto){
+                            enviarNotificacion(mapaPedidos, numeroCorrecto);
+                            mesaIncorrecta = false;
+                            break;
+                        }
+                    }
+                    if(mesaIncorrecta){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Mesa Incorrecta");
+                        alert.setHeaderText("Esa mesa no existe.");
+                        alert.setContentText("Por favor vuelva a comprobar el número de su mesa.");
+                        alert.showAndWait();
+                    }
+                } catch (Exception e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Mesa Incorrecta");
+                    alert.setHeaderText("Esa mesa no existe.");
+                    alert.setContentText("Por favor vuelva a comprobar el número de su mesa.");
+                    alert.showAndWait();
+
+                }
+            });
+        }
         for(PlatoDTO p: mapaPedidos.keySet()){
             System.out.println(p.getNombre() + ", cantidad: "+ mapaPedidos.get(p));
         }
+    }
+
+    public void enviarNotificacion(Map<PlatoDTO, Integer> mapaPedidos,int numeroCorrecto){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Pedido Confirmado");
+        alert.setHeaderText("Pedido Confirmado.");
+        alert.setContentText("Su pedido estrá en su mesa lo más pronto posible, gracias por su paciencia.");
+        alert.showAndWait();
+        pedidosContainer.getChildren().clear();
+        mapaPedidos.clear();
+        mapaCards.clear();
     }
 
     public List<VBox> crearCard(List<PlatoDTO> platos){
