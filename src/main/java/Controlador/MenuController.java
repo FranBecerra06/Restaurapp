@@ -2,7 +2,8 @@ package Controlador;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList; // Importante
+import java.util.List;      // Importante
 import java.util.ResourceBundle;
 
 import DAO.CategoriaDAO;
@@ -15,11 +16,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox; // Importante
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.CheckBox;
 
 public class MenuController implements Initializable {
 
@@ -27,7 +28,14 @@ public class MenuController implements Initializable {
     @FXML private TextField txtNombrePlato;
     @FXML private TextField txtDescripcion;
     @FXML private TextField txtPrecio;
+    
+    // --- NUEVOS CHECKBOXES (Deben coincidir con el fx:id en SceneBuilder) ---
     @FXML private CheckBox chkGluten;
+    @FXML private CheckBox chkLactosa;
+    @FXML private CheckBox chkHuevo;
+    @FXML private CheckBox chkFrutosSecos;
+    @FXML private CheckBox chkPescado;
+    @FXML private CheckBox chkMarisco;
     
     @FXML private ComboBox<CategoriaDTO> comboCategoria;
 
@@ -66,6 +74,10 @@ public class MenuController implements Initializable {
                 txtPrecio.setText(String.valueOf(newVal.getPrecio()));
                 
                 seleccionarCategoriaEnCombo(newVal.getIdCategoria());
+                
+                // NOTA: Para que aquí se marquen los checks al seleccionar, 
+                // el método 'listarPlatos' del DAO tendría que hacer un JOIN con la tabla de alérgenos.
+                // Por ahora, nos centramos en que GUARDEN bien al crear.
             }
         });
 
@@ -136,14 +148,27 @@ public class MenuController implements Initializable {
         }
 
         try {
-            PlatoDTO nuevo = new PlatoDTO(0);
-            nuevo.setNombre(txtNombrePlato.getText());
-            nuevo.setDescripcion(txtDescripcion.getText());
-            nuevo.setPrecio(Double.parseDouble(txtPrecio.getText()));
-            nuevo.setIdCategoria(comboCategoria.getValue().getIdCategoria());
+            // 1. Crear la lista de Alérgenos (Booleanos)
+            // EL ORDEN ES CRÍTICO: 0=Gluten, 1=Lactosa, 2=Huevo, 3=FrutosSecos, 4=Pescado, 5=Marisco
+            List<Boolean> listaAlergenos = new ArrayList<>();
+            listaAlergenos.add(chkGluten.isSelected());      // ID 1
+            listaAlergenos.add(chkLactosa.isSelected());     // ID 2
+            listaAlergenos.add(chkHuevo.isSelected());       // ID 3
+            listaAlergenos.add(chkFrutosSecos.isSelected()); // ID 4
+            listaAlergenos.add(chkPescado.isSelected());     // ID 5
+            listaAlergenos.add(chkMarisco.isSelected());     // ID 6
+
+            // 2. Crear el objeto PlatoDTO usando el constructor completo
+            PlatoDTO nuevo = new PlatoDTO(
+                comboCategoria.getValue().getIdCategoria(), // ID Categoría
+                txtNombrePlato.getText(),                   // Nombre
+                txtDescripcion.getText(),                   // Descripción
+                Double.parseDouble(txtPrecio.getText()),    // Precio
+                listaAlergenos                              // Lista de alérgenos
+            );
             
+            // Validar si existe
             boolean existe = false;
-            
             for (PlatoDTO p : listaPlatos.getItems()) {
                 if (p.getNombre().equalsIgnoreCase(nuevo.getNombre())) {
                     existe = true;
@@ -156,15 +181,17 @@ public class MenuController implements Initializable {
                 return;
             }
 
+            // 3. Llamar al DAO (Esto guardará en 'plato' y en 'plato_alergeno')
             platoDAO.crearPlato(nuevo);
 
-            mostrarAlerta("Éxito", "Nuevo plato creado.");
+            mostrarAlerta("Éxito", "Nuevo plato creado con alérgenos.");
             limpiarFormulario();
             cargarPlatos();
 
         } catch (NumberFormatException e) {
             mostrarAlerta("Error", "El precio debe ser un número válido.");
         } catch (Exception e) {
+            e.printStackTrace(); // Ver error en consola
             mostrarAlerta("Error", "No se pudo crear: " + e.getMessage());
         }
     }
@@ -184,11 +211,13 @@ public class MenuController implements Initializable {
             seleccionado.setDescripcion(txtDescripcion.getText());
             seleccionado.setPrecio(Double.parseDouble(txtPrecio.getText()));
 
-            // ➕ Editar categoría
             if (comboCategoria.getValue() != null) {
                 seleccionado.setIdCategoria(comboCategoria.getValue().getIdCategoria());
             }
-
+            
+            // NOTA: Actualmente el DAO 'modificarPlato' solo actualiza datos básicos, 
+            // no actualiza los alérgenos si los cambias aquí.
+            
             if (platoDAO.modificarPlato(seleccionado)) {
                 mostrarAlerta("Éxito", "Plato modificado correctamente.");
                 listaPlatos.refresh();
@@ -225,6 +254,14 @@ public class MenuController implements Initializable {
         txtPrecio.clear();
         comboCategoria.getSelectionModel().clearSelection();
         listaPlatos.getSelectionModel().clearSelection();
+        
+        // Limpiar checkboxes
+        chkGluten.setSelected(false);
+        chkLactosa.setSelected(false);
+        chkHuevo.setSelected(false);
+        chkFrutosSecos.setSelected(false);
+        chkPescado.setSelected(false);
+        chkMarisco.setSelected(false);
     }
 
     private void mostrarAlerta(String titulo, String contenido) {

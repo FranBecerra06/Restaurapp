@@ -35,12 +35,12 @@
            
             <VBox spacing="5.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="btnDashboard" graphicTextGap="15.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleShowDashboard" prefHeight="50.0" styleClass="menu-button" text="📊  Resumen General" />
-                  <Button fx:id="btnGestionPersonal" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGestionPersonal" prefHeight="50.0" styleClass="menu-button" text="👥  Gestión Personal" />
-                  <Button fx:id="btnCategoria" graphicTextGap="15.0" layoutX="10.0" layoutY="60.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleCategoria" prefHeight="50.0" styleClass="menu-button" text="📚  Categoria" />
-                  <Button fx:id="btnGestionMenu" graphicTextGap="15.0" layoutX="10.0" layoutY="110.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGestionMenu" prefHeight="50.0" styleClass="menu-button" text="🍔  Editar Menú/Carta" />
-                  <Button fx:id="btnHistorial" graphicTextGap="15.0" layoutX="10.0" layoutY="160.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleHistorialMesas" prefHeight="50.0" styleClass="menu-button" text="🪑  Layout Mesas" />
-                  <Button fx:id="btnHistorial1" graphicTextGap="15.0" layoutX="10.0" layoutY="231.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleHistorialVentas" prefHeight="50.0" styleClass="menu-button" text="💰  Historial Ventas" />
+                  <Button fx:id="btnDashboard" graphicTextGap="15.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleShowDashboard" prefHeight="50.0" styleClass="menu-button" text="Resumen General" />
+                  <Button fx:id="btnGestionPersonal" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGestionPersonal" prefHeight="50.0" styleClass="menu-button" text="Gestión Cliente" />
+                  <Button fx:id="btnCategoria" graphicTextGap="15.0" layoutX="10.0" layoutY="60.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleCategoria" prefHeight="50.0" styleClass="menu-button" text="Categoria" />
+                  <Button fx:id="btnGestionMenu" graphicTextGap="15.0" layoutX="10.0" layoutY="110.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGestionMenu" prefHeight="50.0" styleClass="menu-button" text="Editar Menú/Carta" />
+                  <Button fx:id="btnHistorial" graphicTextGap="15.0" layoutX="10.0" layoutY="160.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleHistorialMesas" prefHeight="50.0" styleClass="menu-button" text="Mesas creadas" />
+                  <Button fx:id="btnHistorial1" graphicTextGap="15.0" layoutX="10.0" layoutY="231.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleHistorialVentas" prefHeight="50.0" styleClass="menu-button" text="Historial Ventas" />
                </children>
             </VBox>
             

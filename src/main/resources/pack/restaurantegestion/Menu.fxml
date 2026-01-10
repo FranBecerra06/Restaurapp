@@ -62,15 +62,12 @@
                </children>
             </VBox>
 
-            <!-- NUEVA SECCIÓN: SELECCIÓN DE CATEGORÍA -->
             <VBox spacing="5.0">
                <children>
                   <Label text="Categoría" textFill="#7f8c8d" />
                   <ComboBox fx:id="comboCategoria" promptText="Seleccionar categoría" />
                </children>
             </VBox>
-            <!-- FIN CATEGORÍA -->
-            
             <VBox spacing="8.0">
                <children>
                   <Label text="Alérgenos presentes:" textFill="#7f8c8d" />
@@ -78,10 +75,10 @@
                      <children>
                         <CheckBox fx:id="chkGluten" text="🌾 Gluten" />
                         <CheckBox fx:id="chkLactosa" text="🥛 Lactosa" />
-                        <CheckBox text="🥚 Huevo" />
-                        <CheckBox text="🥜 Frutos Secos" />
-                        <CheckBox text="🐟 Pescado" />
-                        <CheckBox text="🦀 Marisco" />
+                        <CheckBox fx:id="chkHuevo" text="🥚 Huevo" />
+                        <CheckBox fx:id="chkFrutosSecos" text="🥜 Frutos Secos" />
+                        <CheckBox fx:id="chkPescado" text="🐟 Pescado" />
+                        <CheckBox fx:id="chkMarisco" text="🦀 Marisco" />
                      </children>
                   </FlowPane>
                </children>
