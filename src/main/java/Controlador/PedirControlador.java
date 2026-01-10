@@ -156,7 +156,6 @@ public class PedirControlador {
             HBox fila = new HBox();
             fila.setSpacing(25);
             filas.add(fila);
-            System.out.println("Fila añadida");
         }
 
         return filas;
@@ -418,11 +417,9 @@ public class PedirControlador {
             Label label = (Label) node;
             String texto = label.getText();
 
-            // Si el label contiene solo números, es el label de cantidad
             if (texto.matches("\\d+")) {
                 label.setText(String.valueOf(nuevaCantidad));
             }
-            // Si el label contiene "€", es el label de subtotal
             else if (texto.contains("€")) {
                 if ("subtotalVLabel".equals(label.getId())) {
                     double subtotal = nuevaCantidad * precio;
@@ -431,7 +428,6 @@ public class PedirControlador {
             }
         }
 
-        // Buscar recursivamente en los hijos
         if (node instanceof Parent) {
             Parent parent = (Parent) node;
             for (Node child : parent.getChildrenUnmodifiable()) {
@@ -665,7 +661,6 @@ public class PedirControlador {
     }
 
     public void pedirPlato(ActionEvent event){
-        System.out.println("Deberia crearse un pedido");
         Node nodoActual = (Button) event.getSource();
         String nombrePlato = "";
 
@@ -780,6 +775,37 @@ public class PedirControlador {
     public void cerrarSesion(ActionEvent event){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Main.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void goToLanding(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Landing.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void goToAlergenos(ActionEvent event){
+        try{
+            System.out.println("funca");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/ClienteAlergenos.fxml"));
             Parent root = loader.load();
             Stage currentScene = (Stage) pedirButton.getScene().getWindow();
             Scene scene = new Scene(root);

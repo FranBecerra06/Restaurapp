@@ -29,14 +29,19 @@
                                 <Insets />
                             </opaqueInsets>
                             <children>
-                                <ImageView fitHeight="58.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-                                    <image>
-                                        <Image url="@../../Imagenes/output-onlinepngtools-removebg-preview.png" />
-                                    </image>
-                                    <HBox.margin>
-                                        <Insets left="40.0" top="10.0" />
-                                    </HBox.margin>
-                                </ImageView>
+                        <StackPane maxWidth="100.0" prefHeight="58.0" prefWidth="50.0" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="40.0" top="10.0" />
+                           </HBox.margin>
+                           <children>
+                                      <ImageView fitHeight="58.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                                          <image>
+                                              <Image url="@../../Imagenes/output-onlinepngtools-removebg-preview.png" />
+                                          </image>
+                                      </ImageView>
+                              <Button mnemonicParsing="false" onAction="#goToLanding" prefHeight="58.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent;" text="Button" />
+                           </children>
+                        </StackPane>
                                 <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                 <ImageView fitHeight="58.0" fitWidth="186.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -65,7 +70,7 @@
                             <children>
                                 <Button fx:id="pedirButton" styleClass="nav-button" stylesheets="@Estilo.css" text="Pedir" />
                                 <Button fx:id="menuButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Menu" />
-                                <Button fx:id="alergenosButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Alérgenos" />
+                                <Button fx:id="alergenosButton" focusTraversable="false" onAction="#goToAlergenos" styleClass="nav-button" stylesheets="@Estilo.css" text="Alérgenos" />
                                 <Button fx:id="reservarButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Reservar" />
                                 <Button fx:id="sNosototrosButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Sobre nosotros" />
                                 <Button fx:id="perfilButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Perfil" />
@@ -85,9 +90,9 @@
                               <Insets right="10.0" top="20.0" />
                            </VBox.margin>
                            <children>
-                              <ScrollPane fx:id="scrollPanePedido" prefHeight="200.0" prefWidth="324.0" stylesheets="@Estilo.css">
+                              <ScrollPane fx:id="scrollPanePedido" prefHeight="329.0" prefWidth="324.0" stylesheets="@Estilo.css">
                                  <content>
-                                    <VBox prefHeight="266.0" prefWidth="308.0" spacing="5.0">
+                                    <VBox prefHeight="460.0" prefWidth="308.0" spacing="5.0">
                                        <children>
                                           <HBox maxHeight="50.0" prefHeight="100.0" prefWidth="200.0">
                                              <children>
@@ -118,6 +123,23 @@
                                                 <Insets left="5.0" />
                                              </padding>
                                           </VBox>
+                                          <Separator prefHeight="0.0" prefWidth="261.0" />
+                                          <HBox maxHeight="50.0" prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total">
+                                                   <font>
+                                                      <Font name="System Bold" size="22.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" top="10.0" />
+                                                   </HBox.margin>
+                                                </Text>
+                                                <Region maxHeight="30.0" prefHeight="30.0" prefWidth="305.0" />
+                                             </children>
+                                             <padding>
+                                                <Insets left="5.0" />
+                                             </padding>
+                                          </HBox>
                                        </children>
                                        <padding>
                                           <Insets left="5.0" />

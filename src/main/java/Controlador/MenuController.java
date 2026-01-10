@@ -2,6 +2,7 @@ package Controlador;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -27,12 +28,25 @@ public class MenuController implements Initializable {
     @FXML private TextField txtNombrePlato;
     @FXML private TextField txtDescripcion;
     @FXML private TextField txtPrecio;
-    @FXML private CheckBox chkGluten;
     
     @FXML private ComboBox<CategoriaDTO> comboCategoria;
 
+    @FXML private CheckBox chkGluten;
+    @FXML private CheckBox chkLactosa;
+    @FXML private CheckBox chkHuevo;
+    @FXML private CheckBox chkFrutosSecos;
+    @FXML private CheckBox chkPescado;
+    @FXML private CheckBox chkMarisco;
+
     private PlatoDAO platoDAO;
     private CategoriaDAO categoriaDAO;
+
+    private static final String ALERGENO_GLUTEN = "gluten";
+    private static final String ALERGENO_LACTOSA = "lactosa";
+    private static final String ALERGENO_HUEVO = "huevo";
+    private static final String ALERGENO_FRUTOS_SECOS = "frutos_secos";
+    private static final String ALERGENO_PESCADO = "pescado";
+    private static final String ALERGENO_MARISCO = "marisco";
 
     private ObservableList<PlatoDTO> platosObservables;
     private ObservableList<CategoriaDTO> categoriasObservables;
@@ -51,7 +65,12 @@ public class MenuController implements Initializable {
             protected void updateItem(PlatoDTO item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null && !empty) {
-                    setText(item.getNombre() + " - " + item.getPrecio() + " €");
+                    String texto = item.getNombre() + " - " + item.getPrecio() + " €";
+                    // Mostrar alérgenos si los tiene
+                    if (item.getAlergenos() != null && !item.getAlergenos().isEmpty()) {
+                        texto += " [" + String.join(", ", item.getAlergenos()) + "]";
+                    }
+                    setText(texto);
                 } else {
                     setText(null);
                 }
@@ -64,8 +83,14 @@ public class MenuController implements Initializable {
                 txtNombrePlato.setText(newVal.getNombre());
                 txtDescripcion.setText(newVal.getDescripcion() != null ? newVal.getDescripcion() : "");
                 txtPrecio.setText(String.valueOf(newVal.getPrecio()));
-                
+
                 seleccionarCategoriaEnCombo(newVal.getIdCategoria());
+
+                // Cargar alérgenos del plato seleccionado en los CheckBox
+                cargarAlergenosEnCheckBox(newVal);
+            } else {
+                // Limpiar CheckBox si no hay plato seleccionado
+                limpiarCheckBoxAlergenos();
             }
         });
 
@@ -74,7 +99,72 @@ public class MenuController implements Initializable {
         cargarCategorias();
         cargarPlatos();
     }
-    
+    // Método para cargar los alérgenos del plato en los CheckBox
+    private void cargarAlergenosEnCheckBox(PlatoDTO plato) {
+        // Limpiar primero todos los CheckBox
+        limpiarCheckBoxAlergenos();
+
+        if (plato.getAlergenos() != null) {
+            for (String alergeno : plato.getAlergenos()) {
+                switch (alergeno.toLowerCase()) {
+                    case ALERGENO_GLUTEN:
+                        chkGluten.setSelected(true);
+                        break;
+                    case ALERGENO_LACTOSA:
+                        chkLactosa.setSelected(true);
+                        break;
+                    case ALERGENO_HUEVO:
+                        chkHuevo.setSelected(true);
+                        break;
+                    case ALERGENO_FRUTOS_SECOS:
+                        chkFrutosSecos.setSelected(true);
+                        break;
+                    case ALERGENO_PESCADO:
+                        chkPescado.setSelected(true);
+                        break;
+                    case ALERGENO_MARISCO:
+                        chkMarisco.setSelected(true);
+                        break;
+                }
+            }
+        }
+    }
+
+    // Método para limpiar todos los CheckBox de alérgenos
+    private void limpiarCheckBoxAlergenos() {
+        chkGluten.setSelected(false);
+        chkLactosa.setSelected(false);
+        chkHuevo.setSelected(false);
+        chkFrutosSecos.setSelected(false);
+        chkPescado.setSelected(false);
+        chkMarisco.setSelected(false);
+    }
+
+    private List<String> obtenerAlergenosSeleccionados() {
+        List<String> alergenos = new ArrayList<>();
+
+        if (chkGluten.isSelected()) {
+            alergenos.add(ALERGENO_GLUTEN);
+        }
+        if (chkLactosa.isSelected()) {
+            alergenos.add(ALERGENO_LACTOSA);
+        }
+        if (chkHuevo.isSelected()) {
+            alergenos.add(ALERGENO_HUEVO);
+        }
+        if (chkFrutosSecos.isSelected()) {
+            alergenos.add(ALERGENO_FRUTOS_SECOS);
+        }
+        if (chkPescado.isSelected()) {
+            alergenos.add(ALERGENO_PESCADO);
+        }
+        if (chkMarisco.isSelected()) {
+            alergenos.add(ALERGENO_MARISCO);
+        }
+
+        return alergenos;
+    }
+
     private void cargarCategorias() {
         try {
             List<CategoriaDTO> lista = categoriaDAO.listarCategorias();
@@ -103,7 +193,7 @@ public class MenuController implements Initializable {
             mostrarAlerta("Error", "No se pudieron cargar las categorías: " + e.getMessage());
         }
     }
-    
+
     private void seleccionarCategoriaEnCombo(int idCategoria) {
         for (CategoriaDTO c : categoriasObservables) {
             if (c.getIdCategoria() == idCategoria) {
@@ -122,8 +212,8 @@ public class MenuController implements Initializable {
             mostrarAlerta("Error", "No se pudo cargar el menú: " + e.getMessage());
         }
     }
-    
-    
+
+
     @FXML
     void handleCrearProducto(ActionEvent event) {
         crearNuevoPlato();
@@ -141,16 +231,20 @@ public class MenuController implements Initializable {
             nuevo.setDescripcion(txtDescripcion.getText());
             nuevo.setPrecio(Double.parseDouble(txtPrecio.getText()));
             nuevo.setIdCategoria(comboCategoria.getValue().getIdCategoria());
-            
+
+            // Añadir lista de alérgenos seleccionados
+            List<String> alergenos = obtenerAlergenosSeleccionados();
+            nuevo.setAlergenos(alergenos);
+
             boolean existe = false;
-            
+
             for (PlatoDTO p : listaPlatos.getItems()) {
                 if (p.getNombre().equalsIgnoreCase(nuevo.getNombre())) {
                     existe = true;
                     break;
                 }
             }
-            
+
             if (existe) {
                 mostrarAlerta("Advertencia", "El plato \"" + nuevo.getNombre() + "\" ya existe");
                 return;
@@ -166,14 +260,15 @@ public class MenuController implements Initializable {
             mostrarAlerta("Error", "El precio debe ser un número válido.");
         } catch (Exception e) {
             mostrarAlerta("Error", "No se pudo crear: " + e.getMessage());
+            e.printStackTrace(); // Para depuración
         }
     }
-    
-    
+
+
     @FXML
     void handleGuardarCambios(ActionEvent event) {
         PlatoDTO seleccionado = listaPlatos.getSelectionModel().getSelectedItem();
-        
+
         if (seleccionado == null) {
             mostrarAlerta("Aviso", "Selecciona un plato de la lista.");
             return;
@@ -189,16 +284,21 @@ public class MenuController implements Initializable {
                 seleccionado.setIdCategoria(comboCategoria.getValue().getIdCategoria());
             }
 
+            // ➕ Editar alérgenos
+            List<String> alergenos = obtenerAlergenosSeleccionados();
+            seleccionado.setAlergenos(alergenos);
+
             if (platoDAO.modificarPlato(seleccionado)) {
                 mostrarAlerta("Éxito", "Plato modificado correctamente.");
                 listaPlatos.refresh();
             }
         } catch (Exception e) {
             mostrarAlerta("Error", "Error al guardar: " + e.getMessage());
+            e.printStackTrace(); // Para depuración
         }
     }
-    
-    
+
+
     @FXML
     void handleEliminarProducto(ActionEvent event) {
         PlatoDTO seleccionado = listaPlatos.getSelectionModel().getSelectedItem();
@@ -217,14 +317,15 @@ public class MenuController implements Initializable {
             mostrarAlerta("Error", "No se pudo borrar: " + e.getMessage());
         }
     }
-    
-    
+
+
     private void limpiarFormulario() {
         txtNombrePlato.clear();
         txtDescripcion.clear();
         txtPrecio.clear();
         comboCategoria.getSelectionModel().clearSelection();
         listaPlatos.getSelectionModel().clearSelection();
+        limpiarCheckBoxAlergenos(); // Limpiar también los CheckBox
     }
 
     private void mostrarAlerta(String titulo, String contenido) {
