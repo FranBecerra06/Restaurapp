@@ -135,7 +135,7 @@
                                           <Insets right="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="botonFrutosSecos" layoutX="216.0" layoutY="20.0" mnemonicParsing="false" onAction="#mostrarFiltro" style="-fx-background-color: #e7e9f3; -fx-background-radius: 10; -fx-font-weight: bold;" text="Futos Secos">
+                                    <Button fx:id="botonFrutosSecos" layoutX="216.0" layoutY="20.0" mnemonicParsing="false" onAction="#mostrarFiltro" style="-fx-background-color: #e7e9f3; -fx-background-radius: 10; -fx-font-weight: bold;" text="Frutos Secos">
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin>

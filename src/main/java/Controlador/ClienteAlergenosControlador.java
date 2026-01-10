@@ -139,6 +139,7 @@ public class ClienteAlergenosControlador {
         botonFiltroActivo = boton;
 
         String filtro = boton.getText().toLowerCase();
+        filtro = filtro.replace(' ','_');
         System.out.println(filtro);
         mostrarPlatos(filtro);
     }
