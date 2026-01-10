@@ -36,11 +36,7 @@ public class ClienteAlergenosControlador {
     @FXML
     private Button pedirButton; // Ya estaba
     @FXML
-    private Button menuButton;    // NUEVO
-    @FXML
     private Button alergenosButton;  // NUEVO
-    @FXML
-    private Button reservarButton; // NUEVO
     @FXML
     private Button sNosototrosButton;    // NUEVO
     @FXML
@@ -82,9 +78,7 @@ public class ClienteAlergenosControlador {
                 -fx-background-color: transparent;
                 """);
         listaBotones.add(pedirButton);
-        listaBotones.add(menuButton);
         listaBotones.add(alergenosButton);
-        listaBotones.add(reservarButton);
         listaBotones.add(sNosototrosButton);
         listaBotones.add(perfilButton);
         listaBotones.add(closeButton);
@@ -208,7 +202,7 @@ public class ClienteAlergenosControlador {
 
 
             }else{
-                Image im = new Image(getClass().getResourceAsStream("/Imagenes/plato_alpha-removebg-preview.png"));
+                Image im = new Image(getClass().getResourceAsStream("/Imagenes/Productos/placeholder.png"));
                 iv = new ImageView(im);
             }
             iv.setFitHeight(180);
@@ -332,6 +326,21 @@ public class ClienteAlergenosControlador {
     public void goToLanding(ActionEvent event){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Landing.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void goToPedir(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Pedir.fxml"));
             Parent root = loader.load();
             Stage currentScene = (Stage) pedirButton.getScene().getWindow();
             Scene scene = new Scene(root);

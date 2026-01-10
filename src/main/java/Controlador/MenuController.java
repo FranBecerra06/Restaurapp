@@ -28,6 +28,7 @@ public class MenuController implements Initializable {
     @FXML private TextField txtNombrePlato;
     @FXML private TextField txtDescripcion;
     @FXML private TextField txtPrecio;
+    @FXML private TextField txtImagen;
     
     @FXML private ComboBox<CategoriaDTO> comboCategoria;
 
@@ -231,6 +232,9 @@ public class MenuController implements Initializable {
             nuevo.setDescripcion(txtDescripcion.getText());
             nuevo.setPrecio(Double.parseDouble(txtPrecio.getText()));
             nuevo.setIdCategoria(comboCategoria.getValue().getIdCategoria());
+            if(!txtImagen.getText().isEmpty()){
+                nuevo.setImgUrl("/Imagenes/Productos/"+comboCategoria.getValue().getNombre()+"/"+txtImagen.getText());
+            }
 
             // Añadir lista de alérgenos seleccionados
             List<String> alergenos = obtenerAlergenosSeleccionados();
@@ -278,6 +282,9 @@ public class MenuController implements Initializable {
             seleccionado.setNombre(txtNombrePlato.getText());
             seleccionado.setDescripcion(txtDescripcion.getText());
             seleccionado.setPrecio(Double.parseDouble(txtPrecio.getText()));
+            if(!txtImagen.getText().isEmpty()){
+                seleccionado.setImgUrl("/Imagenes/Productos/"+comboCategoria.getValue().getNombre()+"/"+txtImagen.getText());
+            }
 
             // ➕ Editar categoría
             if (comboCategoria.getValue() != null) {

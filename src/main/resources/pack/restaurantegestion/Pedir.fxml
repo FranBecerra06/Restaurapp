@@ -69,9 +69,7 @@
                             </opaqueInsets>
                             <children>
                                 <Button fx:id="pedirButton" styleClass="nav-button" stylesheets="@Estilo.css" text="Pedir" />
-                                <Button fx:id="menuButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Menu" />
                                 <Button fx:id="alergenosButton" focusTraversable="false" onAction="#goToAlergenos" styleClass="nav-button" stylesheets="@Estilo.css" text="Alérgenos" />
-                                <Button fx:id="reservarButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Reservar" />
                                 <Button fx:id="sNosototrosButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Sobre nosotros" />
                                 <Button fx:id="perfilButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Perfil" />
                             </children>

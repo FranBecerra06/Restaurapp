@@ -43,11 +43,7 @@ public class PedirControlador {
     @FXML
     private Button pedirButton; // Ya estaba
     @FXML
-    private Button menuButton;    // NUEVO
-    @FXML
     private Button alergenosButton;  // NUEVO
-    @FXML
-    private Button reservarButton; // NUEVO
     @FXML
     private Button sNosototrosButton;    // NUEVO
     @FXML
@@ -102,9 +98,7 @@ public class PedirControlador {
                 -fx-background-color: transparent;
                 """);
         listaBotones.add(pedirButton);
-        listaBotones.add(menuButton);
         listaBotones.add(alergenosButton);
-        listaBotones.add(reservarButton);
         listaBotones.add(sNosototrosButton);
         listaBotones.add(perfilButton);
         listaBotones.add(closeButton);
@@ -112,7 +106,6 @@ public class PedirControlador {
         for(Button b : listaBotones){
             aplicarAnimacionBoton(b);
         }
-
 
         listaCategoria=mostrarBotones();
 
@@ -541,7 +534,7 @@ public class PedirControlador {
 
 
             }else{
-                Image im = new Image(getClass().getResourceAsStream("/Imagenes/plato_alpha-removebg-preview.png"));
+                Image im = new Image(getClass().getResourceAsStream("/Imagenes/Productos/placeholder.png"));
                 iv = new ImageView(im);
             }
             iv.setFitHeight(180);
