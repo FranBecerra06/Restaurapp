@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ConexionBd.ConexionBD;
+import DTO.MesaDTO;
 import DTO.PedidoDTO;
 import Modelos.Mesa;
 
@@ -89,10 +90,10 @@ public class PedidoDAO {
                 p.setObservaciones(rs.getString("observaciones"));
                 
                 // Reconstruimos objeto Mesa solo con ID
-                int idMesaFK = rs.getInt("id_mesa");
-                if (idMesaFK > 0) {
-                    Mesa m = new Mesa(); 
-                    m.setIdMesa(idMesaFK);
+                int idMesa = rs.getInt("id_mesa");
+                if (idMesa > 0) {
+                    MesaDTO m = new MesaDTO(idMesa); 
+                    m.setIdMesa(idMesa);
                     p.setIdMesa(m);
                 }
 

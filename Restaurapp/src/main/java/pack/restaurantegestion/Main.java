@@ -11,7 +11,6 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // 1. Cargamos tu nuevo archivo AdminView.fxml
-        // Nota: Si te da error de ruta, prueba quitando la barra inicial "/"
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
         
         // 2. Creamos la escena. NO ponemos tamaño (320, 240) para que use el tamaño grande de tu diseño (1080x720)

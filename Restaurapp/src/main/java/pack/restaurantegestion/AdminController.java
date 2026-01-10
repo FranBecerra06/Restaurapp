@@ -1,16 +1,28 @@
-package pack.restaurantegestion; 
+package pack.restaurantegestion;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class AdminController {
+public class AdminController implements Initializable {
 
     @FXML
     private BorderPane mainBorderPane;
+
+    @FXML
+    private Label lblTituloSeccion;
 
     @FXML
     private Button btnDashboard;
@@ -30,56 +42,96 @@ public class AdminController {
     @FXML
     private Button btnLogout;
 
-    @FXML
-    private VBox contentArea;
+    // Variable para guardar la vista original (las gráficas del inicio)
+    private Node dashboardView;
 
-    @FXML
-    private Label lblTituloSeccion;
-
-    @FXML
-    public void initialize() {
-        // Este método se ejecuta automáticamente al cargar la vista
-        System.out.println("Vista de Admin cargada correctamente.");
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // 1. Guardamos lo que hay en el centro al arrancar (el Dashboard)
+        // Esto es importante para poder volver aquí si pulsamos "Resumen General"
+        if (mainBorderPane != null) {
+            dashboardView = mainBorderPane.getCenter();
+        }
     }
+
+    // --- ACCIONES DE LOS BOTONES ---
 
     @FXML
     void handleShowDashboard(ActionEvent event) {
         lblTituloSeccion.setText("Resumen General");
-        System.out.println("Mostrando Dashboard...");
-        // Aquí volverías a cargar el panel inicial si lo has cambiado
+        if (dashboardView != null) {
+            mainBorderPane.setCenter(dashboardView);
+        }
     }
 
     @FXML
     void handleGestionPersonal(ActionEvent event) {
         lblTituloSeccion.setText("Gestión de Personal");
-        System.out.println("Click en Gestión Personal");
-        // Lógica para cargar la vista de personal en el centro
+        cargarVista("GestionPersonal.fxml");
     }
 
     @FXML
     void handleGestionMenu(ActionEvent event) {
         lblTituloSeccion.setText("Edición de Menú");
-        System.out.println("Click en Gestión Menú");
-        // Lógica para cargar la vista de menú en el centro
+        cargarVista("Menu.fxml");
     }
 
     @FXML
     void handleGestionMesas(ActionEvent event) {
         lblTituloSeccion.setText("Layout de Mesas");
-        System.out.println("Click en Gestión Mesas");
-        // Lógica para cargar la vista de mesas
+        cargarVista("GestionMesas.fxml");
     }
 
     @FXML
     void handleHistorialVentas(ActionEvent event) {
         lblTituloSeccion.setText("Historial de Ventas");
-        System.out.println("Click en Historial");
+        cargarVista("Historial.fxml");
     }
 
     @FXML
     void handleLogout(ActionEvent event) {
         System.out.println("Cerrando sesión...");
-        // Aquí va la lógica para volver a cargar el Login.fxml
-        // Por ejemplo: App.setRoot("Login");
+        try {
+            // Cargar la vista de Login (en tu foto se llamaba SignIn.fxml)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SignIn.fxml"));
+            Parent root = loader.load();
+            
+            // Obtener el escenario (Stage) actual y cambiar la escena
+            Stage stage = (Stage) btnLogout.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Login - RestaurApp");
+            stage.show();
+            
+        } catch (IOException e) {
+            System.err.println("Error al intentar cerrar sesión. Verifica que SignIn.fxml existe.");
+            e.printStackTrace();
+        }
+    }
+
+    // --- MÉTODO AUXILIAR PARA CARGAR VISTAS ---
+    
+    private void cargarVista(String nombreArchivo) {
+        try {
+            // Intentamos cargar el archivo FXML
+            // Al poner solo el nombre, busca en el mismo paquete que esta clase java
+            URL url = getClass().getResource(nombreArchivo);
+            
+            if (url == null) {
+                System.err.println("❌ ERROR: No se encuentra el archivo: " + nombreArchivo);
+                lblTituloSeccion.setText("Error: Archivo no encontrado");
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(url);
+            Parent vistaNueva = loader.load();
+            
+            // Ponemos la nueva vista en el CENTRO del BorderPane
+            mainBorderPane.setCenter(vistaNueva);
+            
+        } catch (IOException e) {
+            System.err.println("❌ Error crítico al cargar el FXML: " + nombreArchivo);
+            e.printStackTrace();
+        }
     }
 }

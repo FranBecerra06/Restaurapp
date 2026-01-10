@@ -88,7 +88,7 @@ public class PlatoDAO {
     // -- LISTAR PLATOS POR CATEGORÍA --
     public List<PlatoDTO> obtenerPlatosPorCategoria(int categoriaId) throws SQLException {
         List<PlatoDTO> lista = new ArrayList<>();
-        String sql = "SELECT * FROM plato WHERE nombre = ?";
+        String sql = "SELECT * FROM plato WHERE id_categoria = ?";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -101,7 +101,8 @@ public class PlatoDAO {
                             rs.getInt("id_categoria"),
                             rs.getString("nombre"),
                             rs.getString("descripcion"),
-                            rs.getDouble("precio")
+                            rs.getDouble("precio"),
+                            rs.getString("imgUrl")
                     );
                     lista.add(p);
                 }
@@ -157,6 +158,36 @@ public class PlatoDAO {
         }
 
         return id_plato;
+    }
+
+    public PlatoDTO obtenerPlatoPorNombre(String nombre) {
+
+        PlatoDTO plato = null;
+
+        String sql = "SELECT * FROM plato WHERE nombre = ?";
+
+        try (Connection conn = ConexionBD.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, nombre);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    plato = new PlatoDTO(
+                            rs.getInt("id_plato"),
+                            rs.getInt("id_categoria"),
+                            rs.getString("nombre"),
+                            rs.getString("descripcion"),
+                            rs.getDouble("precio")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return plato;
     }
     
     

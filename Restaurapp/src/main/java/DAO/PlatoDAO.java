@@ -15,7 +15,7 @@ public class PlatoDAO {
 
     // -- INSERTAR PLATO --
     public PlatoDTO crearPlato(PlatoDTO p) throws SQLException {
-        String sql = "INSERT INTO platos (nombre, descripcion, precio, disponible) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO platos (nombre, descripcion, precio) VALUES (?, ?, ?)";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -23,7 +23,7 @@ public class PlatoDAO {
             pst.setString(1, p.getNombre());
             pst.setString(2, p.getDescripcion());
             pst.setDouble(3, p.getPrecio());
-            pst.setBoolean(4, p.isDisponible());
+
 
             pst.executeUpdate();
 
@@ -38,16 +38,15 @@ public class PlatoDAO {
 
     // -- MODIFICAR PLATO --
     public boolean modificarPlato(PlatoDTO p) throws SQLException {
-        String sql = "UPDATE platos SET nombre = ?, descripcion = ?, precio = ?, disponible = ? WHERE id_plato = ?";
-        
+        String sql = "UPDATE platos SET nombre = ?, descripcion = ?, precio = ? WHERE id_plato = ?";
+
         try (Connection conn = ConexionBD.getConnection(); 
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, p.getNombre());
             pst.setString(2, p.getDescripcion());
             pst.setDouble(3, p.getPrecio());
-            pst.setBoolean(4, p.isDisponible());
-            pst.setInt(5, p.getIdPlato());
+            pst.setInt(4, p.getIdPlato());
 
             int filas = pst.executeUpdate();
             return filas > 0;
@@ -81,7 +80,6 @@ public class PlatoDAO {
                 p.setNombre(rs.getString("nombre"));
                 p.setDescripcion(rs.getString("descripcion"));
                 p.setPrecio(rs.getDouble("precio"));
-                p.setDisponible(rs.getBoolean("disponible"));
 
                 lista.add(p);
             }

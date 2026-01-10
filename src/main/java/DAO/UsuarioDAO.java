@@ -1,4 +1,3 @@
-
 package DAO;
 
 import java.sql.Connection;
@@ -17,38 +16,32 @@ public class UsuarioDAO {
 	//CRUD COMPLETO
 	
 	// -- INSERTAR USUARIO -- 
-	
-	// -- INSERTAR USUARIO (CORREGIDO) --
-    public UsuarioDTO crearCliente(UsuarioDTO u) throws SQLException {
 
+	public UsuarioDTO crearCliente(UsuarioDTO u) throws SQLException {
 
-        String sql = "INSERT INTO usuario (nombre, apellidos, email, contrasena, telefono, nombre_usuario, rol) VALUES(?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO usuario (nombre, apellidos, email, contrasena, telefono, nombre_usuario) VALUES(?,?,?,?,?,?)";
 
-        try (Connection conn = ConexionBD.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (Connection conn = ConexionBD.getConnection();
+			 PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            // Asignamos los valores
-            pst.setString(1, u.getNombre());
-            pst.setString(2, u.getApellidos());
-            pst.setString(3, u.getEmail());
-            pst.setString(4, u.getContrasena());
-            pst.setString(5, u.getTelefono());
-            pst.setString(6, u.getNombre_usuario());
-            pst.setString(7, u.getRol());
+			pst.setString(1, u.getNombre());
+			pst.setString(2, u.getApellidos());
+			pst.setString(3, u.getEmail());
+			pst.setString(4, u.getContrasena());
+			pst.setString(5, u.getTelefono());
+			pst.setString(6, u.getNombre_usuario());
 
-            pst.executeUpdate();
+			pst.executeUpdate();
 
-            // AQUÍ ESTABA EL ERROR:
-            try (ResultSet rs = pst.getGeneratedKeys()) {
-                if (rs.next()) {
-                    // Solo leemos la columna 1, que es el ID generado por la BD
-                    int nuevoId = rs.getInt(1);
-                    u.setIdUsuario(nuevoId); 
-                }
-            }
-        }
-        return u;
-    }
+			/*try (ResultSet rs = pst.getGeneratedKeys()) {
+				if (rs.next()) {
+					u.setIdUsuario(rs.getInt(1));  // SOLO el ID autogenerado
+				}
+			}*/
+		}
+
+		return u;
+	}
 
 // -- MODIFICAR USUARIO --
 
@@ -109,7 +102,6 @@ public class UsuarioDAO {
 		return listaNombres;
 
 	}
-	
 	public List<String> listarEmailClientes() throws SQLException {
 		String email;
 
@@ -132,6 +124,4 @@ public class UsuarioDAO {
 		return emails;
 
 	}
-	
-	
 }

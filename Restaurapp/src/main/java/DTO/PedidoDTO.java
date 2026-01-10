@@ -5,7 +5,7 @@ import Modelos.Mesa;
 public class PedidoDTO {
 	
 	private int idPedido;
-	private Mesa idMesa;
+	private MesaDTO idMesa;
 	private String observaciones;
 	
 	
@@ -14,7 +14,7 @@ public class PedidoDTO {
 	}
 	
 	
-	public PedidoDTO(Mesa idMesa, String observaciones) {
+	public PedidoDTO(MesaDTO idMesa, String observaciones) {
 		super();
 		this.idMesa = idMesa;
 		this.observaciones = observaciones;
@@ -30,11 +30,11 @@ public class PedidoDTO {
 		this.idPedido = idPedido;
 	}
 	
-	public Mesa getIdMesa() {
+	public MesaDTO getIdMesa() {
 		return idMesa;
 	}
 	
-	public void setIdMesa(Mesa idMesa) {
+	public void setIdMesa(MesaDTO idMesa) {
 		this.idMesa = idMesa;
 	}
 	
