@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -24,15 +23,15 @@ import java.util.List;
 public class LandingControlador {
     // Declarar TODOS los botones que quieres animar aquí
     @FXML
-    private Button pedirButton; // Ya estaba
+    private Button pedirButton; 
     @FXML
-    private Button menuButton;    // NUEVO
+    private Button menuButton;    
     @FXML
-    private Button alergenosButton;  // NUEVO
+    private Button alergenosButton;  
     @FXML
-    private Button reservarButton; // NUEVO
+    private Button reservarButton; 
     @FXML
-    private Button sNosototrosButton;    // NUEVO
+    private Button sNosototrosButton;    
     @FXML
     private Button perfilButton;
     @FXML
@@ -56,9 +55,12 @@ public class LandingControlador {
             aplicarAnimacionBoton(b);
         }
 
-        imgPrincipal.layoutBoundsProperty().addListener((obs, oldV, newV) -> {
-            clipImgPrincipal();
-        });
+        // Clip de imagen si la imagen existe
+        if (imgPrincipal != null) {
+            imgPrincipal.layoutBoundsProperty().addListener((obs, oldV, newV) -> {
+                clipImgPrincipal();
+            });
+        }
     }
 
     private void clipImgPrincipal() {
@@ -80,13 +82,10 @@ public class LandingControlador {
             Stage currentScene = (Stage) pedirButton.getScene().getWindow();
             Scene scene = new Scene(root);
             currentScene.setScene(scene);
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     @FXML
     public void cerrarSesion(ActionEvent event){
@@ -96,25 +95,12 @@ public class LandingControlador {
             Stage currentScene = (Stage) pedirButton.getScene().getWindow();
             Scene scene = new Scene(root);
             currentScene.setScene(scene);
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-   private void aplicarAnimacionBoton(Button button) {
+    private void aplicarAnimacionBoton(Button button) {
 
         Pane underline = new Pane();
         underline.setStyle("-fx-background-color: #ce6a2e;");
@@ -184,8 +170,4 @@ public class LandingControlador {
             ).play();
         });
     }
-
-
-
-
 }

@@ -39,19 +39,21 @@ import java.util.*;
 
 public class PedirControlador {
     @FXML
-    private Button pedirButton; // Ya estaba
+    private Button pedirButton;
     @FXML
-    private Button menuButton;    // NUEVO
+    private Button menuButton;
     @FXML
-    private Button alergenosButton;  // NUEVO
+    private Button alergenosButton;
     @FXML
-    private Button reservarButton; // NUEVO
+    private Button reservarButton;
     @FXML
-    private Button sNosototrosButton;    // NUEVO
+    private Button sNosototrosButton;
     @FXML
     private Button perfilButton;
     @FXML
     private Button closeButton;
+    
+    // Contenedores y lógica de tu rama (HEAD)
     @FXML
     private VBox contenedorCards;
     @FXML
@@ -66,10 +68,6 @@ public class PedirControlador {
     private Label totalPedidos;
 
     private Button botonCategoriaActivo = null;
-
-    @FXML
-    private ImageView iv;
-
     private List<Button> listaBotones = new ArrayList<>();
     private List<Button> listaBotonesCategoria = new ArrayList<>();
     private List<CategoriaDTO> listaCategoria;
@@ -78,9 +76,9 @@ public class PedirControlador {
 
     private PlatoDAO platoDAO = new PlatoDAO();
 
-
     @FXML
     public void initialize(){
+        // Estilos para los ScrollPane
         scrollPane.setStyle("""
                 -fx-focus-color: transparent;
                 -fx-faint-focus-color: transparent;
@@ -97,6 +95,7 @@ public class PedirControlador {
                 -fx-background-insets: 0;
                 -fx-background-color: transparent;
                 """);
+
         listaBotones.add(pedirButton);
         listaBotones.add(menuButton);
         listaBotones.add(alergenosButton);
@@ -109,9 +108,7 @@ public class PedirControlador {
             aplicarAnimacionBoton(b);
         }
 
-
-        listaCategoria=mostrarBotones();
-
+        listaCategoria = mostrarBotones();
     }
 
     public void mostrarPlatos(String categoria){
@@ -131,10 +128,9 @@ public class PedirControlador {
             int contCards = 0;
             for(HBox hbox: listaFilas){
                 contenedorCards.getChildren().add(hbox);
-                for (int i = 0;i<3 && contCards< cards.size();i++){
+                for (int i = 0; i<3 && contCards< cards.size(); i++){
                     VBox cardToDraw = cards.get(i+filaActual-1);
                     hbox.getChildren().add(cardToDraw);
-                    System.out.println("Se ha añadido "+(i+filaActual)+" elemento");
                     contCards++;
                 }
                 filaActual+=3;
@@ -148,13 +144,11 @@ public class PedirControlador {
     public List<HBox> crearEstructura(List<PlatoDTO> platos){
         List<HBox> filas = new ArrayList<>();
         int numFilas = (int) Math.ceil((double) platos.size()/3);
-        for(int i = 0;i<numFilas;i++){
+        for(int i = 0; i<numFilas; i++){
             HBox fila = new HBox();
             fila.setSpacing(25);
             filas.add(fila);
-            System.out.println("Fila añadida");
         }
-
         return filas;
     }
 
@@ -224,8 +218,6 @@ public class PedirControlador {
         -fx-background-radius: 20;
         -fx-padding: 3px;
     """);
-
-
 
         Button botonMenos = new Button("-");
         botonMenos.setStyle("""
@@ -486,8 +478,6 @@ public class PedirControlador {
             if(p.getImgUrl()!=null){
                 Image im = new Image(getClass().getResourceAsStream(p.getImgUrl()));
                 iv = new ImageView(im);
-
-
             }else{
                 Image im = new Image(getClass().getResourceAsStream("/Imagenes/plato_alpha-removebg-preview.png"));
                 iv = new ImageView(im);
@@ -517,7 +507,7 @@ public class PedirControlador {
             StackPane.setMargin(cardBtn, new Insets(10));
             HBox hb = new HBox();
             hb.setStyle(
-                            "    -fx-padding: 10px 0px 10px 0px;"
+                    "    -fx-padding: 10px 0px 10px 0px;"
             );
             hb.setPrefWidth(200);
             hb.setAlignment(Pos.CENTER_LEFT);
@@ -622,7 +612,11 @@ public class PedirControlador {
         }
 
         PlatoDTO platoAPedir = null;
-        platoAPedir = platoDAO.obtenerPlatoPorId(platoDAO.obtenerIdPlatoPorNombre(nombrePlato));
+        try {
+            platoAPedir = platoDAO.obtenerPlatoPorId(platoDAO.obtenerIdPlatoPorNombre(nombrePlato));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         boolean platoPedido = false;
         PlatoDTO platoEnMapa = null;
@@ -734,6 +728,4 @@ public class PedirControlador {
             throw new RuntimeException(e);
         }
     }
-
-
 }
