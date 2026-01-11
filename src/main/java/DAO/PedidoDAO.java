@@ -1,6 +1,13 @@
 package DAO;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,13 +51,15 @@ public class PedidoDAO {
     public List<PedidoDTO> listarPedidos() throws SQLException {
         List<PedidoDTO> lista = new ArrayList<>();
         String sql = "SELECT * FROM pedido";
+        
 
         try (Connection conn = ConexionBD.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
-                PedidoDTO p = new PedidoDTO();
+            	PedidoDTO p = new PedidoDTO();
+                
                 p.setIdPedido(rs.getInt("id_pedido"));
                 p.setIdCamarero(rs.getInt("id_camarero"));
                 p.setTotal(rs.getDouble("total"));
@@ -61,6 +70,7 @@ public class PedidoDAO {
                 if (idMesa > 0) {
                     p.setIdMesa(new MesaDTO(idMesa));
                 }
+                
 
                 lista.add(p);
             }
@@ -85,7 +95,7 @@ public class PedidoDAO {
     }
     
     
-    public List<PedidoDTO> listarPedidosPorFecha(Date inicio, Date fin) throws SQLException {
+   public List<PedidoDTO> listarPedidosPorFecha(Date inicio, Date fin) throws SQLException {
         List<PedidoDTO> lista = new ArrayList<>();
 
         String sql = "SELECT * FROM pedido WHERE fecha BETWEEN ? AND ?";
@@ -99,6 +109,7 @@ public class PedidoDAO {
 
         while (rs.next()) {
             PedidoDTO p = new PedidoDTO();
+            
             p.setIdPedido(rs.getInt("id_pedido"));
             
             Timestamp ts = rs.getTimestamp("fecha");

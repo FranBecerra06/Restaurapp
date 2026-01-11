@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class EditarProductoTablaViewControlador {
 	
 	@FXML
-	private TextField  txtProducto, txtCantidad, txtPrecio;
+	private TextField txtCantidad, txtPrecio;
 	
 	@FXML
 	private Button btnCancelar, btnGuardar;
@@ -26,7 +26,6 @@ public class EditarProductoTablaViewControlador {
 		
 		this.p = p;
 		
-		txtProducto.setText(p.getNombre());
 		txtCantidad.setText(p.getCantidad() + "");
 		txtPrecio.setText(p.getPrecio() + "");
 		
@@ -37,49 +36,53 @@ public class EditarProductoTablaViewControlador {
 	public void guardar(ActionEvent event) {
 
 	    boolean valido = true;
-
-	    textoErrorProducto.setVisible(false);
+	    
 	    textoErrorCantidad.setVisible(false);
 	    textoErrorPrecio.setVisible(false);
-
-	    if (txtProducto.getText().isEmpty()) {
-	        textoErrorProducto.setText("Este campo es obligatorio");
-	        textoErrorProducto.setVisible(true);
-	        valido = false;
-	    }
-
+	    
+	    
+	    //------ VALIDAR CANTIDAD ------
 	    if (txtCantidad.getText().isEmpty()) {
 	        textoErrorCantidad.setText("Este campo es obligatorio");
 	        textoErrorCantidad.setVisible(true);
 	        valido = false;
+	    }else if (txtCantidad.getText().equals("0")){
+	    	textoErrorCantidad.setText("La cantidad no puede ser 0");
+	        textoErrorCantidad.setVisible(true);
+	        valido = false;
+	    }else {
+	    	try {
+	    		p.setCantidad(Integer.parseInt(txtCantidad.getText()));
+	    	}catch (NumberFormatException e){
+	    		textoErrorCantidad.setText("Debe ser un número");
+	            textoErrorCantidad.setVisible(true);
+	            valido = false;
+	    	}
 	    }
-
+	    
+	    
+	    
+	    //------ VALIDAR PRECIO ------
 	    if (txtPrecio.getText().isEmpty()) {
 	        textoErrorPrecio.setText("Este campo es obligatorio");
 	        textoErrorPrecio.setVisible(true);
 	        valido = false;
+	    }else {
+	    	try {
+	    		p.setPrecio(Double.parseDouble(txtPrecio.getText()));
+	    	}catch (NumberFormatException e) {
+	    		textoErrorPrecio.setText("Debe ser un número");
+	            textoErrorPrecio.setVisible(true);
+	            valido = false;
+	    	}
 	    }
 
 	    // Si falta algún campo → NO seguir
 	    if (!valido) return;
-
-	    try {
-	        p.setNombre(txtProducto.getText());
-	        p.setCantidad(Integer.parseInt(txtCantidad.getText()));
-	        p.setPrecio(Double.parseDouble(txtPrecio.getText()));
-
-	        Stage st = (Stage) txtProducto.getScene().getWindow();
-	        st.close();
-
-	    } catch (NumberFormatException e) {
-
-	        // valida formato numérico incorrecto
-	        textoErrorCantidad.setText("Debe ser un número");
-	        textoErrorCantidad.setVisible(true);
-
-	        textoErrorPrecio.setText("Debe ser un número");
-	        textoErrorPrecio.setVisible(true);
-	    }
+	    
+	    Stage st = (Stage) txtCantidad.getScene().getWindow();
+        st.close();
+	    
 	}
 
 	
@@ -87,7 +90,7 @@ public class EditarProductoTablaViewControlador {
 	@FXML
 	public void cancelar(ActionEvent event) {
 		
-		Stage st = (Stage) txtProducto.getScene().getWindow();
+		Stage st = (Stage) txtCantidad.getScene().getWindow();
 		st.close();
 		
 	}

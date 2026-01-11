@@ -247,20 +247,21 @@ public class DividirCuentaViewControlador {
 
 
 		        // ----------------------- 3. CREAR PEDIDO -----------------------
-		        PedidoDTO pedidoDTO = new PedidoDTO();
+		        
+		        LocalDateTime fecha = LocalDateTime.now();
+		        
+		        PedidoDTO pedidoDTO;
 		        PedidoDAO pedidoDAO = new PedidoDAO();
 
 		        if (numeroMesa > 0) {
-		            pedidoDTO.setIdMesa(new MesaDTO(numeroMesa));
+		        	MesaDTO m = new MesaDTO(numeroMesa);
+		        	pedidoDTO = new PedidoDTO(1, m, fecha, total, observacion);
 		        } else {
-		            pedidoDTO.setIdMesa(null);
+
+		        	pedidoDTO = new PedidoDTO(1, null, fecha, total, observacion);
 		        }
-
-		        pedidoDTO.setIdCamarero(1);   // Modificar cuando tengas login real
-		        pedidoDTO.setTotal(total);
-		        pedidoDTO.setFecha(LocalDateTime.now());
-		        pedidoDTO.setObservaciones(observacion);
-
+		        
+		        
 		        pedidoDAO.crearPedido(pedidoDTO);
 
 
