@@ -120,6 +120,7 @@ public class PedidoMesaViewControlador {
     public void cargarCategorias() {
 
         CategoriaDAO categoriaDAO = new CategoriaDAO();
+        // Si CategoriaDAO también lanza SQLException, deberías envolver esto en try-catch
         List<CategoriaDTO> categorias = categoriaDAO.obtenerCategorias();
 
         flowCategorias.getChildren().clear();
@@ -154,37 +155,43 @@ public class PedidoMesaViewControlador {
         }
     }
     
-    
+    // CORREGIDO: Se añade try-catch para manejar SQLException
     public void agregarProducto(String nombre, double precio) {
-        PlatoDAO pDAO = new PlatoDAO();
-        int idPlato = pDAO.obtenerIdPlatoPorNombre(nombre); // <--- obtener el id real
-
-        for (PlatoDTO p : tablaProductos.getItems()) {
-            if (p.getNombre().equals(nombre)) {
-                p.setCantidad(p.getCantidad() + 1);
-                tablaProductos.refresh();
-                actualizarPrecioTotal();
-
-                // Actualizar BD
-                Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, idPlato, p.getCantidad());
-                Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
-                mpDAO.actualizarMesaPlato(mpDTO); // update
-                return;
-            }
-        }
-
-        // Si no existe en la tabla, agregar
-        PlatoDTO nuevo = new PlatoDTO(nombre, 1, precio);
-        tablaProductos.getItems().add(nuevo);
-        actualizarPrecioTotal();
-
-        // Guardar en BD
-        Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, idPlato, 1);
-        Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
         try {
-            mpDAO.crearMesaPlato(mpDTO);
+            PlatoDAO pDAO = new PlatoDAO();
+            int idPlato = pDAO.obtenerIdPlatoPorNombre(nombre); // Esto ahora lanza SQLException
+
+            for (PlatoDTO p : tablaProductos.getItems()) {
+                if (p.getNombre().equals(nombre)) {
+                    p.setCantidad(p.getCantidad() + 1);
+                    tablaProductos.refresh();
+                    actualizarPrecioTotal();
+
+                    // Actualizar BD
+                    Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, idPlato, p.getCantidad());
+                    Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+                    mpDAO.actualizarMesaPlato(mpDTO); // Esto puede lanzar SQLException
+                    return;
+                }
+            }
+
+            // Si no existe en la tabla, agregar
+            PlatoDTO nuevo = new PlatoDTO(nombre, 1, precio);
+            tablaProductos.getItems().add(nuevo);
+            actualizarPrecioTotal();
+
+            // Guardar en BD
+            Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, idPlato, 1);
+            Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+            mpDAO.crearMesaPlato(mpDTO); // Esto puede lanzar SQLException
+
         } catch (SQLException ex) {
             ex.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de Base de Datos");
+            alert.setHeaderText("Error al agregar producto");
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
         }
     }
     

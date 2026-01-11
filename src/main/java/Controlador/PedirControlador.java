@@ -495,12 +495,14 @@ public class PedirControlador {
                     List<MesaDTO> mesas = mesaDAO.listarMesas();
                     boolean mesaIncorrecta = true;
                     for(MesaDTO m: mesas){
-                        if (m.getIdMesa()==numeroCorrecto){
-                        	
-                        	CamareroViewControlador.mapa = new HashMap<>(mapaPedidos);
-                        	CamareroViewControlador.numeroMesa = numeroCorrecto;
+                        if (m.getIdMesa() == numeroCorrecto){
 
-                        	
+                            // --- INTEGRACIÓN CON CAMARERO ---
+                            // Pasar el mapa de pedidos a CamareroViewControlador
+                            CamareroViewControlador.mapa = new HashMap<>(mapaPedidos);
+                            CamareroViewControlador.numeroMesa = numeroCorrecto;
+                            // --- FIN INTEGRACIÓN ---
+
                             enviarNotificacion(mapaPedidos, numeroCorrecto);
                             mesaIncorrecta = false;
                             break;
@@ -519,7 +521,6 @@ public class PedirControlador {
                     alert.setHeaderText("Esa mesa no existe.");
                     alert.setContentText("Por favor vuelva a comprobar el número de su mesa.");
                     alert.showAndWait();
-
                 }
             });
         }
@@ -528,14 +529,12 @@ public class PedirControlador {
         }
         precioTotalCesta.setText("0.0");
     }
-    
-    
-    public void enviarNotificacion(Map<PlatoDTO, Integer> mapaPedidos, int numeroCorrecto){
-    	
+
+    public void enviarNotificacion(Map<PlatoDTO, Integer> mapaPedidos,int numeroCorrecto){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Pedido Confirmado");
         alert.setHeaderText("Pedido Confirmado.");
-        alert.setContentText("Su pedido estará en su mesa lo más pronto posible, gracias por su paciencia.");
+        alert.setContentText("Su pedido estrá en su mesa lo más pronto posible, gracias por su paciencia.");
         alert.showAndWait();
         pedidosContainer.getChildren().clear();
         mapaPedidos.clear();
