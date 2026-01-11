@@ -1,5 +1,8 @@
 package DTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlatoDTO {
 
     private int idPlato;
@@ -9,10 +12,11 @@ public class PlatoDTO {
     private int cantidad;
     private double precio;
 	private String imgUrl;
-    
-    
-    
-    public PlatoDTO(int idPlato) {
+	private List<String> alergenos;
+
+
+
+	public PlatoDTO(int idPlato) {
         this.idPlato = idPlato;
     }
     
@@ -76,6 +80,16 @@ public class PlatoDTO {
         this.precio = precio;
     }
 
+	public PlatoDTO(int idPlato, int idCategoria, String nombre, String descripcion, int cantidad, double precio, String imgUrl, List<String> alergenos) {
+		this.idPlato = idPlato;
+		this.idCategoria = idCategoria;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.cantidad = cantidad;
+		this.precio = precio;
+		this.imgUrl = imgUrl;
+		this.alergenos = alergenos;
+	}
 
 	public String getImgUrl() {
 		return imgUrl;
@@ -131,6 +145,17 @@ public class PlatoDTO {
 	
 	public void setPrecio(double precio) {
 		this.precio = precio;
+	}
+
+	public List<String> getAlergenos() { return alergenos; }
+	public void setAlergenos(List<String> alergenos) { this.alergenos = alergenos; }
+
+	public boolean tieneAlergeno(String alergeno) {
+		return alergenos.contains(alergeno);
+	}
+
+	public boolean tieneAlergenos() {
+		return !alergenos.isEmpty();
 	}
 	
 }

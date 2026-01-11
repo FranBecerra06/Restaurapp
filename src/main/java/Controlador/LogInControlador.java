@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import pack.restaurantegestion.Preferencias;
 
 import java.io.IOException;
 import java.sql.*;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class LogIn {
+public class LogInControlador {
 
     private List<String> nombresUsuario = new ArrayList<>();
 
@@ -138,7 +139,6 @@ public class LogIn {
 
     public void iniciarSesionUsuario(String contrasena,String nombreUsuario){
         if(contraUsuPF.getText().equals(contrasena)){
-            System.out.println("Problema iniciando sesion");
             cambiarAClienteLogged();
         }else{
             textoAuxiliar.setText("Contraseña incorrecta");
@@ -150,16 +150,15 @@ public class LogIn {
 
     @FXML
     public void cambiarAClienteLogged(){
+        Preferencias.limpiarTodo();
+        String usuario = usuarioTF.getText();
+        Preferencias.guardarUsuario(usuario);
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Landing.fxml"));
             Parent root = loader.load();
-            System.out.println("problema en metodo");
             Stage currentStage = (Stage) loginBtn.getScene().getWindow();
             Scene scene = new Scene(root);
-            currentStage.setWidth(1280);
-            currentStage.setHeight(720);
-            //currentStage.setResizable(false);
-            scene.getStylesheets().add("../resources/EstiloClienteLogged.css/");
+
             currentStage.setScene(scene);
 
         } catch (IOException e) {

@@ -46,7 +46,6 @@ public class SignInControlador {
     //Con este método no dejaremos pulsar el boton si no tenemos los campos mínimos con algo de texto
     @FXML
     private void initialize() {
-        boolean crearUsuOk = false;
         signInBtn.disableProperty().bind(
                 Bindings.or(
                         signInUsuarioField.textProperty().isEmpty(),
@@ -91,9 +90,6 @@ public class SignInControlador {
             UsuarioDTO dto = new UsuarioDTO(nombre,apellidos,email,contra,telefono,usuario);
 
             try {
-            /*System.out.println("Cliente con nombre "+ dto.getNombre()+" apellido "+dto.getApellidos()+
-                    " email "+dto.getEmail()+" contraseña "+dto.getContrasena()+" telefono "+dto.getTelefono()+" nombreUsuario "+
-                    dto.getNombre_usuario());*/
                 usuarioDAO.crearCliente(dto);
                 System.out.println("Usuario creado correctamente");
                 cambiarALogIn(dto.getNombre_usuario());
@@ -217,8 +213,8 @@ public class SignInControlador {
 
             //Hacemos referencia al controlador y llamamos a su método recibir nombre que hará que cuando
             //volvamos esté ya precargado el nombre de usuario
-            LogIn logIn = loader.getController();
-            logIn.recibirNombre(nombreUsuario);
+            LogInControlador logInControlador = loader.getController();
+            logInControlador.recibirNombre(nombreUsuario);
 
             Stage currentStage = (Stage) signInVolverBtn.getScene().getWindow();
             Scene scene = new Scene(root);

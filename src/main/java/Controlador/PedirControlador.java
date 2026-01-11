@@ -7,35 +7,25 @@ import DTO.CategoriaDTO;
 import DTO.MesaDTO;
 import DTO.PlatoDTO;
 import javafx.animation.*;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.w3c.dom.Text;
-import pack.restaurantegestion.Main;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.security.PublicKey;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -43,11 +33,7 @@ public class PedirControlador {
     @FXML
     private Button pedirButton; // Ya estaba
     @FXML
-    private Button menuButton;    // NUEVO
-    @FXML
     private Button alergenosButton;  // NUEVO
-    @FXML
-    private Button reservarButton; // NUEVO
     @FXML
     private Button sNosototrosButton;    // NUEVO
     @FXML
@@ -57,21 +43,15 @@ public class PedirControlador {
     @FXML
     private VBox contenedorCards;
     @FXML
-    private ScrollPane  scrollPane;
-    @FXML
-    private ScrollPane  scrollPanePedido;
+    private ScrollPane  scrollPane, scrollPanePedido, categoriasScrollPane;
     @FXML
     private HBox btnsHbox;
     @FXML
     private VBox pedidosContainer;
     @FXML
-    private Label totalPedidos;
-
+    private Label precioTotalCesta;
 
     private Button botonCategoriaActivo = null;
-
-    @FXML
-    private ImageView iv;
 
     private List<Button> listaBotones = new ArrayList<>();
     private List<Button> listaBotonesCategoria = new ArrayList<>();
@@ -101,10 +81,16 @@ public class PedirControlador {
                 -fx-background-insets: 0;
                 -fx-background-color: transparent;
                 """);
+        categoriasScrollPane.setStyle("""
+                -fx-focus-color: transparent;
+                -fx-faint-focus-color: transparent;
+                -fx-border-width: 0;
+                -fx-border-insets: 0;
+                -fx-background-insets: 0;
+                -fx-background-color: transparent;
+                """);
         listaBotones.add(pedirButton);
-        listaBotones.add(menuButton);
         listaBotones.add(alergenosButton);
-        listaBotones.add(reservarButton);
         listaBotones.add(sNosototrosButton);
         listaBotones.add(perfilButton);
         listaBotones.add(closeButton);
@@ -112,7 +98,6 @@ public class PedirControlador {
         for(Button b : listaBotones){
             aplicarAnimacionBoton(b);
         }
-
 
         listaCategoria=mostrarBotones();
 
@@ -156,13 +141,14 @@ public class PedirControlador {
             HBox fila = new HBox();
             fila.setSpacing(25);
             filas.add(fila);
-            System.out.println("Fila añadida");
         }
 
         return filas;
     }
 
     public HBox crearCardPedido(PlatoDTO plato) {
+        double totalPedidos = calcularTotalPedidos();
+        precioTotalCesta.setText(String.valueOf(totalPedidos));
         HBox hbox = new HBox();
         hbox.setStyle("""
         -fx-background-color: white;
@@ -325,12 +311,41 @@ public class PedirControlador {
 
         // Acción para eliminar la card
         eliminarBtn.setOnAction(e -> {
-            Parent parent = eliminarBtn.getParent();
-            while (parent != null && !(parent instanceof HBox)) {
-                parent = parent.getParent();
-            }
-            if (parent != null && parent.getParent() instanceof Pane) {
-                ((Pane) parent.getParent()).getChildren().remove(parent);
+            try {
+                // Buscar el plato
+                PlatoDTO platoAEliminar = null;
+                for (PlatoDTO p : mapaPedidos.keySet()) {
+                    if (p.getNombre().equals(plato.getNombre())) {
+                        platoAEliminar = p;
+                        break;
+                    }
+                }
+
+                if (platoAEliminar != null) {
+                    // 1. Eliminar del mapa primero
+                    mapaPedidos.remove(platoAEliminar);
+                    mapaCards.remove(platoAEliminar);
+
+                    // 2. Calcular nuevo total usando tu método
+                    double newTotal = calcularTotalPedidos();
+
+                    // 3. Actualizar UI
+                    precioTotalCesta.setText(String.valueOf(newTotal));
+
+                    // 4. Eliminar la card de la UI
+                    Parent parent = eliminarBtn.getParent();
+                    while (parent != null && !(parent instanceof HBox)) {
+                        parent = parent.getParent();
+                    }
+                    if (parent != null && parent.getParent() instanceof Pane) {
+                        ((Pane) parent.getParent()).getChildren().remove(parent);
+                    }
+                } else {
+                    System.out.println("Plato no encontrado en el mapa: " + plato.getNombre());
+                }
+            } catch (Exception ex) {
+                System.err.println("Error crítico: " + ex.getMessage());
+                ex.printStackTrace();
             }
         });
 
@@ -363,9 +378,12 @@ public class PedirControlador {
                     }
                 }
             }
+            double newTotal = calcularTotalPedidos();
+            precioTotalCesta.setText(String.valueOf(newTotal));
         });
 
         botonMas.setOnAction(e -> {
+
             PlatoDTO platoEnMapa = null;
             for (PlatoDTO p : mapaPedidos.keySet()) {
                 if (p.getNombre().equals(plato.getNombre())) {
@@ -382,9 +400,11 @@ public class PedirControlador {
                 double subtotal = nuevaCantidad * platoEnMapa.getPrecio();
                 subtotalValue.setText(String.format("%,.2f€", subtotal));
             }
+            double newTotal = calcularTotalPedidos();
+            precioTotalCesta.setText(String.valueOf(newTotal));
         });
 
-        eliminarBtn.setOnAction(e -> {
+        /*eliminarBtn.setOnAction(e -> {
 
             PlatoDTO platoAEliminar = null;
             for (PlatoDTO p : mapaPedidos.keySet()) {
@@ -405,7 +425,7 @@ public class PedirControlador {
             }
 
 
-        });
+        });*/
 
         contentBox.getChildren().addAll(topRow, bottomRow);
         hbox.getChildren().addAll(contentBox, eliminarBtn);
@@ -413,16 +433,22 @@ public class PedirControlador {
         return hbox;
     }
 
+    private double calcularTotalPedidos() {
+        double total = 0.0;
+        for (Map.Entry<PlatoDTO, Integer> entry : mapaPedidos.entrySet()) {
+            total += entry.getKey().getPrecio() * entry.getValue();
+        }
+        return total;
+    }
+
     private void buscarYActualizarLabels(Node node, int nuevaCantidad, double precio) {
         if (node instanceof Label) {
             Label label = (Label) node;
             String texto = label.getText();
 
-            // Si el label contiene solo números, es el label de cantidad
             if (texto.matches("\\d+")) {
                 label.setText(String.valueOf(nuevaCantidad));
             }
-            // Si el label contiene "€", es el label de subtotal
             else if (texto.contains("€")) {
                 if ("subtotalVLabel".equals(label.getId())) {
                     double subtotal = nuevaCantidad * precio;
@@ -431,7 +457,6 @@ public class PedirControlador {
             }
         }
 
-        // Buscar recursivamente en los hijos
         if (node instanceof Parent) {
             Parent parent = (Parent) node;
             for (Node child : parent.getChildrenUnmodifiable()) {
@@ -501,6 +526,7 @@ public class PedirControlador {
         for(PlatoDTO p: mapaPedidos.keySet()){
             System.out.println(p.getNombre() + ", cantidad: "+ mapaPedidos.get(p));
         }
+        precioTotalCesta.setText("0.0");
     }
     
     
@@ -552,7 +578,7 @@ public class PedirControlador {
 
 
             }else{
-                Image im = new Image(getClass().getResourceAsStream("/Imagenes/plato_alpha-removebg-preview.png"));
+                Image im = new Image(getClass().getResourceAsStream("/Imagenes/Productos/placeholder.png"));
                 iv = new ImageView(im);
             }
             iv.setFitHeight(180);
@@ -575,6 +601,7 @@ public class PedirControlador {
                         -fx-background-radius: 50%;
                     """);
             cardBtn.setOnAction(this::pedirPlato);
+            cardBtn.setCursor(Cursor.HAND);
             sp.getChildren().add(cardBtn);
             StackPane.setAlignment(cardBtn, Pos.BOTTOM_RIGHT);
             StackPane.setMargin(cardBtn, new Insets(10));
@@ -637,6 +664,8 @@ public class PedirControlador {
                 -fx-text-fill: black;  
                 -fx-font-weight: bold;          
             """);
+            btn.setMinWidth(70);
+            btn.setCursor(Cursor.HAND);
 
             btn.setOnAction(this::mostrarCategoria);
             listaBotonesCategoria.add(btn);
@@ -672,7 +701,7 @@ public class PedirControlador {
     }
 
     public void pedirPlato(ActionEvent event){
-        System.out.println("Deberia crearse un pedido");
+
         Node nodoActual = (Button) event.getSource();
         String nombrePlato = "";
 
@@ -710,6 +739,8 @@ public class PedirControlador {
 
             pedidosContainer.getChildren().add(nuevaCard);
         }
+        double totalPedidos = calcularTotalPedidos();
+        precioTotalCesta.setText(String.valueOf(totalPedidos));
     }
 
     private void aplicarAnimacionBoton(Button button) {
@@ -781,6 +812,81 @@ public class PedirControlador {
                     )
             ).play();
         });
+    }
+
+    @FXML
+    public void goToLanding(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Landing.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void goToPedir(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Pedir.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void goToAlergenos(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/ClienteAlergenos.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void goToSNosotros(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/SNosotros.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void goToPerfil(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/PerfilView.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
