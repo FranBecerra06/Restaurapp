@@ -3,12 +3,14 @@ package Controlador;
 import java.sql.SQLException;
 import java.util.Map;
 
+import DAO.MesaDAO;
 import DAO.Mesa_PlatoDAO;
 import DTO.Mesa_PlatoDTO;
 import DTO.PlatoDTO;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -100,11 +102,30 @@ public class NotificacionPedidoViewControlador {
 	    
 	    
 	    CheckBox ch = new CheckBox();
-	    ch.setStyle("-fx-scale-x: 1.3; -fx-scale-y: 1.3; -fx-mark-color: #FF9500; -fx-faint-focus-color: #FF9500;");
+	    ch.setStyle("-fx-scale-x: 1.3; "
+	    		+ "-fx-scale-y: 1.3; "
+	    		+ "-fx-mark-color: #FF9500; "
+	    		+ "-fx-faint-focus-color: #FF9500;");
 	    
 	    
 	    ch.setOnAction(e -> {
 	        if (ch.isSelected()) {
+	        	
+	        	MesaDAO m = new MesaDAO();
+	        	
+	        	try {
+					if(m.obtenerDisponibilidad(numeroMesa) == false) {
+						Alert alert = new Alert(Alert.AlertType.WARNING);
+			            alert.setTitle("Advertencia");
+			            alert.setHeaderText("Mesa " + numeroMesa + " no esta disponible");
+			            alert.setContentText("Inserte manualmente los platos en la mesa correspondiente a la mesa " + numeroMesa);
+			            alert.showAndWait();
+			            return;
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+	        	
 	            listoLabel.setVisible(true);
 	            Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
 	            try {
