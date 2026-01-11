@@ -1,28 +1,31 @@
 package Controlador;
 
-import javafx.animation.*;
+import DAO.UsuarioDAO;
+import DTO.UsuarioDTO;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import pack.restaurantegestion.Preferencias;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LandingControlador {
-    // Declarar TODOS los botones que quieres animar aquí
+public class PerfilControlador {
+
     @FXML
     private Button pedirButton; // Ya estaba
     @FXML
@@ -34,12 +37,22 @@ public class LandingControlador {
     @FXML
     private Button closeButton;
     @FXML
-    private ImageView imgPrincipal;
+    private Button guardarBtn;
 
+    @FXML
+    private TextField nombreTF, apellidosTF, correoTF, telefonoTF, usuarioTF;
+    @FXML
+    private PasswordField contraPF;
+    @FXML
+    private Label textoAuxiliar;
 
     private List<Button> listaBotones = new ArrayList<>();
 
-    public void initialize() {
+    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    UsuarioDTO usuario;
+
+    @FXML
+    public void initialize(){
         listaBotones.add(pedirButton);
         listaBotones.add(alergenosButton);
         listaBotones.add(sNosototrosButton);
@@ -50,21 +63,164 @@ public class LandingControlador {
             aplicarAnimacionBoton(b);
         }
 
-        imgPrincipal.layoutBoundsProperty().addListener((obs, oldV, newV) -> {
-            clipImgPrincipal();
-        });
+        try {
+            usuario = usuarioDAO.obtenerUsuarioPorNombreDeUsuario(Preferencias.obtenerUsuario());
+        }catch (SQLException e){
+            System.out.println("Problema obteniendo usuario desde preferencias.");
+        }
+
+        if(usuario!=null){
+            nombreTF.setText(usuario.getNombre());
+            apellidosTF.setText(usuario.getApellidos());
+            correoTF.setText(usuario.getEmail());
+            telefonoTF.setText(usuario.getTelefono());
+            usuarioTF.setText(usuario.getNombre_usuario());
+            contraPF.setText(usuario.getContrasena());
+        }
+
+        guardarBtn.disableProperty().bind(
+                Bindings.or(
+                        usuarioTF.textProperty().isEmpty(),
+                        Bindings.or(
+                                correoTF.textProperty().isEmpty(),
+                                Bindings.or(
+                                        nombreTF.textProperty().isEmpty(),
+                                        Bindings.or(
+                                                apellidosTF.textProperty().isEmpty(),
+                                                Bindings.or(
+                                                        telefonoTF.textProperty().isEmpty(),
+                                                        contraPF.textProperty().isEmpty()
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+
+
     }
 
-    private void clipImgPrincipal() {
-        double w = imgPrincipal.getBoundsInParent().getWidth();
-        double h = imgPrincipal.getBoundsInParent().getHeight();
+    @FXML
+    public void guardar(ActionEvent event){
+        System.out.println("Se pulsa el boton guardar");
+        textoAuxiliar.setText("");
+        String nombre, apellidos, email, telefono, usuario, contra;
+        nombre = nombreTF.getText();
+        apellidos = apellidosTF.getText();
+        email = correoTF.getText();
+        telefono = telefonoTF.getText();
+        usuario = usuarioTF.getText();
+        contra = contraPF.getText();
 
-        Rectangle clip = new Rectangle(w, h);
-        clip.setArcWidth(60);   // borde redondeado
-        clip.setArcHeight(60);
+        boolean nombreCorrecto, apellidosCorrecto,emailCorrecto, telefonoCorrecto, usuarioCorrecto,contraCorrecta;
 
-        imgPrincipal.setClip(clip);
+        nombreCorrecto = comprobarNombre(nombre);
+        apellidosCorrecto = comprobarApellidos(apellidos);
+        emailCorrecto = comprobarEmail(email);
+        telefonoCorrecto=comprobarTelefono(telefono);
+        usuarioCorrecto = comprobarUsuario(usuario);
+        contraCorrecta = comprobarContra(contra);
+
+        if(nombreCorrecto&&apellidosCorrecto&&emailCorrecto&&telefonoCorrecto&&usuarioCorrecto&&contraCorrecta){
+            UsuarioDTO dto = new UsuarioDTO(nombre,apellidos,email,contra,telefono,usuario);
+
+            try {
+                usuarioDAO.modificarUsuario(dto);
+                System.out.println("Usuario modificado correctamente");
+            } catch (SQLException e) {
+                System.out.println("Error creando usuario");
+            }
+        }else{
+            System.out.println("Usuario no validado");
+        }
     }
+
+    public boolean comprobarUsuario(String nombreComprobando){
+        List<String> usuarios = new ArrayList<>();
+        boolean res = false;
+        try {
+            usuarios = usuarioDAO.listarUsuarioClientes();
+        } catch (SQLException e) {
+            System.out.println("Problema recuperando lista con nombres de usuario");
+        }
+        if(nombreComprobando.length() < 1 || nombreComprobando.length() > 20){
+            textoAuxiliar.setText("El nombre debe tener entre 1 y 20 caracteres");
+        }else{
+            res = true;
+        }
+        return res;
+    }
+
+    public boolean comprobarNombre(String nombreComprobando){
+        boolean res = false;
+        if(nombreComprobando.length() < 1 || nombreComprobando.length() > 20){
+            textoAuxiliar.setText("El nombre debe tener entre 1 y 20 caracteres");
+        } else{
+            res = true;
+        }
+        return res;
+    }
+
+    public boolean comprobarApellidos(String apellidosComprobando){
+        boolean res = false;
+        if(apellidosComprobando.length() < 1 || apellidosComprobando.length() > 50){
+            textoAuxiliar.setText("Sus apellidos deben ocupar entre 1 y 50 caracteres");
+        } else{
+            res = true;
+        }
+        return res;
+    }
+
+    public boolean comprobarTelefono(String telefono) {
+        String patron = "^[0-9]{9}$";
+        boolean res = false;
+        if(!telefono.matches(patron)){
+            textoAuxiliar.setText("El teléfono debe estar compuesto por 9 dígitos");
+        }else{
+            res = true;
+        }
+        return res;
+    }
+
+    public boolean comprobarContra(String contra){
+        boolean res = false;
+        if(contra.length() < 1 || contra.length() > 20){
+            textoAuxiliar.setText("Su contraseña debe ocupar entre 1 y 20 caracteres");
+        } else{
+            res = true;
+        }
+        return res;
+    }
+
+    public boolean comprobarEmail(String emailComprobando){
+        List<String> emails = new ArrayList<>();
+        boolean res = false;
+        try {
+            emails = usuarioDAO.listarEmailClientes();
+        } catch (SQLException e) {
+            System.out.println("Problema recuperando lista con emails de usuario");
+        }
+
+        if(emailValido(emailComprobando)){
+            res = true;
+        }else{
+            textoAuxiliar.setText("Formato email incorrecto");
+        }
+        return res;
+    }
+
+    public static boolean emailValido(String email) {
+        String patron = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        return email.matches(patron);
+    }
+
+
+
+
+
+
+
+
 
     private void aplicarAnimacionBoton(Button button) {
 
@@ -226,8 +382,5 @@ public class LandingControlador {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
 }
+

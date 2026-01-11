@@ -6,6 +6,9 @@ public class UsuarioDTO {
 	private String nombre, apellidos, email, contrasena, telefono, rol, nombre_usuario;
 
 
+	public UsuarioDTO() {
+	}
+
 	public UsuarioDTO(int idUsuario) {
 		this.idUsuario = idUsuario;
 	}

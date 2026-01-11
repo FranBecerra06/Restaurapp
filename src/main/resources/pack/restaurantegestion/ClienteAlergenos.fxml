@@ -70,8 +70,8 @@
                             <children>
                                 <Button fx:id="pedirButton" onAction="#goToPedir" styleClass="nav-button" stylesheets="@Estilo.css" text="Pedir" />
                                 <Button fx:id="alergenosButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Alérgenos" />
-                                <Button fx:id="sNosototrosButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Sobre nosotros" />
-                                <Button fx:id="perfilButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Perfil" />
+                                <Button fx:id="sNosototrosButton" focusTraversable="false" onAction="#goToSNosotros" styleClass="nav-button" stylesheets="@Estilo.css" text="Sobre nosotros" />
+                                <Button fx:id="perfilButton" focusTraversable="false" onAction="#goToPerfil" styleClass="nav-button" stylesheets="@Estilo.css" text="Perfil" />
                             </children>
                         </HBox>
                         <Separator prefWidth="200.0" />

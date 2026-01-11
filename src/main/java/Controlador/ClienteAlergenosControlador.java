@@ -353,6 +353,51 @@ public class ClienteAlergenosControlador {
     }
 
     @FXML
+    public void goToAlergenos(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/ClienteAlergenos.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void goToSNosotros(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/SNosotros.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void goToPerfil(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/PerfilView.fxml"));
+            Parent root = loader.load();
+            Stage currentScene = (Stage) pedirButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentScene.setScene(scene);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
     public void cerrarSesion(ActionEvent event){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Main.fxml"));

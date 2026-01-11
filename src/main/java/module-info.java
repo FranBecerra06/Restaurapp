@@ -9,7 +9,7 @@ module pack.restaurantegestion {
 	requires javafx.fxml;
 	requires javafx.controls;
 	requires java.sql;
-
+    requires java.prefs;
 
 
 }
