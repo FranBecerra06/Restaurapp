@@ -390,11 +390,11 @@ public class PedidoMesaViewControlador {
     }
     
     
-    public void actualizarTabla(ObservableList<PlatoDTO> productos, String total) {
+    /*public void actualizarTabla(ObservableList<PlatoDTO> productos, String total) {
     	
     	tablaProductos.setItems(productos);
     	
-    }
+    }*/
     
     
     @FXML
@@ -427,7 +427,7 @@ public class PedidoMesaViewControlador {
     
     
     @FXML
-    public void salir(ActionEvent event) throws IOException {
+    public void salir(ActionEvent event) throws IOException, SQLException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/CamareroView.fxml"));
         Parent root = loader.load();
@@ -435,6 +435,8 @@ public class PedidoMesaViewControlador {
         Stage stage = (Stage) btnSalir.getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
+        
+        MesaCamareroViewControlador.resetearMesaActual();
     }
     
     

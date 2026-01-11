@@ -23,6 +23,13 @@ public class MesaCamareroViewControlador {
     private VBox vboxCol1, vboxCol2, vboxCol3;
 	private static int mesaActual = 0;
 	
+	
+	
+	public static void resetearMesaActual() {
+		mesaActual = 0;
+	}
+	
+	
 	public void initialize() throws SQLException {
         generarMesas();
     }
