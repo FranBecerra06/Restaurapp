@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.ClienteAlergenosControlador">
+    <children>
+        <BorderPane prefHeight="728.0" prefWidth="1280.0" style="-fx-background-color: white;">
+            <top>
+                <VBox spacing="10.0">
+                    <children>
+                        <HBox alignment="TOP_CENTER" prefHeight="46.0" prefWidth="900.0" spacing="15">
+                            <padding>
+                                <Insets bottom="0" left="10" right="10" top="0" />
+                            </padding>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <children>
+                                <StackPane maxWidth="100.0" prefHeight="58.0" prefWidth="50.0" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets left="40.0" top="10.0" />
+                                    </HBox.margin>
+                                    <children>
+                                        <ImageView fitHeight="58.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../Imagenes/output-onlinepngtools-removebg-preview.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Button mnemonicParsing="false" onAction="#goToLanding" prefHeight="58.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent;" text="Button" />
+                                    </children>
+                                </StackPane>
+                                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                <ImageView fitHeight="58.0" fitWidth="186.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@Imagenes/logoRestaurapp.jpg" />
+                                    </image>
+                                    <HBox.margin>
+                                        <Insets left="30.0" top="10.0" />
+                                    </HBox.margin>
+                                </ImageView>
+                                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                <Button fx:id="closeButton" alignment="CENTER" onAction="#cerrarSesion" prefHeight="77.0" prefWidth="131.0" styleClass="nav-button" stylesheets="@Estilo.css" text="Cerrar sesión">
+                                    <padding>
+                                        <Insets top="10.0" />
+                                    </padding>
+                                </Button>
+                            </children>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                        <HBox alignment="CENTER" prefWidth="900.0" spacing="50.0">
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" />
+                            </padding>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <children>
+                                <Button fx:id="pedirButton" onAction="#goToPedir" styleClass="nav-button" stylesheets="@Estilo.css" text="Pedir" />
+                                <Button fx:id="alergenosButton" focusTraversable="false" styleClass="nav-button" stylesheets="@Estilo.css" text="Alérgenos" />
+                                <Button fx:id="sNosototrosButton" focusTraversable="false" onAction="#goToSNosotros" styleClass="nav-button" stylesheets="@Estilo.css" text="Sobre nosotros" />
+                                <Button fx:id="perfilButton" focusTraversable="false" onAction="#goToPerfil" styleClass="nav-button" stylesheets="@Estilo.css" text="Perfil" />
+                            </children>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                    </children>
+                </VBox>
+            </top>
+            <center>
+                <BorderPane prefHeight="359.0" prefWidth="900.0" style="-fx-background-color: #f6f6f8;" BorderPane.alignment="CENTER">
+                    <right>
+                        <VBox prefHeight="587.0" prefWidth="31.0" BorderPane.alignment="CENTER" />
+                    </right>
+                    <center>
+                        <VBox alignment="TOP_CENTER" prefHeight="359.0" prefWidth="507.0" BorderPane.alignment="CENTER">
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                            <children>
+                                <VBox prefHeight="141.0" prefWidth="900.0">
+                                    <children>
+                                        <HBox prefHeight="66.0" prefWidth="900.0">
+                                            <children>
+                                                <Text lineSpacing="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Alérgenos de nuestros platos">
+                                                    <font>
+                                                        <Font name="Ebrima Bold" size="34.0" />
+                                                    </font>
+                                                    <HBox.margin>
+                                                        <Insets left="100.0" top="20.0" />
+                                                    </HBox.margin>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                        <HBox prefHeight="42.0" prefWidth="900.0">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Comprueba que platos puedes disfrutar">
+                                                    <HBox.margin>
+                                                        <Insets left="100.0" />
+                                                    </HBox.margin>
+                                                    <font>
+                                                        <Font name="Microsoft Sans Serif" size="24.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                        <HBox fx:id="btnsHbox" prefHeight="53.0" prefWidth="900.0">
+                                            <children>
+                                                <Region prefHeight="200.0" prefWidth="85.0" />
+                                    <Button fx:id="botonGluten" mnemonicParsing="false" onAction="#mostrarFiltro" style="-fx-background-color: #e7e9f3; -fx-background-radius: 10; -fx-font-weight: bold;" text="Gluten">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="botonLactosa" layoutX="106.0" layoutY="20.0" mnemonicParsing="false" onAction="#mostrarFiltro" style="-fx-background-color: #e7e9f3; -fx-background-radius: 10; -fx-font-weight: bold;" text="Lactosa">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="botonHuevo" layoutX="161.0" layoutY="20.0" mnemonicParsing="false" onAction="#mostrarFiltro" style="-fx-background-color: #e7e9f3; -fx-background-radius: 10; -fx-font-weight: bold;" text="Huevo">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="botonFrutosSecos" layoutX="216.0" layoutY="20.0" mnemonicParsing="false" onAction="#mostrarFiltro" style="-fx-background-color: #e7e9f3; -fx-background-radius: 10; -fx-font-weight: bold;" text="Frutos Secos">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="botonPescado" layoutX="272.0" layoutY="20.0" mnemonicParsing="false" onAction="#mostrarFiltro" style="-fx-background-color: #e7e9f3; -fx-background-radius: 10; -fx-font-weight: bold;" text="Pescado">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="botonMarisco" layoutX="327.0" layoutY="20.0" mnemonicParsing="false" onAction="#mostrarFiltro" style="-fx-background-color: #e7e9f3; -fx-background-radius: 10; -fx-font-weight: bold;" text="Marisco">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                            </padding>
+                                        </HBox>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" />
+                                    </VBox.margin>
+                                </VBox>
+                                <ScrollPane fx:id="scrollPane" prefHeight="415.0" prefWidth="0.0" style="-fx-border-color: transparent; -fx-background-insets: 0; -fx-background-color: transparent;" stylesheets="@Estilo.css">
+                                    <content>
+                                        <VBox fx:id="contenedorCards" prefHeight="200.0" prefWidth="1126.0" spacing="20.0" styleClass="scroll-pane" stylesheets="@Estilo.css">
+                                            <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                            </padding>
+                                        </VBox>
+                                    </content>
+                                    <VBox.margin>
+                                        <Insets left="100.0" />
+                                    </VBox.margin>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+                    </center>
+                </BorderPane>
+            </center>
+
+        </BorderPane>
+    </children>
+</AnchorPane>

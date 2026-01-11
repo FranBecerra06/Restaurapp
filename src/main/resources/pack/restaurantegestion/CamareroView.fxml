@@ -4,14 +4,18 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -19,12 +23,10 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: FCFCB8;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.CamareroViewControlador">
     <children>
-        <Label text="Usuario" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="50.0">
-            <font>
-                <Font name="Georgia" size="20.0" />
-            </font>
-        </Label>
-        <TextField fx:id="txtUsuario" prefWidth="180.0" style="-fx-background-radius: 20;" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="50.0" />
+        <TextField fx:id="txtUsuario" alignment="CENTER" editable="false" focusTraversable="false" layoutX="22.0" layoutY="50.0" prefWidth="180.0" style="-fx-background-radius: 20;" text="BARRA" AnchorPane.leftAnchor="22.0" AnchorPane.topAnchor="50.0">
+         <font>
+            <Font name="Serif Bold" size="14.0" />
+         </font></TextField>
         <TableView fx:id="tablaProductos" layoutX="124.0" layoutY="103.0" prefHeight="282.0" prefWidth="515.0" style="-fx-background-color: #ffca80;" AnchorPane.leftAnchor="124.0" AnchorPane.topAnchor="103.0">
             <columns>
                 <TableColumn fx:id="colProducto" prefWidth="305.6000213623047" text="Producto" />
@@ -73,7 +75,7 @@
                      <font>
                         <Font name="Serif Bold" size="28.0" />
                      </font></Button>
-                  <Button fx:id="btnAddPago" mnemonicParsing="false" prefHeight="70.0" prefWidth="81.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="AÑADIR PAGO" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3">
+                  <Button fx:id="btnAddPago" mnemonicParsing="false" onAction="#anadirPago" prefHeight="70.0" prefWidth="81.0" style="-fx-background-color: FF9500; -fx-background-radius: 12;" text="AÑADIR PAGO" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3">
                      <font>
                         <Font name="Serif Bold" size="11.0" />
                      </font>
@@ -182,11 +184,11 @@
          </children></Pane>
       <Pane layoutX="657.0" prefHeight="374.0" prefWidth="148.0" style="-fx-background-color: FFE478;" AnchorPane.leftAnchor="670.0" AnchorPane.topAnchor="10.0">
          <children>
-            <VBox prefHeight="374.0" prefWidth="148.0">
+            <VBox alignment="CENTER" prefHeight="374.0" prefWidth="148.0" spacing="50.0">
                <children>
-                  <Button fx:id="btnCambiarUsuario" mnemonicParsing="false" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="CAMBIAR USUARIO" textAlignment="CENTER" wrapText="true">
+                  <Button fx:id="btnMesas" mnemonicParsing="false" onAction="#mesa" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="MESAS" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                      <VBox.margin>
-                        <Insets bottom="14.0" left="12.0" right="12.0" top="30.0" />
+                        <Insets />
                      </VBox.margin>
                      <font>
                         <Font name="Serif Bold" size="15.0" />
@@ -195,9 +197,9 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button fx:id="btnMesas" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#mesa" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="MESAS" textAlignment="CENTER">
+                  <Button fx:id="btnDividirCuenta" mnemonicParsing="false" onAction="#dividirCuenta" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="DIVIDIR CUENTA" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
                      <VBox.margin>
-                        <Insets bottom="14.0" left="12.0" right="12.0" top="14.0" />
+                        <Insets />
                      </VBox.margin>
                      <font>
                         <Font name="Serif Bold" size="15.0" />
@@ -206,20 +208,9 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button fx:id="btnDividirCuenta" layoutX="10.0" layoutY="84.0" mnemonicParsing="false" onAction="#dividirCuenta" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="DIVIDIR CUENTA" textAlignment="CENTER" wrapText="true">
+                  <Button fx:id="btnAjustes" mnemonicParsing="false" onAction="#ajustes" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="AJUSTES" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                      <VBox.margin>
-                        <Insets bottom="14.0" left="12.0" right="12.0" top="14.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Serif Bold" size="15.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="btnAjustes" layoutX="10.0" layoutY="138.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="AJUSTES" textAlignment="CENTER">
-                     <VBox.margin>
-                        <Insets bottom="18.0" left="12.0" right="12.0" top="14.0" />
+                        <Insets />
                      </VBox.margin>
                      <font>
                         <Font name="Serif Bold" size="15.0" />
@@ -234,22 +225,12 @@
       </Pane>
       <Pane layoutX="670.0" layoutY="410.0" prefHeight="336.0" prefWidth="249.0" style="-fx-background-color: FCFCB8;" AnchorPane.leftAnchor="670.0" AnchorPane.rightAnchor="361.0" AnchorPane.topAnchor="410.0">
          <children>
-            <GridPane fx:id="gridCategorias" layoutX="-1.0" prefHeight="336.0" prefWidth="214.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-            <Pane layoutX="214.0" prefHeight="336.0" prefWidth="34.0" style="-fx-background-color: FFE478;" />
+            <Pane layoutX="238.0" prefHeight="336.0" prefWidth="10.0" style="-fx-background-color: FFE478;" />
+            <ScrollPane fitToWidth="true" prefHeight="336.0" prefWidth="238.0" style="-fx-background: FCFCB8; -fx-background-color: FCFCB8;">
+               <content>
+                  <FlowPane fx:id="flowCategorias" hgap="10.0" prefWidth="228.0" style="-fx-background-color: FCFCB8;" vgap="12.0" />
+               </content>
+            </ScrollPane>
          </children>
       </Pane>
       <Pane layoutX="919.0" layoutY="410.0" prefHeight="336.0" prefWidth="351.0" style="-fx-background-color: FCFCB8;" AnchorPane.leftAnchor="919.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="410.0">
@@ -301,5 +282,17 @@
             <Font name="Serif Bold" size="16.0" />
          </font>
       </Label>
+      <Button fx:id="btnLimpiar" alignment="CENTER" layoutX="369.0" layoutY="612.0" mnemonicParsing="false" onAction="#limpiar" prefWidth="69.0" style="-fx-background-color: #81C784; -fx-background-radius: 12;" text="Limpiar" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Serif Bold" size="14.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="imagenLogo" fitHeight="86.0" fitWidth="278.0" layoutX="358.0" layoutY="660.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="660.0" />
+      <StackPane fx:id="paneNotificacion" layoutX="316.0" layoutY="22.0" prefHeight="68.0" prefWidth="98.0">
+    <children>
+        <Label fx:id="badge" alignment="TOP_LEFT" prefHeight="5.0" prefWidth="24.0" style="-fx-background-color: #E57373;                -fx-text-fill: white;                -fx-font-size: 14px;                -fx-padding: 4 8;                -fx-background-radius: 15px;" text="1" visible="false" StackPane.alignment="TOP_RIGHT" />
+        <ImageView fx:id="notificacion" fitHeight="67.0" fitWidth="100.0" onMouseClicked="#notificacion" pickOnBounds="true" preserveRatio="true" />
+    </children>
+</StackPane>
     </children>
 </AnchorPane>

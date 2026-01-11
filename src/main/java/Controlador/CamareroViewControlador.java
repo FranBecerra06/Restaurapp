@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import DAO.CategoriaDAO;
@@ -19,19 +20,20 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.application.Platform;
 
 public class CamareroViewControlador {
 	
@@ -54,25 +56,41 @@ public class CamareroViewControlador {
     private AnchorPane productoAnchorPane, mesaAnchorPane;
     
     @FXML
-    private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnComa, btnDelete, btnClear, btnMesas, btnDividirCuenta, btnSalir;
+    private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnComa, btnDelete, btnClear, btnMesas, btnDividirCuenta, btnSalir,
+    btnLimpiar;
     
     @FXML
-    private GridPane gridCategorias;
-    
+    private FlowPane flowCategorias;
     
     @FXML
-    public void initialize() {
+    private ImageView imagenLogo, notificacion;
+    
+    @FXML
+    private StackPane paneNotificacion;
+
+    @FXML
+    private Label badge;
+    
+    public static Map<PlatoDTO, Integer> mapa;
+    public static int numeroMesa;
+    
+    @FXML
+    public void initialize() throws SQLException {
+        
         colProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         
-        cargarCategorias(); 
-    }
-    
-    
-    /*public void mostrarUsuarioCamarero() {
+        cargarCategorias();
+        
+        Image image = new Image(getClass().getResourceAsStream("/Imagenes/logoRestaurapp.png"));
+    	imagenLogo.setImage(image);
     	
-    }*/
+    	Image imagenNotificacion = new Image(getClass().getResourceAsStream("/Imagenes/notificacion.png"));
+    	notificacion.setImage(imagenNotificacion);
+    	
+    	actualizarNotificacion();
+    }
     
     
     public TableView<PlatoDTO> getTablaProductos() {
@@ -81,25 +99,30 @@ public class CamareroViewControlador {
     
     
     public void cargarCategorias() {
+
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         List<CategoriaDTO> categorias = categoriaDAO.obtenerCategorias();
 
-        gridCategorias.getChildren().clear();
-        int fila = 0;
-        int columna = 0;
+        flowCategorias.getChildren().clear();
 
         for (CategoriaDTO categoria : categorias) {
+
             Button btn = new Button(categoria.getNombre());
-            btn.setPrefWidth(150);
+
+            btn.setPrefWidth(105);
+            btn.setMinHeight(45);
+            btn.setWrapText(true);
+            btn.setTextAlignment(TextAlignment.CENTER); // centra las líneas dentro del texto
+            btn.setAlignment(Pos.CENTER);
+
             btn.setStyle(
-            		"-fx-background-color: linear-gradient(to bottom, #FFB84D, #FF9500);" + // gradiente naranja
-            	    "-fx-text-fill: white;" + // texto blanco
-            	    "-fx-font-size: 18px;" + // tamaño de fuente más grande
-            	    "-fx-font-weight: bold;" + // texto en negrita
-            	    "-fx-background-radius: 15;" + // bordes redondeados
-            	    "-fx-border-width: 2;" +
-            	    "-fx-border-radius: 15;"
-            	    );
+                "-fx-background-color: linear-gradient(to bottom, #FFB84D, #FF9500);" +
+                "-fx-text-fill: white;" +
+                "-fx-font-size: 16px;" +
+                "-fx-font-weight: bold;" +
+                "-fx-background-radius: 20;"
+            );
+
             btn.setOnAction(e -> {
                 try {
                     Refresco(categoria.getIdCategoria());
@@ -108,12 +131,7 @@ public class CamareroViewControlador {
                 }
             });
 
-            gridCategorias.add(btn, columna, fila);
-            columna++;
-            if (columna > 1) { // tu GridPane tiene 2 columnas
-                columna = 0;
-                fila++;
-            }
+            flowCategorias.getChildren().add(btn);
         }
     }
     
@@ -133,6 +151,13 @@ public class CamareroViewControlador {
     
     
     public void actualizarPrecioTotal() {
+    	
+    	if(tablaProductos.getItems().isEmpty()) {
+    		precioTotal.clear();
+    		entregado.clear();
+    		return;
+    	}
+    	
         double total = 0;
         for (PlatoDTO p : tablaProductos.getItems()) {
             total += p.getCantidad() * p.getPrecio();
@@ -189,27 +214,31 @@ public class CamareroViewControlador {
         String numeroPulsado = boton.getText();
         String actual = entregado.getText();
         
-        switch (numeroPulsado) {
-        case "C":
-            entregado.clear();
-            break;
+        if(!precioTotal.getText().isEmpty()) {
+        	switch (numeroPulsado) {
+            case "C":
+                entregado.clear();
+                break;
 
-        case "<":
-            if (!actual.isEmpty()) {
-                entregado.setText(actual.substring(0, actual.length() - 1));
+            case "<":
+                if (!actual.isEmpty()) {
+                    entregado.setText(actual.substring(0, actual.length() - 1));
+                }
+                break;
+
+            case ".":
+                if (!actual.contains(".")) { 
+                    entregado.setText(actual + ".");
+                }
+                break;
+
+            default:  
+                // Aquí entran 0-9 u otros números
+                entregado.setText(actual + numeroPulsado);
+                break;
             }
-            break;
-
-        case ".":
-            if (!actual.contains(".")) { 
-                entregado.setText(actual + ".");
-            }
-            break;
-
-        default:  
-            // Aquí entran 0-9 u otros números
-            entregado.setText(actual + numeroPulsado);
-            break;
+        }else {
+        	return;
         }
     }
     
@@ -246,15 +275,17 @@ public class CamareroViewControlador {
                 Optional<String> result = dialog.showAndWait();
                 String observacion = result.orElse("");
                 
+                LocalDateTime fecha = LocalDateTime.now();
                 
-                PedidoDTO pDTO = new PedidoDTO();
                 
-                pDTO.setIdCamarero(1);
+                PedidoDTO pDTO = new PedidoDTO(1, null, fecha, total, observacion);
+                
+                /*pDTO.setIdCamarero(1);
                 pDTO.setIdMesa(null);
                 pDTO.setTotal(total);
                 pDTO.setObservaciones("");
                 pDTO.setFecha(LocalDateTime.now());
-                pDTO.setObservaciones(observacion);
+                pDTO.setObservaciones(observacion);*/
                 
                 PedidoDAO p = new PedidoDAO();
                 
@@ -271,13 +302,16 @@ public class CamareroViewControlador {
                 	
                 	PlatoDAO pDAO = new PlatoDAO();
                 	
-                	int id_plato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
-                	
-                    Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
-                    
-                    System.out.println(ppDTO.getId_pedido() + "" + ppDTO.getId_plato() + "" + ppDTO.getCantidad());
-                    
-                    ppDAO.crearPedidoPlato(ppDTO);
+                	if(!plato.getNombre().isEmpty()) {
+                		
+                		int id_plato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
+                    	
+                        Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
+                        
+                        System.out.println(ppDTO.getId_pedido() + "" + ppDTO.getId_plato() + "" + ppDTO.getCantidad());
+                        
+                        ppDAO.crearPedidoPlato(ppDTO);
+                	}
                 }
                 
                 tablaProductos.getItems().clear();
@@ -385,6 +419,152 @@ public class CamareroViewControlador {
 
         mesaAnchorPane.getChildren().setAll(root);
     	
+    }
+    
+    
+    @FXML
+    public void limpiar(ActionEvent event) {
+    	devolver.clear();
+    }
+    
+    
+    @FXML
+    public void anadirPago(ActionEvent event) throws IOException {
+    	
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AnadirPagoView.fxml"));
+        Parent root = loader.load();
+        
+        AnadirPagoViewControlador apc = loader.getController();
+        
+        Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.showAndWait();
+		
+		PlatoDTO extra = apc.getProductoCreado();
+		
+		if(extra != null) {
+			tablaProductos.getItems().add(extra);
+			tablaProductos.refresh();
+			actualizarPrecioTotal();
+		}
+		
+    }
+
+
+    @FXML
+    public void ajustes(ActionEvent event) throws IOException {
+
+        if(!tablaProductos.getItems().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Advertencia");
+            alert.setHeaderText("Se perderan todos los productos de la tabla");
+            alert.setContentText("¿Deseas continuar?");
+
+            Optional<ButtonType> resultado = alert.showAndWait();
+
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
+                Parent root = loader.load();
+
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Ajustes");
+                dialog.setHeaderText("Introduzca la contraseña del administrador");
+                dialog.setContentText("Contraseña:");
+
+                Optional<String> result = dialog.showAndWait();
+
+                if(result.isPresent()) {
+                    String contrasena = result.get();
+                    if(contrasena.equals("1234")) {
+                        Stage stage = (Stage) btnSalir.getScene().getWindow();
+                        stage.setScene(new Scene(root));
+                        stage.show();
+                    }else {
+                        Alert alerta = new Alert(Alert.AlertType.WARNING);
+                        alerta.setTitle("Advertencia");
+                        alerta.setHeaderText("Contraseña incorrecta");
+                        alerta.setContentText("No se ha podido cambiar a la vista camarero debido a que la contraseña no coincide");
+                        alerta.showAndWait();
+                        return;
+                    }
+                }else {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
+            Parent root = loader.load();
+
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Ajustes");
+            dialog.setHeaderText("Introduzca la contraseña del administrador");
+            dialog.setContentText("Contraseña:");
+
+            Optional<String> result = dialog.showAndWait();
+
+            if(result.isPresent()) {
+                String contrasena = result.get();
+                if(contrasena.equals("1234")) {
+                    Stage stage = (Stage) btnSalir.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                }else {
+                    Alert alerta = new Alert(Alert.AlertType.WARNING);
+                    alerta.setTitle("Advertencia");
+                    alerta.setHeaderText("Contraseña incorrecta");
+                    alerta.setContentText("No se ha podido cambiar a la vista camarero debido a que la contraseña no coincide");
+                    alerta.showAndWait();
+                    return;
+                }
+            }else {
+                return;
+            }
+        }
+
+    }
+    
+    
+    public void obtenerMapYMesa(Map<PlatoDTO, Integer> pedido, int mesa) {
+    	mapa = pedido;
+    	numeroMesa = mesa;
+    	
+        actualizarNotificacion();
+    }
+    
+    
+    public void actualizarNotificacion() {
+        Platform.runLater(() -> {
+            if (mapa != null && !mapa.isEmpty()) {
+                badge.setVisible(true);
+                badge.setText("1"); // Número de pedidos
+            } else {
+                badge.setVisible(false);
+            }
+        });
+    }
+    
+    
+    @FXML
+    public void notificacion(MouseEvent event) throws IOException {
+    	
+    	if(mapa == null || mapa.isEmpty()) {
+    		return;
+    	}
+    	
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/NotificacionPedidoView.fxml"));
+    	Parent root = loader.load();
+    	
+    	NotificacionPedidoViewControlador npvc = loader.getController();
+    	npvc.notificacionPedido(CamareroViewControlador.mapa, CamareroViewControlador.numeroMesa);
+        
+        Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.showAndWait();
+		
+		mapa.clear();
+		actualizarNotificacion();
     }
 
 }

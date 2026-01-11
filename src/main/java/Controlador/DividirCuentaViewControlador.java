@@ -108,27 +108,31 @@ public class DividirCuentaViewControlador {
         String numeroPulsado = boton.getText();
         String actual = totalEntregado.getText();
 
-        switch (numeroPulsado) {
-        case "C":
-            totalEntregado.clear();
-            break;
+        if(!totalDividir.getText().isEmpty()) {
+        	switch (numeroPulsado) {
+            case "C":
+                totalEntregado.clear();
+                break;
 
-        case "<":
-            if (!actual.isEmpty()) {
-                totalEntregado.setText(actual.substring(0, actual.length() - 1));
+            case "<":
+                if (!actual.isEmpty()) {
+                    totalEntregado.setText(actual.substring(0, actual.length() - 1));
+                }
+                break;
+
+            case ".":
+                if (!actual.contains(".")) {
+                    totalEntregado.setText(actual + ".");
+                }
+                break;
+
+            default:
+                // Aquí entran 0-9 u otros números
+                totalEntregado.setText(actual + numeroPulsado);
+                break;
             }
-            break;
-
-        case ".":
-            if (!actual.contains(".")) {
-                totalEntregado.setText(actual + ".");
-            }
-            break;
-
-        default:
-            // Aquí entran 0-9 u otros números
-            totalEntregado.setText(actual + numeroPulsado);
-            break;
+        }else {
+        	return;
         }
 	}
 
@@ -219,90 +223,98 @@ public class DividirCuentaViewControlador {
 	        double total = Double.parseDouble(totalDividir.getText().trim());
 	        double pago = Double.parseDouble(totalEntregado.getText().trim());
 	        double cambio = pago - total;
+	        
+	        if(pago < total) {
+	        	Alert alerta = new Alert(Alert.AlertType.WARNING);
+            	alerta.setTitle("Advertencia");
+                alerta.setHeaderText("No se ha realizado el cobro");
+                alerta.setContentText("La cantidad entregada es menor que el total");
+                alerta.showAndWait();
+                
+                totalEntregado.clear();
+                
+                return;
+	        }else {
+	        	totalDevolver.setText(String.format(Locale.US, "%.2f", cambio));
 
-	        totalDevolver.setText(String.format(Locale.US, "%.2f", cambio));
+
+		        // ----------------------- 2. OBSERVACIONES -----------------------
+		        TextInputDialog dialog = new TextInputDialog();
+		        dialog.setTitle("Observaciones");
+		        dialog.setHeaderText("¿Desea añadir alguna observación al pedido?");
+		        dialog.setContentText("Observación:");
+		        String observacion = dialog.showAndWait().orElse("");
 
 
-	        // ----------------------- 2. OBSERVACIONES -----------------------
-	        TextInputDialog dialog = new TextInputDialog();
-	        dialog.setTitle("Observaciones");
-	        dialog.setHeaderText("¿Desea añadir alguna observación al pedido?");
-	        dialog.setContentText("Observación:");
-	        String observacion = dialog.showAndWait().orElse("");
+		        // ----------------------- 3. CREAR PEDIDO -----------------------
+		        
+		        LocalDateTime fecha = LocalDateTime.now();
+		        
+		        PedidoDTO pedidoDTO;
+		        PedidoDAO pedidoDAO = new PedidoDAO();
+
+		        if (numeroMesa > 0) {
+		        	MesaDTO m = new MesaDTO(numeroMesa);
+		        	pedidoDTO = new PedidoDTO(1, m, fecha, total, observacion);
+		        } else {
+
+		        	pedidoDTO = new PedidoDTO(1, null, fecha, total, observacion);
+		        }
+		        
+		        
+		        pedidoDAO.crearPedido(pedidoDTO);
 
 
-	        // ----------------------- 3. CREAR PEDIDO -----------------------
-	        PedidoDTO pedidoDTO = new PedidoDTO();
-	        PedidoDAO pedidoDAO = new PedidoDAO();
+		        // ----------------------- 4. OBTENER ID -----------------------
+		        int idPedido = pedidoDAO.obtenerUltimoIdPedido();
 
-	        if (numeroMesa > 0) {
-	            pedidoDTO.setIdMesa(new MesaDTO(numeroMesa));
-	        } else {
-	            pedidoDTO.setIdMesa(null);
+
+		        // ----------------------- 5. INSERTAR PEDIDO_PLATO -----------------------
+		        Pedido_PlatoDAO pedidoPlatoDAO = new Pedido_PlatoDAO();
+		        PlatoDAO platoDAO = new PlatoDAO();
+		        Mesa_PlatoDAO mesaPlatoDAO = new Mesa_PlatoDAO();
+
+		        for (PlatoDTO plato : tablaDividir.getItems()) {
+
+		            // Obtener ID real del plato
+		            int idPlato = platoDAO.obtenerIdPlatoPorNombre(plato.getNombre());
+
+		            // Guardar en pedido_plato
+		            Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(
+		                    idPedido,
+		                    idPlato,
+		                    plato.getCantidad()
+		            );
+		            pedidoPlatoDAO.crearPedidoPlato(ppDTO);
+
+
+		            // ----------------------- 6. RESTAR CANTIDADES SI VIENE DE MESA -----------------------
+		            if (numeroMesa > 0) {
+
+		                // Cantidad que se está pagando
+		                int cantidadPagada = plato.getCantidad();
+
+		                // Cantidad que hay en BD
+		                int cantidadActual = mesaPlatoDAO.obtenerCantidad(numeroMesa, idPlato);
+
+		                int nuevaCantidad = cantidadActual - cantidadPagada;
+
+		                if (nuevaCantidad > 0) {
+		                    // Actualizar cantidad restante
+		                    mesaPlatoDAO.actualizarCantidad(numeroMesa, idPlato, nuevaCantidad);
+		                } else {
+		                    // Si llega a 0, eliminar fila
+		                    mesaPlatoDAO.eliminarMesaPlato(numeroMesa, idPlato);
+		                }
+		            }
+		        }
+
+
+		        // ----------------------- 7. LIMPIAR -----------------------
+		        tablaDividir.getItems().clear();
+		        totalDividir.clear();
+		        totalEntregado.clear();
 	        }
-
-	        pedidoDTO.setIdCamarero(1);   // Modificar cuando tengas login real
-	        pedidoDTO.setTotal(total);
-	        pedidoDTO.setFecha(LocalDateTime.now());
-	        pedidoDTO.setObservaciones(observacion);
-
-	        pedidoDAO.crearPedido(pedidoDTO);
-
-
-	        // ----------------------- 4. OBTENER ID -----------------------
-	        int idPedido = pedidoDAO.obtenerUltimoIdPedido();
-
-
-	        // ----------------------- 5. INSERTAR PEDIDO_PLATO -----------------------
-	        Pedido_PlatoDAO pedidoPlatoDAO = new Pedido_PlatoDAO();
-	        PlatoDAO platoDAO = new PlatoDAO();
-	        Mesa_PlatoDAO mesaPlatoDAO = new Mesa_PlatoDAO();
-
-	        for (PlatoDTO plato : tablaDividir.getItems()) {
-
-	            // Obtener ID real del plato
-	            int idPlato = platoDAO.obtenerIdPlatoPorNombre(plato.getNombre());
-
-	            // Guardar en pedido_plato
-	            Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(
-	                    idPedido,
-	                    idPlato,
-	                    plato.getCantidad()
-	            );
-	            pedidoPlatoDAO.crearPedidoPlato(ppDTO);
-
-
-	            // ----------------------- 6. RESTAR CANTIDADES SI VIENE DE MESA -----------------------
-	            if (numeroMesa > 0) {
-
-	                // Cantidad que se está pagando
-	                int cantidadPagada = plato.getCantidad();
-
-	                // Cantidad que hay en BD
-	                int cantidadActual = mesaPlatoDAO.obtenerCantidad(numeroMesa, idPlato);
-
-	                int nuevaCantidad = cantidadActual - cantidadPagada;
-
-	                if (nuevaCantidad > 0) {
-	                    // Actualizar cantidad restante
-	                    mesaPlatoDAO.actualizarCantidad(numeroMesa, idPlato, nuevaCantidad);
-	                } else {
-	                    // Si llega a 0, eliminar fila
-	                    mesaPlatoDAO.eliminarMesaPlato(numeroMesa, idPlato);
-	                }
-	            }
-	        }
-
-
-	        // ----------------------- 7. LIMPIAR -----------------------
-	        tablaDividir.getItems().clear();
-	        totalDividir.clear();
-	        totalEntregado.clear();
-
-
-	        // ----------------------- 8. CERRAR Y VOLVER -----------------------
-	        /*Stage stage = (Stage) btnSalir.getScene().getWindow();
-	        stage.close();*/
 
 	    } catch (NumberFormatException e) {
 	        totalDevolver.setText("ERROR");
@@ -469,6 +481,12 @@ public class DividirCuentaViewControlador {
 
 
 	public void actualizarPrecioTotalDividir() {
+		
+		if(tablaDividir.getItems().isEmpty()) {
+			totalDividir.clear();
+			totalEntregado.clear();
+		}
+		
         double total = 0;
         for (PlatoDTO p : tablaDividir.getItems()) {
             total += p.getCantidad() * p.getPrecio();
@@ -483,6 +501,12 @@ public class DividirCuentaViewControlador {
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         return alerta.showAndWait().filter(bt -> bt == ButtonType.OK).isPresent();
+    }
+	
+	
+	@FXML
+    public void limpiar(ActionEvent event) {
+    	totalDevolver.clear();
     }
 	
 }

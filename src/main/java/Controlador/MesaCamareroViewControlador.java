@@ -21,6 +21,13 @@ public class MesaCamareroViewControlador {
 	
 	@FXML
     private VBox vboxCol1, vboxCol2, vboxCol3;
+	private static int mesaActual = 0;
+	
+	
+	
+	public static void resetearMesaActual() {
+		mesaActual = 0;
+	}
 	
 	
 	public void initialize() throws SQLException {
@@ -39,7 +46,7 @@ public class MesaCamareroViewControlador {
 
 		    int idMesa = mesa.getIdMesa();
 
-            Image imgMesa = new Image(getClass().getResourceAsStream("/imagenes/ImagenMesas.png"));
+            Image imgMesa = new Image(getClass().getResourceAsStream("/Imagenes/ImagenMesas.png"));
 
             ImageView imagen = new ImageView(imgMesa);
             imagen.setFitWidth(80);
@@ -95,6 +102,13 @@ public class MesaCamareroViewControlador {
 	
 	
 	public void seleccionarMesa(int numMesa) throws IOException, SQLException{
+		
+		if(numMesa == mesaActual) {
+			return;
+		}
+		
+		mesaActual = numMesa;
+		
 		 FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/PedidoMesaView.fxml"));
 	     Parent root = loader.load();
 

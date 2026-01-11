@@ -46,19 +46,23 @@ public class UsuarioDAO {
 // -- MODIFICAR USUARIO --
 
 	public boolean modificarUsuario(UsuarioDTO u) throws SQLException {
+		// CORRECCIÓN 1: Cambiar "cliente" por "usuario"
+		// CORRECCIÓN 2: Añadir el parámetro para el WHERE
+		String sql = "UPDATE usuario SET nombre = ?, apellidos = ?, email = ?, contrasena = ?, telefono = ?, nombre_usuario = ? WHERE nombre_usuario = ?";
 
-		String sql = "UPDATE cliente SET nombre = ?, apellidos = ?, email = ?, contrasena = ?, telefono = ?, nombre_usuario = ? WHERE nombre_usuario = ?";
-		try (Connection conn = ConexionBD.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+		try (Connection conn = ConexionBD.getConnection();
+			 PreparedStatement pst = conn.prepareStatement(sql)) {
 
 			pst.setString(1, u.getNombre());
 			pst.setString(2, u.getApellidos());
 			pst.setString(3, u.getEmail());
 			pst.setString(4, u.getContrasena());
 			pst.setString(5, u.getTelefono());
-			pst.setString(6, u.getNombre_usuario());
+			pst.setString(6, u.getNombre_usuario());  // Nuevo nombre_usuario (si cambia)
+			pst.setString(7, u.getNombre_usuario());  // Nombre_usuario original para WHERE
+
 			int filas = pst.executeUpdate();
 			return filas > 0;
-
 		}
 	}
 
@@ -123,5 +127,30 @@ public class UsuarioDAO {
 
 		return emails;
 
+	}
+	public UsuarioDTO obtenerUsuarioPorNombreDeUsuario(String nombreUsuario) throws SQLException {
+		UsuarioDTO usuario = null;
+		String sql = "SELECT * FROM usuario WHERE nombre_usuario = ?";
+
+		try (Connection conn = ConexionBD.getConnection();
+			 PreparedStatement pst = conn.prepareStatement(sql)) {
+
+			pst.setString(1, nombreUsuario);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					usuario = new UsuarioDTO();
+					usuario.setIdUsuario(rs.getInt("id_usuario"));
+					usuario.setNombre(rs.getString("nombre"));
+					usuario.setApellidos(rs.getString("apellidos"));
+					usuario.setEmail(rs.getString("email"));
+					usuario.setContrasena(rs.getString("contrasena"));
+					usuario.setTelefono(rs.getString("telefono"));
+					usuario.setNombre_usuario(rs.getString("nombre_usuario"));
+				}
+			}
+		}
+
+		return usuario;
 	}
 }

@@ -96,7 +96,27 @@ public class MesaDAO {
                 return rs.getInt("total");
             }
         }
-        return 0; // Si no hay resultados
+        return 0;
+    }
+    
+    
+    public boolean obtenerDisponibilidad(int numeroMesa) throws SQLException {
+        String sql = "SELECT disponibilidad FROM mesa WHERE id_mesa = ?";
+        
+        try (Connection conn = ConexionBD.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            
+            pst.setInt(1, numeroMesa);
+            
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    String disponibilidad = rs.getString("disponibilidad");
+                    return disponibilidad.equalsIgnoreCase("Disponible");
+                } else {
+                    return false;
+                }
+            }
+        }
     }
     
 }

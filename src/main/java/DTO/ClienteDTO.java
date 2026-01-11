@@ -2,12 +2,10 @@ package DTO;
 
 import java.time.LocalDate;
 
-import Modelos.Usuario;
-
 public class ClienteDTO {
 
 	private int idCliente;
-	private Usuario idUsuario;
+	private int idUsuario;
 	private String nombre, apellidos, email;
 	private LocalDate fechaNacimiento;
 
@@ -17,7 +15,7 @@ public class ClienteDTO {
 	}
 
 
-	public ClienteDTO(Usuario idUsuario, String nombre, String apellidos, String email, LocalDate fechaNacimiento) {
+	public ClienteDTO(int idUsuario, String nombre, String apellidos, String email, LocalDate fechaNacimiento) {
 		this.idUsuario = idUsuario;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -43,11 +41,11 @@ public class ClienteDTO {
 		this.idCliente = idCliente;
 	}
 
-	public Usuario getIdUsuario() {
+	public int getIdUsuario() {
 		return idUsuario;
 	}
 
-	public void setIdUsuario(Usuario idUsuario) {
+	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 
