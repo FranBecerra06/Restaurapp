@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import DAO.CategoriaDAO;
@@ -24,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -32,10 +34,13 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.application.Platform;
 
 public class CamareroViewControlador {
 	
@@ -65,8 +70,16 @@ public class CamareroViewControlador {
     private FlowPane flowCategorias;
     
     @FXML
-    private ImageView imagenLogo;
+    private ImageView imagenLogo, notificacion;
     
+    @FXML
+    private StackPane paneNotificacion;
+
+    @FXML
+    private Label badge;
+    
+    public static Map<PlatoDTO, Integer> mapa;
+    public static int numeroMesa;
     
     @FXML
     public void initialize() throws SQLException {
@@ -80,6 +93,10 @@ public class CamareroViewControlador {
         Image image = new Image(getClass().getResourceAsStream("/Imagenes/logoRestaurapp.png"));
     	imagenLogo.setImage(image);
     	
+    	Image imagenNotificacion = new Image(getClass().getResourceAsStream("/Imagenes/notificacion.png"));
+    	notificacion.setImage(imagenNotificacion);
+    	
+    	actualizarNotificacion();
     }
     
     
@@ -472,6 +489,48 @@ public class CamareroViewControlador {
         	 return;
          }
     	
+    }
+    
+    
+    public void obtenerMapYMesa(Map<PlatoDTO, Integer> pedido, int mesa) {
+    	mapa = pedido;
+    	numeroMesa = mesa;
+    	
+        actualizarNotificacion();
+    }
+    
+    
+    public void actualizarNotificacion() {
+        Platform.runLater(() -> {
+            if (mapa != null && !mapa.isEmpty()) {
+                badge.setVisible(true);
+                badge.setText("1"); // Número de pedidos
+            } else {
+                badge.setVisible(false);
+            }
+        });
+    }
+    
+    
+    @FXML
+    public void notificacion(MouseEvent event) throws IOException {
+    	
+    	if(mapa == null || mapa.isEmpty()) {
+    		return;
+    	}
+    	
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/NotificacionPedidoView.fxml"));
+    	Parent root = loader.load();
+    	
+    	NotificacionPedidoViewControlador npvc = loader.getController();
+    	npvc.notificacionPedido(CamareroViewControlador.mapa, CamareroViewControlador.numeroMesa);
+        
+        Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.showAndWait();
+		
+		mapa.clear();
+		actualizarNotificacion();
     }
 
 }

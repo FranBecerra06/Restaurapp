@@ -471,6 +471,11 @@ public class PedirControlador {
                     boolean mesaIncorrecta = true;
                     for(MesaDTO m: mesas){
                         if (m.getIdMesa()==numeroCorrecto){
+                        	
+                        	CamareroViewControlador.mapa = new HashMap<>(mapaPedidos);
+                        	CamareroViewControlador.numeroMesa = numeroCorrecto;
+
+                        	
                             enviarNotificacion(mapaPedidos, numeroCorrecto);
                             mesaIncorrecta = false;
                             break;
@@ -497,12 +502,14 @@ public class PedirControlador {
             System.out.println(p.getNombre() + ", cantidad: "+ mapaPedidos.get(p));
         }
     }
-
-    public void enviarNotificacion(Map<PlatoDTO, Integer> mapaPedidos,int numeroCorrecto){
+    
+    
+    public void enviarNotificacion(Map<PlatoDTO, Integer> mapaPedidos, int numeroCorrecto){
+    	
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Pedido Confirmado");
         alert.setHeaderText("Pedido Confirmado.");
-        alert.setContentText("Su pedido estrá en su mesa lo más pronto posible, gracias por su paciencia.");
+        alert.setContentText("Su pedido estará en su mesa lo más pronto posible, gracias por su paciencia.");
         alert.showAndWait();
         pedidosContainer.getChildren().clear();
         mapaPedidos.clear();

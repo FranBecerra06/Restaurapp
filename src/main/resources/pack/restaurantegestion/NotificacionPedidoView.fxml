@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: FCFCB8;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.NotificacionPedidoViewControlador">
+   <children>
+      <HBox alignment="CENTER" layoutX="192.0" layoutY="14.0" prefHeight="55.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="NOTIFICACION">
+               <font>
+                  <Font name="Serif Bold" size="40.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <ScrollPane fitToWidth="true" layoutX="39.0" layoutY="109.0" prefHeight="269.0" prefWidth="522.0" style="-fx-background: FFE478;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="110.0">
+         <content>
+            <VBox fx:id="pedidos" prefWidth="520.0" spacing="10.0" style="-fx-background: FFE478;" />
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
