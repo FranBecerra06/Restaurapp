@@ -53,7 +53,7 @@ public class Mesa_PlatoDAO {
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
-
+        	
             pst.setInt(1, idMesa);
             pst.setInt(2, idPlato);
 

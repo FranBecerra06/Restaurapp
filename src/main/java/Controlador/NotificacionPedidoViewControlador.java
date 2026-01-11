@@ -1,7 +1,10 @@
 package Controlador;
 
+import java.sql.SQLException;
 import java.util.Map;
 
+import DAO.Mesa_PlatoDAO;
+import DTO.Mesa_PlatoDTO;
 import DTO.PlatoDTO;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -20,7 +23,10 @@ public class NotificacionPedidoViewControlador {
 	
 	
 	public void notificacionPedido(Map<PlatoDTO, Integer> mapaPedidos, int numeroMesa) {
-
+		
+		/*PlatoDTO plato = null;
+		Integer cantidad = 0;*/
+		
 	    pedidos.getChildren().clear();
 	    pedidos.setPadding(new Insets(20, 20, 20, 10));
 	    pedidos.setSpacing(10);
@@ -52,8 +58,8 @@ public class NotificacionPedidoViewControlador {
 	    contenidoMesa.getChildren().add(mesaLabel);
 	    
 	    for (Map.Entry<PlatoDTO, Integer> entry : mapaPedidos.entrySet()) {
-	        PlatoDTO plato = entry.getKey();
-	        Integer cantidad = entry.getValue();
+	    	final PlatoDTO plato = entry.getKey();
+	    	final Integer cantidad = entry.getValue();
 	        
 	        HBox lineaPlato = new HBox(12);
 	        lineaPlato.setAlignment(Pos.CENTER_LEFT);
@@ -100,6 +106,24 @@ public class NotificacionPedidoViewControlador {
 	    ch.setOnAction(e -> {
 	        if (ch.isSelected()) {
 	            listoLabel.setVisible(true);
+	            Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+	            try {
+	                for (Map.Entry<PlatoDTO, Integer> entry : mapaPedidos.entrySet()) {
+	                    PlatoDTO plato = entry.getKey();
+	                    Integer cantidad = entry.getValue();
+	                    
+	                    int existePlato = mpDAO.obtenerCantidad(numeroMesa, plato.getIdPlato());
+	                    
+	                    if(existePlato > 0) {
+	                    	mpDAO.actualizarCantidad(numeroMesa, plato.getIdPlato(), existePlato + cantidad);
+	                    }else {
+	                    	Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, plato.getIdPlato(), cantidad);
+		                    mpDAO.crearMesaPlato(mpDTO);
+	                    }
+	                }
+	            } catch (SQLException ex) {
+	                ex.printStackTrace();
+	            }
 	            ch.setDisable(true);
 	        }
 	    });
