@@ -22,12 +22,6 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: FCFCB8;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.CamareroViewControlador">
     <children>
-        <Label text="Usuario" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="50.0">
-            <font>
-                <Font name="Georgia" size="20.0" />
-            </font>
-        </Label>
-        <TextField fx:id="txtUsuario" prefWidth="180.0" style="-fx-background-radius: 20;" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="50.0" />
         <TableView fx:id="tablaProductos" layoutX="124.0" layoutY="103.0" prefHeight="282.0" prefWidth="515.0" style="-fx-background-color: #ffca80;" AnchorPane.leftAnchor="124.0" AnchorPane.topAnchor="103.0">
             <columns>
                 <TableColumn fx:id="colProducto" prefWidth="305.6000213623047" text="Producto" />
@@ -187,17 +181,6 @@
          <children>
             <VBox prefHeight="374.0" prefWidth="148.0">
                <children>
-                  <Button fx:id="btnCambiarUsuario" mnemonicParsing="false" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="CAMBIAR USUARIO" textAlignment="CENTER" wrapText="true">
-                     <VBox.margin>
-                        <Insets bottom="14.0" left="12.0" right="12.0" top="30.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Serif Bold" size="15.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
                   <Button fx:id="btnMesas" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#mesa" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="MESAS" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets bottom="14.0" left="12.0" right="12.0" top="14.0" />
@@ -220,7 +203,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button fx:id="btnAjustes" layoutX="10.0" layoutY="138.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="AJUSTES" textAlignment="CENTER">
+                  <Button fx:id="btnAjustes" layoutX="10.0" layoutY="138.0" mnemonicParsing="false" onAction="#irAAdmin" prefHeight="54.0" prefWidth="124.0" style="-fx-background-color: #FF9500; -fx-background-radius: 20;" text="AJUSTES" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets bottom="18.0" left="12.0" right="12.0" top="14.0" />
                      </VBox.margin>
