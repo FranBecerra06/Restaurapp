@@ -26,9 +26,6 @@ public class NotificacionPedidoViewControlador {
 	
 	public void notificacionPedido(Map<PlatoDTO, Integer> mapaPedidos, int numeroMesa) {
 		
-		/*PlatoDTO plato = null;
-		Integer cantidad = 0;*/
-		
 	    pedidos.getChildren().clear();
 	    pedidos.setPadding(new Insets(20, 20, 20, 10));
 	    pedidos.setSpacing(10);

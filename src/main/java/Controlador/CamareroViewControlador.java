@@ -16,6 +16,7 @@ import DTO.CategoriaDTO;
 import DTO.PedidoDTO;
 import DTO.Pedido_PlatoDTO;
 import DTO.PlatoDTO;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
@@ -40,7 +42,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.application.Platform;
 
 public class CamareroViewControlador {
 	
@@ -338,15 +339,14 @@ public class CamareroViewControlador {
     	
     	if(!tablaProductos.getItems().isEmpty()) {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/DividirCuentaView.fxml"));
-            AnchorPane root = loader.load(); // Cargar vista
+            AnchorPane root = loader.load();
             DividirCuentaViewControlador dcvc = loader.getController();
             
             
-            // Crear nueva ventana
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.show(); // Mostrar nueva ventana
+            stage.show();
             
             String total = precioTotal.getText();
             
@@ -398,13 +398,12 @@ public class CamareroViewControlador {
     public void salir(ActionEvent event) throws IOException {
     	
     	if (!tablaProductos.getItems().isEmpty()) {
-            // Crear un alert de advertencia
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Advertencia");
             alert.setHeaderText("No puedes salir");
             alert.setContentText("Primero debes cobrar o eliminar los productos de la tabla.");
             alert.showAndWait();
-            return; // Salir del método, no cambiamos de ventana
+            return;
         }
     	
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/Main.fxml"));
@@ -461,42 +460,47 @@ public class CamareroViewControlador {
     @FXML
     public void ajustes(ActionEvent event) throws IOException {
     	
-    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
-         Parent root = loader.load();
-         
-         TextInputDialog dialog = new TextInputDialog();
-         dialog.setTitle("Ajustes");
-         dialog.setHeaderText("Introduzca la contraseña del administrador");
-         dialog.setContentText("Contraseña:");
+    	if(!tablaProductos.getItems().isEmpty()) {
+    		Alert alert = new Alert(Alert.AlertType.WARNING);
+    		alert.setTitle("Advertencia");
+    		alert.setHeaderText("Se perderan todos los productos de la tabla");
+    		alert.setContentText("¿Deseas continuar?");
 
-         Optional<String> result = dialog.showAndWait();
-         
-         if(result.isPresent()) {
-        	 String contrasena = result.get();
-        	 if(contrasena.equals("1234")) {
-            	 Stage stage = (Stage) btnSalir.getScene().getWindow();
-                 stage.setScene(new Scene(root));
-                 stage.show();
-             }else {
-            	 Alert alert = new Alert(Alert.AlertType.WARNING);
-                 alert.setTitle("Advertencia");
-                 alert.setHeaderText("Contraseña incorrecta");
-                 alert.setContentText("No se ha podido cambiar a la vista camarero debido a que la contraseña no coincide");
-                 alert.showAndWait();
-                 return;
-             }
-         }else {
-        	 return;
-         }
+    		Optional<ButtonType> resultado = alert.showAndWait();
+
+    		if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
+    	         Parent root = loader.load();
+    	         
+    	         TextInputDialog dialog = new TextInputDialog();
+    	         dialog.setTitle("Ajustes");
+    	         dialog.setHeaderText("Introduzca la contraseña del administrador");
+    	         dialog.setContentText("Contraseña:");
+
+    	         Optional<String> result = dialog.showAndWait();
+    	         
+    	         if(result.isPresent()) {
+    	        	 String contrasena = result.get();
+    	        	 if(contrasena.equals("1234")) {
+    	            	 Stage stage = (Stage) btnSalir.getScene().getWindow();
+    	                 stage.setScene(new Scene(root));
+    	                 stage.show();
+    	             }else {
+    	            	 Alert alerta = new Alert(Alert.AlertType.WARNING);
+    	                 alerta.setTitle("Advertencia");
+    	                 alerta.setHeaderText("Contraseña incorrecta");
+    	                 alerta.setContentText("No se ha podido cambiar a la vista camarero debido a que la contraseña no coincide");
+    	                 alerta.showAndWait();
+    	                 return;
+    	             }
+    	         }else {
+    	        	 return;
+    	         }
+    		} else {
+    			return;
+    		}
+    	}
     	
-    }
-    
-    
-    public void obtenerMapYMesa(Map<PlatoDTO, Integer> pedido, int mesa) {
-    	mapa = pedido;
-    	numeroMesa = mesa;
-    	
-        actualizarNotificacion();
     }
     
     
@@ -504,7 +508,7 @@ public class CamareroViewControlador {
         Platform.runLater(() -> {
             if (mapa != null && !mapa.isEmpty()) {
                 badge.setVisible(true);
-                badge.setText("1"); // Número de pedidos
+                badge.setText("1");
             } else {
                 badge.setVisible(false);
             }
