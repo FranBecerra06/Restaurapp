@@ -499,6 +499,34 @@ public class CamareroViewControlador {
     		} else {
     			return;
     		}
+    	}else {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
+	         Parent root = loader.load();
+	         
+	         TextInputDialog dialog = new TextInputDialog();
+	         dialog.setTitle("Ajustes");
+	         dialog.setHeaderText("Introduzca la contraseña del administrador");
+	         dialog.setContentText("Contraseña:");
+
+	         Optional<String> result = dialog.showAndWait();
+	         
+	         if(result.isPresent()) {
+	        	 String contrasena = result.get();
+	        	 if(contrasena.equals("1234")) {
+	            	 Stage stage = (Stage) btnSalir.getScene().getWindow();
+	                 stage.setScene(new Scene(root));
+	                 stage.show();
+	             }else {
+	            	 Alert alerta = new Alert(Alert.AlertType.WARNING);
+	                 alerta.setTitle("Advertencia");
+	                 alerta.setHeaderText("Contraseña incorrecta");
+	                 alerta.setContentText("No se ha podido cambiar a la vista camarero debido a que la contraseña no coincide");
+	                 alerta.showAndWait();
+	                 return;
+	             }
+	         }else {
+	        	 return;
+	         }
     	}
     	
     }
