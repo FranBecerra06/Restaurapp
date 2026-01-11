@@ -123,6 +123,12 @@ public class AdminController implements Initializable {
         lblTituloSeccion.setText("Edición de Menú");
         cargarVista("Menu.fxml");
     }
+
+    @FXML
+    void handleHistorialVentas(ActionEvent event) {
+        lblTituloSeccion.setText("Historial de Ventas");
+        cargarVista("Historial.fxml");
+    }
     
     @FXML
     void handleCategoria(ActionEvent event) {
