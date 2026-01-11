@@ -23,14 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -456,39 +449,80 @@ public class CamareroViewControlador {
 		}
 		
     }
-    
-    
+
+
     @FXML
     public void ajustes(ActionEvent event) throws IOException {
-    	
-    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
-         Parent root = loader.load();
-         
-         TextInputDialog dialog = new TextInputDialog();
-         dialog.setTitle("Ajustes");
-         dialog.setHeaderText("Introduzca la contraseña del administrador");
-         dialog.setContentText("Contraseña:");
 
-         Optional<String> result = dialog.showAndWait();
-         
-         if(result.isPresent()) {
-        	 String contrasena = result.get();
-        	 if(contrasena.equals("1234")) {
-            	 Stage stage = (Stage) btnSalir.getScene().getWindow();
-                 stage.setScene(new Scene(root));
-                 stage.show();
-             }else {
-            	 Alert alert = new Alert(Alert.AlertType.WARNING);
-                 alert.setTitle("Advertencia");
-                 alert.setHeaderText("Contraseña incorrecta");
-                 alert.setContentText("No se ha podido cambiar a la vista camarero debido a que la contraseña no coincide");
-                 alert.showAndWait();
-                 return;
-             }
-         }else {
-        	 return;
-         }
-    	
+        if(!tablaProductos.getItems().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Advertencia");
+            alert.setHeaderText("Se perderan todos los productos de la tabla");
+            alert.setContentText("¿Deseas continuar?");
+
+            Optional<ButtonType> resultado = alert.showAndWait();
+
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
+                Parent root = loader.load();
+
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Ajustes");
+                dialog.setHeaderText("Introduzca la contraseña del administrador");
+                dialog.setContentText("Contraseña:");
+
+                Optional<String> result = dialog.showAndWait();
+
+                if(result.isPresent()) {
+                    String contrasena = result.get();
+                    if(contrasena.equals("1234")) {
+                        Stage stage = (Stage) btnSalir.getScene().getWindow();
+                        stage.setScene(new Scene(root));
+                        stage.show();
+                    }else {
+                        Alert alerta = new Alert(Alert.AlertType.WARNING);
+                        alerta.setTitle("Advertencia");
+                        alerta.setHeaderText("Contraseña incorrecta");
+                        alerta.setContentText("No se ha podido cambiar a la vista camarero debido a que la contraseña no coincide");
+                        alerta.showAndWait();
+                        return;
+                    }
+                }else {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AdminView.fxml"));
+            Parent root = loader.load();
+
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Ajustes");
+            dialog.setHeaderText("Introduzca la contraseña del administrador");
+            dialog.setContentText("Contraseña:");
+
+            Optional<String> result = dialog.showAndWait();
+
+            if(result.isPresent()) {
+                String contrasena = result.get();
+                if(contrasena.equals("1234")) {
+                    Stage stage = (Stage) btnSalir.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                }else {
+                    Alert alerta = new Alert(Alert.AlertType.WARNING);
+                    alerta.setTitle("Advertencia");
+                    alerta.setHeaderText("Contraseña incorrecta");
+                    alerta.setContentText("No se ha podido cambiar a la vista camarero debido a que la contraseña no coincide");
+                    alerta.showAndWait();
+                    return;
+                }
+            }else {
+                return;
+            }
+        }
+
     }
     
     
