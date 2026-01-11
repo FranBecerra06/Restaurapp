@@ -41,9 +41,9 @@
             <HBox alignment="CENTER_RIGHT" spacing="10">
                 <Label text="Total:">
                <font>
-                  <Font name="Serif Bold" size="28.0" />
+                  <Font name="Serif Regular" size="30.0" />
                </font></Label>
-                <TextField fx:id="totalPrincipal" alignment="CENTER_RIGHT" editable="false" prefHeight="60.0" prefWidth="160.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 10; -fx-text-fill: #ffffff;">
+                <TextField fx:id="totalPrincipal" alignment="CENTER_RIGHT" editable="false" prefHeight="60.0" prefWidth="160.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;">
                <font>
                   <Font name="Serif Regular" size="30.0" />
                </font></TextField>
@@ -89,9 +89,9 @@
             <HBox alignment="CENTER_RIGHT" spacing="10">
                 <Label text="Total:">
                <font>
-                  <Font name="Serif Bold" size="28.0" />
+                  <Font name="Serif Regular" size="30.0" />
                </font></Label>
-                <TextField fx:id="totalDividir" alignment="CENTER_RIGHT" editable="false" prefHeight="55.0" prefWidth="166.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 10; -fx-text-fill: #ffffff;">
+                <TextField fx:id="totalDividir" alignment="CENTER_RIGHT" editable="false" prefHeight="55.0" prefWidth="166.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;">
                <font>
                   <Font name="Serif Regular" size="30.0" />
                </font></TextField>
@@ -238,9 +238,9 @@
             </GridPane>
         </children>
     </Pane>
-   <VBox layoutX="1031.0" layoutY="426.0" prefHeight="226.0" prefWidth="160.0" AnchorPane.bottomAnchor="68.0" AnchorPane.rightAnchor="102.0">
+   <VBox layoutX="1018.0" layoutY="425.0" prefHeight="226.0" prefWidth="166.0" AnchorPane.bottomAnchor="69.0" AnchorPane.rightAnchor="96.0">
       <children>
-         <TextField fx:id="totalEntregado" alignment="CENTER_RIGHT" editable="false" prefHeight="72.0" prefWidth="146.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 10; -fx-text-fill: #ffffff;">
+         <TextField fx:id="totalEntregado" alignment="CENTER_RIGHT" editable="false" prefHeight="63.0" prefWidth="179.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;">
             <VBox.margin>
                <Insets top="20.0" />
             </VBox.margin>
@@ -248,7 +248,7 @@
                <Font name="Serif Regular" size="30.0" />
             </font>
          </TextField>
-         <TextField fx:id="totalDevolver" alignment="CENTER_RIGHT" editable="false" layoutX="10.0" layoutY="30.0" prefHeight="72.0" prefWidth="146.0" style="-fx-background-color: #3B3B3B; -fx-background-radius: 10; -fx-text-fill: #ffffff;">
+         <TextField fx:id="totalDevolver" alignment="CENTER_RIGHT" editable="false" layoutX="10.0" layoutY="30.0" prefHeight="72.0" prefWidth="146.0" style="-fx-background-color: FFE478; -fx-background-radius: 10; -fx-text-fill: black;">
             <VBox.margin>
                <Insets bottom="20.0" top="60.0" />
             </VBox.margin>
@@ -260,17 +260,17 @@
    </VBox>
    <VBox layoutX="831.0" layoutY="441.0" prefHeight="194.0" prefWidth="234.0" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="262.0">
       <children>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ENTREGADO:" textAlignment="RIGHT" wrappingWidth="236.0">
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ENTREGADO" textAlignment="RIGHT" wrappingWidth="220.0">
             <font>
-               <Font name="Serif Bold" size="30.0" />
+               <Font name="Serif Regular" size="30.0" />
             </font>
             <VBox.margin>
                <Insets top="25.0" />
             </VBox.margin>
          </Text>
-         <Text layoutX="10.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DEVOLVER:" textAlignment="RIGHT" wrappingWidth="236.0">
+         <Text layoutX="10.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DEVOLVER" textAlignment="RIGHT" wrappingWidth="220.0">
             <font>
-               <Font name="Serif Bold" size="30.0" />
+               <Font name="Serif Regular" size="30.0" />
             </font>
             <VBox.margin>
                <Insets top="85.0" />
@@ -278,14 +278,19 @@
          </Text>
       </children>
    </VBox>
-   <Text layoutX="1178.0" layoutY="496.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€" wrappingWidth="26.93670654296875" AnchorPane.bottomAnchor="213.9609375" AnchorPane.rightAnchor="75.06329345703125">
+   <Text layoutX="1191.0" layoutY="494.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€" wrappingWidth="26.93670654296875" AnchorPane.bottomAnchor="215.9609375" AnchorPane.rightAnchor="62.06329345703125">
       <font>
          <Font size="40.0" />
       </font>
    </Text>
-   <Text layoutX="1178.0" layoutY="616.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€" wrappingWidth="26.93670654296875" AnchorPane.bottomAnchor="93.9609375" AnchorPane.rightAnchor="75.06329345703125">
+   <Text layoutX="1190.0" layoutY="614.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€" wrappingWidth="26.93670654296875" AnchorPane.bottomAnchor="95.9609375" AnchorPane.rightAnchor="63.06329345703125">
       <font>
          <Font size="40.0" />
       </font>
    </Text>
+   <Button fx:id="btnLimpiar" alignment="CENTER" layoutX="915.0" layoutY="631.0" mnemonicParsing="false" onAction="#limpiar" prefWidth="69.0" style="-fx-background-color: #81C784; -fx-background-radius: 12;" text="Limpiar" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="63.19999999999995" AnchorPane.rightAnchor="295.4">
+      <font>
+         <Font name="Serif Bold" size="14.0" />
+      </font>
+   </Button>
 </AnchorPane>

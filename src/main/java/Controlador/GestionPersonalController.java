@@ -14,7 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
+// import javafx.scene.control.ComboBox; // Ya no lo necesitamos
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,9 +29,10 @@ public class GestionPersonalController implements Initializable {
     @FXML private TextField txtTelefono;
     @FXML private TextField txtUsuario; // nombre_usuario
     @FXML private PasswordField txtContrasena;
-    @FXML private ComboBox<String> comboRol;
+    
+    // ELIMINADO: @FXML private ComboBox<String> comboRol; -> Ya no existe en la vista
 
-    // Tabla (Solo muestra Nombres porque tu DAO devuelve List<String>)
+    // Tabla
     @FXML private TableView<String> tablaUsuarios;
     @FXML private TableColumn<String, String> colNombreUsuario;
 
@@ -44,13 +45,12 @@ public class GestionPersonalController implements Initializable {
         // Configurar Columna (Muestra el String directamente)
         colNombreUsuario.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
 
-        // Rellenar Combo de Roles
-        comboRol.getItems().addAll("Admin", "Camarero");
+        // ELIMINADO: comboRol.getItems().addAll(...) -> Esto causaba el NullPointerException
 
         // Cargar datos al iniciar
         cargarDatos();
         
-        // Listener para cuando seleccionas una fila (Rellena el campo usuario para facilitar editar/borrar)
+        // Listener para cuando seleccionas una fila
         tablaUsuarios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 txtUsuario.setText(newSelection);
@@ -80,14 +80,13 @@ public class GestionPersonalController implements Initializable {
             txtEmail.getText(),
             txtContrasena.getText(),
             txtTelefono.getText(),
-            comboRol.getValue(),
+            null, // <--- CAMBIO: Pasamos null porque ya no hay Rol
             txtUsuario.getText()
         );
 
         try {
-            // Nota: Tu DAO 'crearCliente' inserta en la tabla 'usuario'
             usuarioDAO.crearCliente(nuevoUser);
-            mostrarAlerta("Éxito", "Empleado añadido correctamente.");
+            mostrarAlerta("Éxito", "Cliente añadido correctamente.");
             limpiarFormulario();
             cargarDatos();
         } catch (SQLException e) {
@@ -112,14 +111,14 @@ public class GestionPersonalController implements Initializable {
             txtEmail.getText(),
             txtContrasena.getText(),
             txtTelefono.getText(),
-            comboRol.getValue(),
-            txtUsuario.getText() // Este es el identificador clave en tu DAO
+            null, // <--- CAMBIO: Pasamos null porque ya no hay Rol
+            txtUsuario.getText()
         );
 
         try {
             boolean exito = usuarioDAO.modificarUsuario(userEditado);
             if (exito) {
-                mostrarAlerta("Éxito", "Usuario modificado correctamente.");
+                mostrarAlerta("Éxito", "Cliente modificado correctamente.");
                 limpiarFormulario();
                 cargarDatos();
             } else {
@@ -168,7 +167,7 @@ public class GestionPersonalController implements Initializable {
         txtTelefono.clear();
         txtUsuario.clear();
         txtContrasena.clear();
-        comboRol.getSelectionModel().clearSelection();
+        // ELIMINADO: comboRol.getSelectionModel().clearSelection(); -> Ya no existe
     }
 
     private void mostrarAlerta(String titulo, String contenido) {

@@ -19,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -29,8 +30,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class CamareroViewControlador {
@@ -54,10 +58,14 @@ public class CamareroViewControlador {
     private AnchorPane productoAnchorPane, mesaAnchorPane;
     
     @FXML
-    private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnComa, btnDelete, btnClear, btnMesas, btnDividirCuenta, btnSalir;
+    private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnComa, btnDelete, btnClear, btnMesas, btnDividirCuenta, btnSalir,
+    btnLimpiar;
     
     @FXML
-    private GridPane gridCategorias;
+    private FlowPane flowCategorias;
+    
+    @FXML
+    private ImageView imagenLogo;
     
     
     @FXML
@@ -66,7 +74,11 @@ public class CamareroViewControlador {
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         
-        cargarCategorias(); 
+        cargarCategorias();
+        
+        Image image = new Image(getClass().getResourceAsStream("/imagenes/logoRestaurapp.png"));
+    	imagenLogo.setImage(image);
+        
     }
     
     
@@ -81,25 +93,30 @@ public class CamareroViewControlador {
     
     
     public void cargarCategorias() {
+
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         List<CategoriaDTO> categorias = categoriaDAO.obtenerCategorias();
 
-        gridCategorias.getChildren().clear();
-        int fila = 0;
-        int columna = 0;
+        flowCategorias.getChildren().clear();
 
         for (CategoriaDTO categoria : categorias) {
+
             Button btn = new Button(categoria.getNombre());
-            btn.setPrefWidth(150);
+
+            btn.setPrefWidth(105);
+            btn.setMinHeight(45);
+            btn.setWrapText(true);
+            btn.setTextAlignment(TextAlignment.CENTER); // centra las líneas dentro del texto
+            btn.setAlignment(Pos.CENTER);
+
             btn.setStyle(
-            		"-fx-background-color: linear-gradient(to bottom, #FFB84D, #FF9500);" + // gradiente naranja
-            	    "-fx-text-fill: white;" + // texto blanco
-            	    "-fx-font-size: 18px;" + // tamaño de fuente más grande
-            	    "-fx-font-weight: bold;" + // texto en negrita
-            	    "-fx-background-radius: 15;" + // bordes redondeados
-            	    "-fx-border-width: 2;" +
-            	    "-fx-border-radius: 15;"
-            	    );
+                "-fx-background-color: linear-gradient(to bottom, #FFB84D, #FF9500);" +
+                "-fx-text-fill: white;" +
+                "-fx-font-size: 16px;" +
+                "-fx-font-weight: bold;" +
+                "-fx-background-radius: 20;"
+            );
+
             btn.setOnAction(e -> {
                 try {
                     Refresco(categoria.getIdCategoria());
@@ -108,12 +125,7 @@ public class CamareroViewControlador {
                 }
             });
 
-            gridCategorias.add(btn, columna, fila);
-            columna++;
-            if (columna > 1) { // tu GridPane tiene 2 columnas
-                columna = 0;
-                fila++;
-            }
+            flowCategorias.getChildren().add(btn);
         }
     }
     
@@ -133,6 +145,13 @@ public class CamareroViewControlador {
     
     
     public void actualizarPrecioTotal() {
+    	
+    	if(tablaProductos.getItems().isEmpty()) {
+    		precioTotal.clear();
+    		entregado.clear();
+    		return;
+    	}
+    	
         double total = 0;
         for (PlatoDTO p : tablaProductos.getItems()) {
             total += p.getCantidad() * p.getPrecio();
@@ -189,27 +208,31 @@ public class CamareroViewControlador {
         String numeroPulsado = boton.getText();
         String actual = entregado.getText();
         
-        switch (numeroPulsado) {
-        case "C":
-            entregado.clear();
-            break;
+        if(!precioTotal.getText().isEmpty()) {
+        	switch (numeroPulsado) {
+            case "C":
+                entregado.clear();
+                break;
 
-        case "<":
-            if (!actual.isEmpty()) {
-                entregado.setText(actual.substring(0, actual.length() - 1));
+            case "<":
+                if (!actual.isEmpty()) {
+                    entregado.setText(actual.substring(0, actual.length() - 1));
+                }
+                break;
+
+            case ".":
+                if (!actual.contains(".")) { 
+                    entregado.setText(actual + ".");
+                }
+                break;
+
+            default:  
+                // Aquí entran 0-9 u otros números
+                entregado.setText(actual + numeroPulsado);
+                break;
             }
-            break;
-
-        case ".":
-            if (!actual.contains(".")) { 
-                entregado.setText(actual + ".");
-            }
-            break;
-
-        default:  
-            // Aquí entran 0-9 u otros números
-            entregado.setText(actual + numeroPulsado);
-            break;
+        }else {
+        	return;
         }
     }
     
@@ -385,6 +408,35 @@ public class CamareroViewControlador {
 
         mesaAnchorPane.getChildren().setAll(root);
     	
+    }
+    
+    
+    @FXML
+    public void limpiar(ActionEvent event) {
+    	devolver.clear();
+    }
+    
+    
+    @FXML
+    public void anadirPago(ActionEvent event) throws IOException {
+    	
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AnadirPagoView.fxml"));
+        Parent root = loader.load();
+        
+        AnadirPagoViewControlador apc = loader.getController();
+        
+        Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.showAndWait();
+		
+		PlatoDTO extra = apc.getProductoCreado();
+		
+		if(extra != null) {
+			tablaProductos.getItems().add(extra);
+			tablaProductos.refresh();
+			actualizarPrecioTotal();
+		}
+		
     }
 
 }

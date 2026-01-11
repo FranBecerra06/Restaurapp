@@ -4,65 +4,99 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #D3D3D3;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.SignInControlador">
-   <center>
-      <StackPane alignment="TOP_LEFT" maxHeight="600.0" maxWidth="547.0" minHeight="400.0" minWidth="400.0" prefHeight="600.0" prefWidth="547.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 16, 0, 0, 4);" BorderPane.alignment="CENTER">
-         <children>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="278.0" prefWidth="420.0" StackPane.alignment="TOP_CENTER">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+           prefHeight="600.0" prefWidth="800.0" 
+           style="-fx-background-color: #FFF3E0;" 
+           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+           fx:controller="Controlador.SignInControlador">
+   <children>
+   
+      <ImageView fitWidth="800.0" pickOnBounds="true" preserveRatio="true" opacity="0.6">
+         <image>
+            <Image url="@../../Imagenes/logoRestaurapp.png" />
+         </image>
+      </ImageView>
+
+      <BorderPane style="-fx-background-color: transparent;">
+         <center>
+            <StackPane maxHeight="520.0" maxWidth="600.0" prefHeight="520.0" prefWidth="600.0" 
+                       style="-fx-background-color: white; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 20, 0, 0, 8);" 
+                       BorderPane.alignment="CENTER">
                <children>
-                  <Label alignment="CENTER" layoutX="21.0" layoutY="385.0" prefHeight="30.0" prefWidth="222.0" text="NOMBRE DE USUARIO">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="343.0" layoutY="385.0" prefHeight="30.0" prefWidth="142.0" text="CONTRASEÑA">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="signInUsuarioField" layoutX="20.0" layoutY="415.0" prefHeight="30.0" prefWidth="221.0" promptText="Nombre de usuario" AnchorPane.leftAnchor="20.0" />
-                  <PasswordField fx:id="signInContraField" layoutX="305.0" layoutY="415.0" prefHeight="30.0" prefWidth="221.0" promptText="Contraseña" />
-                  <Button fx:id="signInBtn" layoutX="370.0" layoutY="513.0" mnemonicParsing="false" onAction="#signInAction" style="-fx-background-color: #222222; -fx-text-fill: white;" text="Crear Usuario" />
-                  <Button fx:id="signInVolverBtn" layoutX="112.0" layoutY="513.0" mnemonicParsing="false" onAction="#cambiarALogIn" style="-fx-background-color: #FFFFFF; -fx-text-fill: black;" text="Volver" />
-                  <Label alignment="CENTER" layoutX="82.0" layoutY="188.0" prefHeight="30.0" prefWidth="100.0" text="NOMBRE">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="signInNombreField" layoutX="26.0" layoutY="222.0" prefHeight="30.0" prefWidth="221.0" promptText="Nombre" />
-                  <Label fx:id="textoAuxiliar" alignment="CENTER" contentDisplay="CENTER" layoutX="304.0" layoutY="550.0" prefHeight="46.0" prefWidth="222.0" textFill="RED" />
-                  <Label alignment="CENTER" layoutX="350.0" layoutY="188.0" prefHeight="30.0" prefWidth="130.0" text="APELLIDOS">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="signInApellidosField" layoutX="305.0" layoutY="222.0" prefHeight="30.0" prefWidth="221.0" promptText="Apellidos" />
-                  <Label alignment="CENTER" layoutX="92.0" layoutY="283.0" prefHeight="30.0" prefWidth="79.0" text="EMAIL">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="signInEmailField" layoutX="21.0" layoutY="323.0" prefHeight="30.0" prefWidth="221.0" promptText="Correo electrónico" />
-                  <Label alignment="CENTER" layoutX="350.0" layoutY="283.0" prefHeight="30.0" prefWidth="131.0" text="TELÉFONO">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="signInTelefonoField" layoutX="304.0" layoutY="323.0" prefHeight="30.0" prefWidth="221.0" promptText="Número de teléfono" />
-                  <Label alignment="CENTER" layoutX="109.0" layoutY="89.0" prefHeight="30.0" text="BIENVENIDO A RESTAURAPP">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="Comentario" alignment="CENTER" contentDisplay="CENTER" layoutX="316.0" layoutY="461.0" prefHeight="18.0" prefWidth="200.0" text="*Todos los campos son obligatorios" />
+                  <AnchorPane prefHeight="520.0" prefWidth="600.0">
+                     <children>
+                        
+                        <Label alignment="CENTER" layoutX="0.0" layoutY="30.0" prefWidth="600.0" text="Crear Cuenta" textFill="#d16026" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <font>
+                              <Font name="System Bold" size="28.0" />
+                           </font>
+                        </Label>
+
+                        <Label layoutX="40.0" layoutY="100.0" text="Nombre" textFill="#555555">
+                           <font><Font name="System Bold" size="13.0" /></font>
+                        </Label>
+                        <TextField fx:id="signInNombreField" layoutX="40.0" layoutY="125.0" prefHeight="35.0" prefWidth="240.0" promptText="Nombre" 
+                                   style="-fx-background-radius: 8; -fx-border-color: #EEEEEE; -fx-border-radius: 8; -fx-background-color: #FAFAFA;" />
+
+                        <Label layoutX="40.0" layoutY="180.0" text="Email" textFill="#555555">
+                           <font><Font name="System Bold" size="13.0" /></font>
+                        </Label>
+                        <TextField fx:id="signInEmailField" layoutX="40.0" layoutY="205.0" prefHeight="35.0" prefWidth="240.0" promptText="correo@ejemplo.com" 
+                                   style="-fx-background-radius: 8; -fx-border-color: #EEEEEE; -fx-border-radius: 8; -fx-background-color: #FAFAFA;" />
+
+                        <Label layoutX="40.0" layoutY="260.0" text="Usuario" textFill="#555555">
+                           <font><Font name="System Bold" size="13.0" /></font>
+                        </Label>
+                        <TextField fx:id="signInUsuarioField" layoutX="40.0" layoutY="285.0" prefHeight="35.0" prefWidth="240.0" promptText="Usuario" 
+                                   style="-fx-background-radius: 8; -fx-border-color: #EEEEEE; -fx-border-radius: 8; -fx-background-color: #FAFAFA;" />
+
+
+                        <Label layoutX="320.0" layoutY="100.0" text="Apellidos" textFill="#555555">
+                           <font><Font name="System Bold" size="13.0" /></font>
+                        </Label>
+                        <TextField fx:id="signInApellidosField" layoutX="320.0" layoutY="125.0" prefHeight="35.0" prefWidth="240.0" promptText="Apellidos" 
+                                   style="-fx-background-radius: 8; -fx-border-color: #EEEEEE; -fx-border-radius: 8; -fx-background-color: #FAFAFA;" />
+
+                        <Label layoutX="320.0" layoutY="180.0" text="Teléfono" textFill="#555555">
+                           <font><Font name="System Bold" size="13.0" /></font>
+                        </Label>
+                        <TextField fx:id="signInTelefonoField" layoutX="320.0" layoutY="205.0" prefHeight="35.0" prefWidth="240.0" promptText="Teléfono" 
+                                   style="-fx-background-radius: 8; -fx-border-color: #EEEEEE; -fx-border-radius: 8; -fx-background-color: #FAFAFA;" />
+
+                        <Label layoutX="320.0" layoutY="260.0" text="Contraseña" textFill="#555555">
+                           <font><Font name="System Bold" size="13.0" /></font>
+                        </Label>
+                        <PasswordField fx:id="signInContraField" layoutX="320.0" layoutY="285.0" prefHeight="35.0" prefWidth="240.0" promptText="••••••••" 
+                                       style="-fx-background-radius: 8; -fx-border-color: #EEEEEE; -fx-border-radius: 8; -fx-background-color: #FAFAFA;" />
+
+                        <Label fx:id="Comentario" layoutX="0.0" layoutY="340.0" prefWidth="600.0" alignment="CENTER" text="*Todos los campos son obligatorios" textFill="#999999">
+                           <font><Font size="12.0" /></font>
+                        </Label>
+                        
+                        <Label fx:id="textoAuxiliar" alignment="CENTER" contentDisplay="CENTER" layoutX="0.0" layoutY="360.0" prefWidth="600.0" textFill="#e74c3c" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <font><Font name="System Bold" size="12.0" /></font>
+                        </Label>
+
+                        <Button fx:id="signInVolverBtn" layoutX="140.0" layoutY="410.0" mnemonicParsing="false" onAction="#cambiarALogIn" prefHeight="40.0" prefWidth="150.0" 
+                                style="-fx-background-color: transparent; -fx-text-fill: #888888; -fx-border-color: #DDDDDD; -fx-border-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" 
+                                text="Volver" />
+
+                        <Button fx:id="signInBtn" layoutX="310.0" layoutY="410.0" mnemonicParsing="false" onAction="#signInAction" prefHeight="40.0" prefWidth="150.0" 
+                                style="-fx-background-color: #D16026; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" 
+                                text="Registrarse" />
+
+                     </children>
+                  </AnchorPane>
                </children>
-            </AnchorPane>
-         </children>
-      </StackPane>
-   </center>
-</BorderPane>
+            </StackPane>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>

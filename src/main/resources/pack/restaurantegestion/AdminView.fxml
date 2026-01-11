@@ -35,12 +35,12 @@
            
             <VBox spacing="5.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="btnDashboard" graphicTextGap="15.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleShowDashboard" prefHeight="50.0" styleClass="menu-button" text="📊  Resumen General" />
-                  <Button fx:id="btnGestionPersonal" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGestionPersonal" prefHeight="50.0" styleClass="menu-button" text="👥  Gestión Personal" />
-                  <Button fx:id="btnCategoria" graphicTextGap="15.0" layoutX="10.0" layoutY="60.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleCategoria" prefHeight="50.0" styleClass="menu-button" text="📚  Categoria" />
-                  <Button fx:id="btnGestionMenu" graphicTextGap="15.0" layoutX="10.0" layoutY="110.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGestionMenu" prefHeight="50.0" styleClass="menu-button" text="🍔  Editar Menú/Carta" />
-                  <Button fx:id="btnHistorial" graphicTextGap="15.0" layoutX="10.0" layoutY="160.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleHistorialMesas" prefHeight="50.0" styleClass="menu-button" text="🪑  Layout Mesas" />
-                  <Button fx:id="btnHistorial1" graphicTextGap="15.0" layoutX="10.0" layoutY="231.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleHistorialVentas" prefHeight="50.0" styleClass="menu-button" text="💰  Historial Ventas" />
+                  <Button fx:id="btnDashboard" graphicTextGap="15.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleShowDashboard" prefHeight="50.0" styleClass="menu-button" text="Resumen General" />
+                  <Button fx:id="btnGestionPersonal" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGestionPersonal" prefHeight="50.0" styleClass="menu-button" text="Gestión Cliente" />
+                  <Button fx:id="btnCategoria" graphicTextGap="15.0" layoutX="10.0" layoutY="60.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleCategoria" prefHeight="50.0" styleClass="menu-button" text="Categoria" />
+                  <Button fx:id="btnGestionMenu" graphicTextGap="15.0" layoutX="10.0" layoutY="110.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGestionMenu" prefHeight="50.0" styleClass="menu-button" text="Editar Menú/Carta" />
+                  <Button fx:id="btnHistorial" graphicTextGap="15.0" layoutX="10.0" layoutY="160.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleHistorialMesas" prefHeight="50.0" styleClass="menu-button" text="Mesas creadas" />
+                  <Button fx:id="btnHistorial1" graphicTextGap="15.0" layoutX="10.0" layoutY="231.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#irACamarero" prefHeight="50.0" styleClass="menu-button" text="Camarero" />
                </children>
             </VBox>
             
@@ -55,9 +55,7 @@
             </VBox>
          </children>
       </VBox>
-   </left>
-   
-   <center>
+   </left> <center>
       <VBox fx:id="contentArea" spacing="20.0" styleClass="#FFFFFF" BorderPane.alignment="CENTER">
          <children>
             
@@ -122,15 +120,13 @@
                   </HBox>
                   
                   <VBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+                     <padding>
+                        <Insets top="50.0" />
+                     </padding>
                      <children>
-                        <Label prefHeight="130.0" prefWidth="666.0" style="-fx-opacity: 0.9;" text="Panel de Control del Administrador" textFill="#D16B36">
-                           <font>
-                              <Font name="System Bold" size="40.0" />
-                           </font>
-                        </Label>
-                        <ImageView fitHeight="209.0" fitWidth="522.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="300.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@logorestaurapp.png" />
+                              <Image url="@../../Imagenes/logoRestaurapp.png" />
                            </image>
                         </ImageView>
                      </children>

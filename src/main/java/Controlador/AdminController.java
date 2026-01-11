@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -36,7 +37,7 @@ public class AdminController implements Initializable {
     @FXML private Button btnGestionMenu;
     @FXML private Button btnCategoria;
     @FXML private Button btnGestionMesas;
-    @FXML private Button btnHistorial;
+    @FXML private Button btnHistorial; 
     @FXML private Button btnLogout;
 
     @FXML private Label lblVentas;
@@ -68,7 +69,7 @@ public class AdminController implements Initializable {
 
     private void actualizarDashboard() {
         try {
-            // A) MESAS LIBRES (Cambio solicitado: Mostrar las NO ocupadas)
+            // A) MESAS LIBRES
             List<MesaDTO> mesas = mesaDAO.listarMesas();
             long libres = mesas.stream()
                                .filter(m -> "Disponible".equals(m.getDisponibilidad()))
@@ -90,11 +91,9 @@ public class AdminController implements Initializable {
             
             if (lblVentas != null) {
                 for(PedidoDTO p : pedidos) {
-                	totalEstimado += p.getTotal();
-                	
-                	lblVentas.setText(String.format("%.2f €", totalEstimado));
-                	
+                    totalEstimado += p.getTotal();
                 }
+                lblVentas.setText(String.format("%.2f €", totalEstimado));
             }
 
         } catch (SQLException e) {
@@ -137,10 +136,33 @@ public class AdminController implements Initializable {
         cargarVista("GestionMesas.fxml");
     }
 
+    // --- CAMBIO IMPORTANTE: Renombrado a 'irACamarero' para coincidir con tu FXML ---
     @FXML
-    void handleHistorialVentas(ActionEvent event) {
-        lblTituloSeccion.setText("Historial de Ventas");
-        cargarVista("Historial.fxml");
+    void irACamarero(ActionEvent event) {
+        try {
+            // 1. Cerrar la ventana actual (Admin)
+            Node source = (Node) event.getSource();
+            Stage stageActual = (Stage) source.getScene().getWindow();
+            stageActual.close();
+
+            // 2. Cargar la vista de Camarero
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/CamareroView.fxml"));
+            Parent root = loader.load();
+
+            // 3. Abrir la nueva ventana
+            Stage stage = new Stage();
+            stage.setTitle("Vista Camarero");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No se pudo abrir la vista de Camarero");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     @FXML
