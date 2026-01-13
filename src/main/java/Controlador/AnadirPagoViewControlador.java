@@ -15,7 +15,14 @@ public class AnadirPagoViewControlador {
 	@FXML
 	private Button btnCancelar, btnGuardar;
 	
-	private PlatoDTO plato;
+	private PlatoDTO p;
+	
+	private String plato;
+	
+	
+	public void obtenerPlato(String nombrePlato) {
+		plato = nombrePlato;
+	}
 	
 	
 	@FXML
@@ -25,7 +32,7 @@ public class AnadirPagoViewControlador {
 		
 		double precio = Double.parseDouble(precioS);
 		
-		plato = new PlatoDTO("", 1, precio);
+		p = new PlatoDTO(plato, 1, precio);
 		
 		Stage st = (Stage) txtPrecio.getScene().getWindow();
         st.close();
@@ -43,7 +50,7 @@ public class AnadirPagoViewControlador {
 	
 	
 	public PlatoDTO getProductoCreado() {
-		return plato;
+		return p;
 	}
 	
 }

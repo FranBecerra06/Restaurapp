@@ -47,6 +47,11 @@ public class PlatosViewControlador {
         
         
         for (PlatoDTO p : platos) {
+        	
+        	if(p.getNombre().equalsIgnoreCase("otro")) {
+        		return;
+        	}
+        	
             Button btn = new Button(p.getNombre());
             btn.setPrefWidth(180);
             btn.setStyle(
@@ -58,9 +63,9 @@ public class PlatosViewControlador {
             );
 
             btn.setOnAction(e -> {
-                if (camareroController != null) {
+                if (camareroController != null) {  //si la vista esta abierta desde camarero
                     camareroController.agregarProducto(p.getNombre(), p.getPrecio());
-                } else if (pedidoController != null) {
+                } else if (pedidoController != null) {  //si la vista esta abierta desde pedido
                     pedidoController.agregarProducto(p.getNombre(), p.getPrecio());
                 }
             });

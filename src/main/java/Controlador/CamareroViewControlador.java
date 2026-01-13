@@ -114,6 +114,10 @@ public class CamareroViewControlador {
         flowCategorias.getChildren().clear();
 
         for (CategoriaDTO categoria : categorias) {
+        	
+        	if(categoria.getNombre().equalsIgnoreCase("otro")) {
+        		continue;
+        	}
 
             Button btn = new Button(categoria.getNombre());
 
@@ -133,7 +137,7 @@ public class CamareroViewControlador {
 
             btn.setOnAction(e -> {
                 try {
-                    Refresco(categoria.getIdCategoria());
+                    plato(categoria.getIdCategoria(), categoria.getNombre());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -141,6 +145,22 @@ public class CamareroViewControlador {
 
             flowCategorias.getChildren().add(btn);
         }
+    }
+    
+    
+    
+    public void plato(int idCategoria, String nombreCategoria) throws IOException, SQLException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/PlatosView.fxml"));
+        ScrollPane view = loader.load();
+        
+        PlatosViewControlador pvc = loader.getController();
+        pvc.setCamareroController(this);
+        
+        if(!nombreCategoria.equalsIgnoreCase("otro")) {
+        	pvc.cargarPlatos(idCategoria);
+        }
+        
+        productoAnchorPane.getChildren().setAll(view);
     }
     
     
@@ -174,27 +194,9 @@ public class CamareroViewControlador {
     }
     
     
-    // Refresco: carga la vista de refrescos
-    @FXML
-    public void Refresco(int idCategoria) throws IOException, SQLException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/PlatosView.fxml"));
-        ScrollPane view = loader.load();
-
-        // Pasar la tabla al controlador de Refresco
-        PlatosViewControlador controller = loader.getController();
-        //controller.setTablaProductos(tablaProductos);
-        controller.setCamareroController(this); // Para actualizar total desde Refresco
-        controller.cargarPlatos(idCategoria);
-
-        // Mostrar la vista
-        productoAnchorPane.getChildren().setAll(view);
-    }
-    
-    
     @FXML
     public void borrar() {
-
-        // Obtener el producto seleccionado
+    	
         PlatoDTO seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
         
         if (seleccionado == null) {
@@ -210,8 +212,7 @@ public class CamareroViewControlador {
         else {
             tablaProductos.getItems().remove(seleccionado);
         }
-
-        // Actualizar el precio total
+        
         actualizarPrecioTotal();
     }
     
@@ -241,7 +242,6 @@ public class CamareroViewControlador {
                 break;
 
             default:  
-                // Aquí entran 0-9 u otros números
                 entregado.setText(actual + numeroPulsado);
                 break;
             }
@@ -272,16 +272,13 @@ public class CamareroViewControlador {
             }else {
             	devolver.setText(String.format(Locale.US, "%.2f", cambio));
                 
-                
-                //añadir panel: quiere añadir alguna observacion?
-                
                 TextInputDialog dialog = new TextInputDialog();
                 dialog.setTitle("Observaciones");
                 dialog.setHeaderText("¿Desea añadir alguna observación al pedido?");
                 dialog.setContentText("Observación:");
 
-                Optional<String> result = dialog.showAndWait();
-                String observacion = result.orElse("");
+                Optional<String> result = dialog.showAndWait();  //result toma el valor que ha escrito el camarero
+                String observacion = result.orElse("");  //observacion tomara el valor de result o en su defecto ("")
                 
                 LocalDateTime fecha = LocalDateTime.now();
                 
@@ -440,13 +437,15 @@ public class CamareroViewControlador {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AnadirPagoView.fxml"));
         Parent root = loader.load();
         
-        AnadirPagoViewControlador apc = loader.getController();
+        AnadirPagoViewControlador apvc = loader.getController();
+        apvc.obtenerPlato("otro");
         
         Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.showAndWait();
 		
-		PlatoDTO extra = apc.getProductoCreado();
+		
+		PlatoDTO extra = apvc.getProductoCreado();
 		
 		if(extra != null) {
 			tablaProductos.getItems().add(extra);

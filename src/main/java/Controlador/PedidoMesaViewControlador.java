@@ -126,6 +126,10 @@ public class PedidoMesaViewControlador {
         flowCategorias.getChildren().clear();
 
         for (CategoriaDTO categoria : categorias) {
+        	
+        	if(categoria.getNombre().equalsIgnoreCase("otro")) {
+        		continue;
+        	}
 
             Button btn = new Button(categoria.getNombre());
 
@@ -145,7 +149,7 @@ public class PedidoMesaViewControlador {
 
             btn.setOnAction(e -> {
                 try {
-                    Refresco(categoria.getIdCategoria());
+                    plato(categoria.getIdCategoria(), categoria.getNombre());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -155,7 +159,23 @@ public class PedidoMesaViewControlador {
         }
     }
     
-    // CORREGIDO: Se añade try-catch para manejar SQLException
+    
+    public void plato(int idCategoria, String nombreCategoria) throws IOException, SQLException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/PlatosView.fxml"));
+        ScrollPane view = loader.load();
+        
+        PlatosViewControlador pvc = loader.getController();
+        pvc.setPedidoController(this);
+        pvc.cargarPlatos(idCategoria);
+        
+        if(!nombreCategoria.equalsIgnoreCase("otro")) {
+        	pvc.cargarPlatos(idCategoria);
+        }
+
+        productoAnchorPane.getChildren().setAll(view);
+    }
+    
+    
     public void agregarProducto(String nombre, double precio) {
         try {
             PlatoDAO pDAO = new PlatoDAO();
@@ -209,22 +229,6 @@ public class PedidoMesaViewControlador {
             total += p.getCantidad() * p.getPrecio();
         }
         precioTotal.setText(String.format(Locale.US, "%.2f", total));
-    }
-    
-    
-    @FXML
-    public void Refresco(int idCategoria) throws IOException, SQLException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/PlatosView.fxml"));
-        ScrollPane view = loader.load();
-
-        // Pasar la tabla al controlador de Refresco
-        PlatosViewControlador controller = loader.getController();
-        //controller.setTablaProductos(tablaProductos);
-        controller.setPedidoController(this); // Para actualizar total desde Refresco
-        controller.cargarPlatos(idCategoria);
-
-        // Mostrar la vista
-        productoAnchorPane.getChildren().setAll(view);
     }
     
     
@@ -397,13 +401,6 @@ public class PedidoMesaViewControlador {
     }
     
     
-    /*public void actualizarTabla(ObservableList<PlatoDTO> productos, String total) {
-    	
-    	tablaProductos.setItems(productos);
-    	
-    }*/
-    
-    
     @FXML
     public void editar(ActionEvent event) throws IOException {
     	
@@ -468,16 +465,17 @@ public class PedidoMesaViewControlador {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/AnadirPagoView.fxml"));
         Parent root = loader.load();
         
-        AnadirPagoViewControlador apc = loader.getController();
+        AnadirPagoViewControlador apvc = loader.getController();
+        apvc.obtenerPlato("otro");
         
         Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.showAndWait();
 		
-		PlatoDTO extra = apc.getProductoCreado();
+		PlatoDTO extra = apvc.getProductoCreado();
 		
 		if(extra != null) {
-			tablaProductos.getItems().add(extra);
+			agregarProducto(extra.getNombre(), extra.getPrecio());
 			tablaProductos.refresh();
 			actualizarPrecioTotal();
 		}
