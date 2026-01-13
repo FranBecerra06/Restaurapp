@@ -197,6 +197,7 @@ public class PedidoMesaViewControlador {
 
             // Si no existe en la tabla, agregar
             PlatoDTO nuevo = new PlatoDTO(nombre, 1, precio);
+            nuevo.setIdPlato(idPlato);
             tablaProductos.getItems().add(nuevo);
             actualizarPrecioTotal();
 
@@ -234,7 +235,6 @@ public class PedidoMesaViewControlador {
     
     @FXML
     public void borrar() throws SQLException {
-
         // Obtener el producto seleccionado
         PlatoDTO seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
         Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
@@ -249,10 +249,8 @@ public class PedidoMesaViewControlador {
             
             mpDAO.actualizarCantidad(numeroMesa, seleccionado.getIdPlato(), seleccionado.getCantidad());
             tablaProductos.refresh();  // Actualizar la tabla
-        } 
-        // Si la cantidad es 1, eliminamos toda la fila
-        else {
-        	mpDAO.eliminarPorMesa(numeroMesa);
+        }else {
+        	mpDAO.eliminarMesaPlato(numeroMesa, seleccionado.getIdPlato());
             tablaProductos.getItems().remove(seleccionado);
         }
 

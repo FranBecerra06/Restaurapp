@@ -21,13 +21,8 @@
             </Text>
          </children>
       </HBox>
-      <VBox layoutX="319.0" layoutY="95.0" prefHeight="214.0" prefWidth="250.0" AnchorPane.bottomAnchor="191.0" AnchorPane.topAnchor="95.0">
+      <VBox layoutX="319.0" layoutY="119.0" prefHeight="214.0" prefWidth="250.0" AnchorPane.bottomAnchor="167.39999999999998" AnchorPane.topAnchor="119.0">
          <children>
-            <Text fx:id="textoErrorProducto" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" style="visibility: false;" textAlignment="CENTER" wrappingWidth="250.0">
-               <font>
-                  <Font name="Serif Bold" size="18.0" />
-               </font>
-            </Text>
             <TextField fx:id="txtCantidad" alignment="CENTER" style="-fx-background-color: #3B3B3B; -fx-background-radius: 10; -fx-text-fill: #ffffff;">
                <font>
                   <Font size="20.0" />
