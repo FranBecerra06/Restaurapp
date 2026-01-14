@@ -3,15 +3,20 @@ package Controlador;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import DAO.MesaDAO;
 import DAO.Mesa_PlatoDAO;
 import DTO.MesaDTO;
+import DTO.PlatoDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -22,6 +27,12 @@ public class MesaCamareroViewControlador {
 	@FXML
     private VBox vboxCol1, vboxCol2, vboxCol3;
 	private static int mesaActual = 0;
+	private CamareroViewControlador cvc;
+	
+	
+	public void setCamareroViewControlador(CamareroViewControlador controller) {
+		this.cvc = controller;
+	}
 	
 	
 	
@@ -105,6 +116,19 @@ public class MesaCamareroViewControlador {
 		
 		if(numMesa == mesaActual) {
 			return;
+		}
+		
+		if(!cvc.getTablaProductos().getItems().isEmpty()) {
+			Alert alert = new Alert(Alert.AlertType.WARNING);
+    		alert.setTitle("Advertencia");
+    		alert.setHeaderText("Se perderán todos los productos de la tabla");
+    		alert.setContentText("¿Deseas continuar?");
+    		
+    		Optional<ButtonType> resultado = alert.showAndWait();
+
+    		if (resultado.isEmpty() || resultado.get() != ButtonType.OK) {
+                return;
+            }
 		}
 		
 		mesaActual = numMesa;

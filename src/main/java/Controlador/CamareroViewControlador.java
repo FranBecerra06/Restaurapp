@@ -419,7 +419,10 @@ public class CamareroViewControlador {
     	
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/pack/restaurantegestion/MesaCamareroView.fxml"));
         Parent root = loader.load();
-
+        
+        MesaCamareroViewControlador mcvc = loader.getController();
+        mcvc.setCamareroViewControlador(this);
+        
         mesaAnchorPane.getChildren().setAll(root);
     	
     }
@@ -462,7 +465,7 @@ public class CamareroViewControlador {
     	if(!tablaProductos.getItems().isEmpty()) {
     		Alert alert = new Alert(Alert.AlertType.WARNING);
     		alert.setTitle("Advertencia");
-    		alert.setHeaderText("Se perderan todos los productos de la tabla");
+    		alert.setHeaderText("Se perderán todos los productos de la tabla");
     		alert.setContentText("¿Deseas continuar?");
 
     		Optional<ButtonType> resultado = alert.showAndWait();
