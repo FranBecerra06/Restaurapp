@@ -10,7 +10,7 @@ import DTO.Mesa_PlatoDTO;
 public class Mesa_PlatoDAO {
 	
     public Mesa_PlatoDTO crearMesaPlato(Mesa_PlatoDTO mp) throws SQLException {
-        String sql = "INSERT INTO mesa_plato (id_mesa, id_plato, cantidad) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO mesa_plato (id_mesa, id_plato, cantidad, precio) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -18,6 +18,7 @@ public class Mesa_PlatoDAO {
             pst.setInt(1, mp.getId_mesa());
             pst.setInt(2, mp.getId_plato());
             pst.setInt(3, mp.getCantidad());
+            pst.setDouble(4, mp.getPrecio());
             pst.executeUpdate();
         }
 
@@ -37,9 +38,11 @@ public class Mesa_PlatoDAO {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     lista.add(new Mesa_PlatoDTO(
+                    		rs.getInt("id_mesa_plato"),
                             rs.getInt("id_mesa"),
                             rs.getInt("id_plato"),
-                            rs.getInt("cantidad")
+                            rs.getInt("cantidad"),
+                            rs.getDouble("precio")
                     ));
                 }
             }
@@ -81,19 +84,20 @@ public class Mesa_PlatoDAO {
     }
     
     
-    public boolean actualizarMesaPlato(Mesa_PlatoDTO mp) { 
-    	String sql = "UPDATE mesa_plato SET cantidad = ? WHERE id_mesa = ? AND id_plato = ?"; 
-    	try (Connection conn = ConexionBD.getConnection(); 
-    			PreparedStatement pst = conn.prepareStatement(sql)) { 
-    		pst.setInt(1, mp.getCantidad()); 
-    		pst.setInt(2, mp.getId_mesa()); 
-    		pst.setInt(3, mp.getId_plato()); 
-    		return pst.executeUpdate() > 0; 
-    	} catch (SQLException e) { 
-    		e.printStackTrace(); 
-    		return false; 
-    	} 
+    public void actualizarMesaPlato(Mesa_PlatoDTO mp) throws SQLException {
+        String sql = "UPDATE mesa_plato SET cantidad = ?, precio = ? WHERE id_mesa_plato = ?";
+
+        try (Connection conn = ConexionBD.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setInt(1, mp.getCantidad());
+            pst.setDouble(2, mp.getPrecio());
+            pst.setInt(3, mp.getIdMesaPlato());
+
+            pst.executeUpdate();
+        }
     }
+
     
     
     public boolean eliminarMesaPlato(int idMesa, int idPlato) throws SQLException {

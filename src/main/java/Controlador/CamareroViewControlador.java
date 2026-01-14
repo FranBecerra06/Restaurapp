@@ -348,7 +348,7 @@ public class CamareroViewControlador {
             String total = precioTotal.getText();
             
             dcvc.setCamareroController(this);
-            dcvc.mostrarCuentaPrincipal(tablaProductos.getItems(), total);
+            dcvc.mostrarCuentaPrincipal(tablaProductos.getItems());
     	}
         
     }

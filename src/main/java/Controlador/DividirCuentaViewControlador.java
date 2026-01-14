@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Locale;
-import java.util.Optional;
 
 import DAO.Mesa_PlatoDAO;
 import DAO.PedidoDAO;
 import DAO.Pedido_PlatoDAO;
 import DAO.PlatoDAO;
 import DTO.MesaDTO;
+import DTO.Mesa_PlatoDTO;
 import DTO.PedidoDTO;
 import DTO.Pedido_PlatoDTO;
 import DTO.PlatoDTO;
@@ -73,23 +73,24 @@ public class DividirCuentaViewControlador {
 		this.numeroMesa = numeroMesa;
 
 	}
+	
+	
+	public void mostrarCuentaPrincipal(ObservableList<PlatoDTO> productos) {
+		
+	    listaPrincipalLocal.clear();
 
+	    for (PlatoDTO p : productos) {
+	        // Crear copia independiente
+	        PlatoDTO prd = new PlatoDTO(p.getNombre(), p.getCantidad(), p.getPrecio());
+	        prd.setIdPlato(p.getIdPlato()); // Mantener ID si es necesario
+	        listaPrincipalLocal.add(prd);
+	    }
 
-	public void mostrarCuentaPrincipal(ObservableList<PlatoDTO> productos, String total) {
-
-		listaPrincipalLocal.clear();
-
-		for (PlatoDTO p : productos) {
-			PlatoDTO prd = new PlatoDTO(p.getNombre(), p.getCantidad(), p.getPrecio());
-			listaPrincipalLocal.add(prd);
-		}
-
-		tablaPrincipal.setItems(listaPrincipalLocal);
-		totalPrincipal.setText(total);
-
+	    tablaPrincipal.setItems(listaPrincipalLocal);
+	    //totalPrincipal.setText(total);
 	}
-
-
+	
+	
 	public void initialize() {
         colProductoP.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colProductoD.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -139,165 +140,151 @@ public class DividirCuentaViewControlador {
 	
 	@FXML
 	public void cobrar(ActionEvent event) throws SQLException, IOException {
-
 	    try {
-	        // ----------------------- 1. CALCULAR CAMBIO -----------------------
 	        double total = Double.parseDouble(totalDividir.getText().trim());
 	        double pago = Double.parseDouble(totalEntregado.getText().trim());
+
 	        double cambio = pago - total;
-	        
-	        if(pago < total) {
-	        	Alert alerta = new Alert(Alert.AlertType.WARNING);
-            	alerta.setTitle("Advertencia");
-                alerta.setHeaderText("No se ha realizado el cobro");
-                alerta.setContentText("La cantidad entregada es menor que el total");
-                alerta.showAndWait();
-                
-                totalEntregado.clear();
-                
-                return;
-	        }else {
-	        	totalDevolver.setText(String.format(Locale.US, "%.2f", cambio));
 
-
-		        // ----------------------- 2. OBSERVACIONES -----------------------
-		        TextInputDialog dialog = new TextInputDialog();
-		        dialog.setTitle("Observaciones");
-		        dialog.setHeaderText("¿Desea añadir alguna observación al pedido?");
-		        dialog.setContentText("Observación:");
-		        String observacion = dialog.showAndWait().orElse("");
-
-
-		        // ----------------------- 3. CREAR PEDIDO -----------------------
-		        
-		        LocalDateTime fecha = LocalDateTime.now();
-		        
-		        PedidoDTO pedidoDTO;
-		        PedidoDAO pedidoDAO = new PedidoDAO();
-
-		        if (numeroMesa > 0) {
-		        	MesaDTO m = new MesaDTO(numeroMesa);
-		        	pedidoDTO = new PedidoDTO(1, m, fecha, total, observacion);
-		        } else {
-
-		        	pedidoDTO = new PedidoDTO(1, null, fecha, total, observacion);
-		        }
-		        
-		        
-		        pedidoDAO.crearPedido(pedidoDTO);
-
-
-		        // ----------------------- 4. OBTENER ID -----------------------
-		        int idPedido = pedidoDAO.obtenerUltimoIdPedido();
-
-
-		        // ----------------------- 5. INSERTAR PEDIDO_PLATO -----------------------
-		        Pedido_PlatoDAO pedidoPlatoDAO = new Pedido_PlatoDAO();
-		        PlatoDAO platoDAO = new PlatoDAO();
-		        Mesa_PlatoDAO mesaPlatoDAO = new Mesa_PlatoDAO();
-
-		        for (PlatoDTO plato : tablaDividir.getItems()) {
-
-		            // Obtener ID real del plato
-		            int idPlato = platoDAO.obtenerIdPlatoPorNombre(plato.getNombre());
-
-		            // Guardar en pedido_plato
-		            Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(
-		                    idPedido,
-		                    idPlato,
-		                    plato.getCantidad()
-		            );
-		            pedidoPlatoDAO.crearPedidoPlato(ppDTO);
-
-
-		            // ----------------------- 6. RESTAR CANTIDADES SI VIENE DE MESA -----------------------
-		            if (numeroMesa > 0) {
-
-		                // Cantidad que se está pagando
-		                int cantidadPagada = plato.getCantidad();
-
-		                // Cantidad que hay en BD
-		                int cantidadActual = mesaPlatoDAO.obtenerCantidad(numeroMesa, idPlato);
-
-		                int nuevaCantidad = cantidadActual - cantidadPagada;
-
-		                if (nuevaCantidad > 0) {
-		                    // Actualizar cantidad restante
-		                    mesaPlatoDAO.actualizarCantidad(numeroMesa, idPlato, nuevaCantidad);
-		                } else {
-		                    // Si llega a 0, eliminar fila
-		                    mesaPlatoDAO.eliminarMesaPlato(numeroMesa, idPlato);
-		                }
-		            }
-		        }
-
-
-		        // ----------------------- 7. LIMPIAR -----------------------
-		        tablaDividir.getItems().clear();
-		        totalDividir.clear();
-		        totalEntregado.clear();
+	        if (pago < total) {
+	            Alert alerta = new Alert(Alert.AlertType.WARNING);
+	            alerta.setTitle("Advertencia");
+	            alerta.setHeaderText("No se ha realizado el cobro");
+	            alerta.setContentText("La cantidad entregada es menor que el total");
+	            alerta.showAndWait();
+	            totalEntregado.clear();
+	            return;
 	        }
+	        
+	        totalDevolver.setText(String.format(Locale.US, "%.2f", cambio));
+	        
+	        TextInputDialog dialog = new TextInputDialog();
+	        dialog.setTitle("Observaciones");
+	        dialog.setHeaderText("¿Desea añadir alguna observación al pedido?");
+	        dialog.setContentText("Observación:");
+	        String observacion = dialog.showAndWait().orElse("");
+	        
+	        LocalDateTime fecha = LocalDateTime.now();
+	        PedidoDTO pedidoDTO;
+	        PedidoDAO pedidoDAO = new PedidoDAO();
+
+	        if (numeroMesa > 0) {
+	            MesaDTO m = new MesaDTO(numeroMesa);
+	            pedidoDTO = new PedidoDTO(1, m, fecha, total, observacion);
+	        } else {
+	            pedidoDTO = new PedidoDTO(1, null, fecha, total, observacion);
+	        }
+
+	        pedidoDAO.crearPedido(pedidoDTO);
+
+	        int idPedido = pedidoDAO.obtenerUltimoIdPedido();
+
+	        Pedido_PlatoDAO pedidoPlatoDAO = new Pedido_PlatoDAO();
+	        PlatoDAO platoDAO = new PlatoDAO();
+	        Mesa_PlatoDAO mesaPlatoDAO = new Mesa_PlatoDAO();
+	        
+	        for (PlatoDTO plato : tablaDividir.getItems()) {
+	            int idPlato = platoDAO.obtenerIdPlatoPorNombre(plato.getNombre());
+	            int cantidadPagada = plato.getCantidad();
+
+	            // Guardar en pedido_plato
+	            Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idPedido, idPlato, cantidadPagada);
+	            pedidoPlatoDAO.crearPedidoPlato(ppDTO);
+	            
+	            if (numeroMesa > 0) {
+	                int cantidadActual = mesaPlatoDAO.obtenerCantidad(numeroMesa, idPlato);
+	                int nuevaCantidad = cantidadActual - cantidadPagada;
+
+	                if (nuevaCantidad > 0) {
+	                    mesaPlatoDAO.actualizarCantidad(numeroMesa, idPlato, nuevaCantidad);
+	                } else {
+	                    mesaPlatoDAO.eliminarMesaPlato(numeroMesa, idPlato);
+	                }
+	            }
+	        }
+	        
+	        if (pmvc != null && numeroMesa > 0) {
+	            for (PlatoDTO platoCobrado : tablaDividir.getItems()) {
+	                for (PlatoDTO platoMesa : pmvc.getTablaProductos().getItems()) {
+	                    if (platoMesa.getIdPlato() == platoCobrado.getIdPlato()) {
+	                        int nuevaCantidad = platoMesa.getCantidad() - platoCobrado.getCantidad();
+	                        if (nuevaCantidad > 0) {
+	                            platoMesa.setCantidad(nuevaCantidad);
+	                        } else {
+	                            pmvc.getTablaProductos().getItems().remove(platoMesa);
+	                        }
+	                        break;
+	                    }
+	                }
+	            }
+	            pmvc.getTablaProductos().refresh();
+	            pmvc.actualizarPrecioTotal();
+	        }
+	        // --------------------------------------------------------
+
+	        // Limpiar tablaDividir y campos
+	        tablaDividir.getItems().clear();
+	        totalDividir.clear();
+	        totalEntregado.clear();
+
+	        cobrar = true;
 
 	    } catch (NumberFormatException e) {
 	        totalDevolver.setText("ERROR");
 	    }
 	}
-
+	
+	
 	//---------MOVER A CUENTA DIVIDIR---------------------------------------------------------------------
 
 	@FXML
 	public void moverCuentaDividir(ActionEvent event) {
-		PlatoDTO seleccionado = tablaPrincipal.getSelectionModel().getSelectedItem();
+	    PlatoDTO seleccionado = tablaPrincipal.getSelectionModel().getSelectedItem();
 
 	    if (seleccionado != null) {
-	        // Buscar si ya existe en tablaDividir
-	    	PlatoDTO existente = null;
+	        PlatoDTO nuevo = null;
 	        for (PlatoDTO p : tablaDividir.getItems()) {
 	            if (p.getNombre().equals(seleccionado.getNombre())) {
-	                existente = p;
+	                nuevo = p;
 	                break;
 	            }
 	        }
 
 	        if (seleccionado.getCantidad() > 1) {
-	            // Reducir cantidad en tablaPrincipal
 	            seleccionado.setCantidad(seleccionado.getCantidad() - 1);
 	        } else {
-	            // Si es 1, quitarlo de tablaPrincipal
 	            tablaPrincipal.getItems().remove(seleccionado);
 	        }
 
 	        actualizarPrecioTotalPrincipal();
 
-	        if (existente != null) {
-	            // Incrementar cantidad si ya existe en tablaDividir
-	            existente.setCantidad(existente.getCantidad() + 1);
+	        if (nuevo != null) {
+	            nuevo.setCantidad(nuevo.getCantidad() + 1);
 	        } else {
-	            // Sino, crear una copia con cantidad 1 y añadir
-	        	PlatoDTO nuevo = new PlatoDTO(seleccionado.getNombre(), 1, seleccionado.getPrecio());
-	            tablaDividir.getItems().add(nuevo);
+	            PlatoDTO copia = new PlatoDTO(seleccionado.getNombre(), 1, seleccionado.getPrecio());
+	            copia.setIdPlato(seleccionado.getIdPlato());
+	            tablaDividir.getItems().add(copia);
 	        }
 
 	        actualizarPrecioTotalDividir();
 
-	        // Refrescar ambas tablas
 	        tablaPrincipal.refresh();
 	        tablaDividir.refresh();
 	    }
 	}
-
-
+	
+	
 	//-------------------------------------------------------------------------------------------------------
 
 
 	//------------MOVER A CUENTA PRINCIPAL-------------------------------------------------------------------
-
+	
+	
 	@FXML
 	public void moverCuentaPrincipal() {
 		PlatoDTO seleccionado = tablaDividir.getSelectionModel().getSelectedItem();
-
+		
 	    if (seleccionado != null) {
-	        // Buscar si ya existe en tablaDividir
 	    	PlatoDTO existente = null;
 	        for (PlatoDTO p : tablaPrincipal.getItems()) {
 	            if (p.getNombre().equals(seleccionado.getNombre())) {
@@ -305,94 +292,99 @@ public class DividirCuentaViewControlador {
 	                break;
 	            }
 	        }
-
+	        
 	        if (seleccionado.getCantidad() > 1) {
-	            // Reducir cantidad en tablaPrincipal
 	            seleccionado.setCantidad(seleccionado.getCantidad() - 1);
 	        } else {
-	            // Si es 1, quitarlo de tablaPrincipal
 	            tablaDividir.getItems().remove(seleccionado);
 	        }
-
+	        
 	        actualizarPrecioTotalDividir();
-
+	        
 	        if (existente != null) {
-	            // Incrementar cantidad si ya existe en tablaDividir
 	            existente.setCantidad(existente.getCantidad() + 1);
 	        } else {
-	            // Sino, crear una copia con cantidad 1 y añadir
 	        	PlatoDTO nuevo = new PlatoDTO(seleccionado.getNombre(), 1, seleccionado.getPrecio());
 	            tablaPrincipal.getItems().add(nuevo);
 	        }
-
+	        
 	        actualizarPrecioTotalPrincipal();
-
-	        // Refrescar ambas tablas
+	        
+	        
 	        tablaPrincipal.refresh();
 	        tablaDividir.refresh();
 	    }
 	}
-
-
+	
+	
 	//---------------------------------------------------------------------------------------------------
-
-
+	
+	
 	@FXML
 	public void volver(ActionEvent event) {
 		
-		
-		if (!tablaDividir.getItems().isEmpty()) {
+	    if (!tablaDividir.getItems().isEmpty()) {
 	        boolean confirmado = confirmar("Hay platos en la tabla dividir.\nSi vuelves, se descartarán.\n¿Deseas continuar?");
 	        if (!confirmado) return;
 	    }
-		
-		
-		if(!cobrar) {
-			for(PlatoDTO p : tablaDividir.getItems()) {
 
-				PlatoDTO existe = null;
+	    try {
+	        if (numeroMesa > 0) {
+	            Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+	            
+	            for (PlatoDTO p : tablaPrincipal.getItems()) {
+	                int cantidadEnBD = mpDAO.obtenerCantidad(numeroMesa, p.getIdPlato());
+	                if (cantidadEnBD > 0) {
+	                    mpDAO.actualizarCantidad(numeroMesa, p.getIdPlato(), p.getCantidad());
+	                } else {
+	                    Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, p.getIdPlato(), p.getCantidad(), p.getPrecio());
+	                    mpDAO.crearMesaPlato(mpDTO);
+	                }
+	            }
+	            
+	            for (PlatoDTO p : tablaDividir.getItems()) {
+	                mpDAO.eliminarMesaPlato(numeroMesa, p.getIdPlato());
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        Alert alert = new Alert(Alert.AlertType.ERROR);
+	        alert.setTitle("Error BD");
+	        alert.setHeaderText("Error al sincronizar la mesa");
+	        alert.setContentText(e.getMessage());
+	        alert.showAndWait();
+	    }
+	    
+	    if (pmvc != null) {
 
-				for(PlatoDTO productoUnico : tablaPrincipal.getItems()) {
-					if(productoUnico.getNombre().equals(p.getNombre())) {
-						existe = productoUnico;
-						break;
-					}
-				}
+	        pmvc.getTablaProductos().getItems().clear();
 
-				if(existe != null) {
-					existe.setCantidad(existe.getCantidad() + p.getCantidad());
-				}else {
-					PlatoDTO nuevo = new PlatoDTO(p.getNombre(), p.getCantidad(), p.getPrecio());
-					tablaPrincipal.getItems().add(nuevo);
-				}
+	        for (PlatoDTO p : tablaPrincipal.getItems()) {
+	            PlatoDTO copia = new PlatoDTO(p.getNombre(), p.getCantidad(), p.getPrecio());
+	            copia.setIdPlato(p.getIdPlato());
+	            pmvc.getTablaProductos().getItems().add(copia);
+	        }
 
-			}
-
-			tablaDividir.getItems().clear();
-
-			actualizarPrecioTotalPrincipal();
-		    actualizarPrecioTotalDividir();
-		}
-
+	        pmvc.getTablaProductos().refresh();
+	        pmvc.actualizarPrecioTotal();
+	    }
+	    
 	    if (cvc != null) {
 	        String total = totalPrincipal.getText();
 	        cvc.actualizarTabla(tablaPrincipal.getItems(), total);
 	    }
 	    
-	    try {
-	        if (pmvc != null && numeroMesa > 0) {
-	            pmvc.setMesa(numeroMesa);  // <--- RECARGA REAL DESDE BD
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+	    tablaDividir.getItems().clear();
+	    actualizarPrecioTotalPrincipal();
+	    actualizarPrecioTotalDividir();
 
-	    // Cerrar la ventana
+	    // 5️⃣ Cerrar ventana
 	    Stage st = (Stage) totalPrincipal.getScene().getWindow();
 	    st.close();
 	}
 
-
+	
+	
 	public void actualizarPrecioTotalPrincipal() {
         double total = 0;
         for (PlatoDTO p : tablaPrincipal.getItems()) {
@@ -400,8 +392,8 @@ public class DividirCuentaViewControlador {
         }
         totalPrincipal.setText(String.format(Locale.US, "%.2f", total));
     }
-
-
+	
+	
 	public void actualizarPrecioTotalDividir() {
 		
 		if(tablaDividir.getItems().isEmpty()) {

@@ -3,8 +3,10 @@ package Controlador;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import DAO.CategoriaDAO;
@@ -18,7 +20,6 @@ import DTO.Mesa_PlatoDTO;
 import DTO.PedidoDTO;
 import DTO.Pedido_PlatoDTO;
 import DTO.PlatoDTO;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -108,6 +109,7 @@ public class PedidoMesaViewControlador {
             PlatoDAO pDAO = new PlatoDAO();
             PlatoDTO plato = pDAO.obtenerPlatoPorId(mp.getId_plato());
             plato.setCantidad(mp.getCantidad());
+            plato.setPrecio(mp.getPrecio());
             tablaProductos.getItems().add(plato);
         }
 
@@ -180,18 +182,20 @@ public class PedidoMesaViewControlador {
         try {
             PlatoDAO pDAO = new PlatoDAO();
             int idPlato = pDAO.obtenerIdPlatoPorNombre(nombre); // Esto ahora lanza SQLException
+            
+            if(!nombre.equalsIgnoreCase("otro")) {
+            	for (PlatoDTO p : tablaProductos.getItems()) {
+                    if (p.getNombre().equals(nombre)) {
+                        p.setCantidad(p.getCantidad() + 1);
+                        tablaProductos.refresh();
+                        actualizarPrecioTotal();
 
-            for (PlatoDTO p : tablaProductos.getItems()) {
-                if (p.getNombre().equals(nombre)) {
-                    p.setCantidad(p.getCantidad() + 1);
-                    tablaProductos.refresh();
-                    actualizarPrecioTotal();
-
-                    // Actualizar BD
-                    Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, idPlato, p.getCantidad());
-                    Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
-                    mpDAO.actualizarMesaPlato(mpDTO); // Esto puede lanzar SQLException
-                    return;
+                        // Actualizar BD
+                        Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, idPlato, p.getCantidad(), p.getPrecio());
+                        Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+                        mpDAO.actualizarMesaPlato(mpDTO); // Esto puede lanzar SQLException
+                        return;
+                    }
                 }
             }
 
@@ -202,7 +206,7 @@ public class PedidoMesaViewControlador {
             actualizarPrecioTotal();
 
             // Guardar en BD
-            Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, idPlato, 1);
+            Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, idPlato, 1, precio);
             Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
             mpDAO.crearMesaPlato(mpDTO); // Esto puede lanzar SQLException
 
@@ -341,32 +345,50 @@ public class PedidoMesaViewControlador {
                 
                 int idUltimoPedido = p.obtenerUltimoIdPedido();
                 
-                System.out.println(idUltimoPedido);
-                
                 Pedido_PlatoDAO ppDAO = new Pedido_PlatoDAO();
+                PlatoDAO pDAO = new PlatoDAO();
+                Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+                
+                //Map<String, Integer> platosMap = new HashMap<>();
                 
                 for (PlatoDTO plato : tablaProductos.getItems()) {
                 	
-                	PlatoDAO pDAO = new PlatoDAO();
+                	int idPlato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
+                    int cantidadPagada = plato.getCantidad();
                 	
-                	if(!plato.getNombre().isEmpty()) {
-                		
-                		int id_plato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
-                    	
-                        Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
-                        
-                        System.out.println(ppDTO.getId_pedido() + "" + ppDTO.getId_plato() + "" + ppDTO.getCantidad());
-                        
-                        ppDAO.crearPedidoPlato(ppDTO);
-                	}
+                    Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, idPlato, cantidadPagada);
+                    ppDAO.crearPedidoPlato(ppDTO);
+                    
+                    int cantidadActual = mpDAO.obtenerCantidad(numeroMesa, idPlato);
+                    int nuevaCantidad = cantidadActual - cantidadPagada;
+                    
+                    if (nuevaCantidad > 0) {
+                    	mpDAO.actualizarCantidad(numeroMesa, idPlato, nuevaCantidad);
+                    } else {
+                    	mpDAO.eliminarMesaPlato(numeroMesa, idPlato);
+                    }
                 }
+                
+                /*Pedido_PlatoDAO ppDAO = new Pedido_PlatoDAO();
+                
+                PlatoDAO pDAO = new PlatoDAO();
+                
+                for (Map.Entry<String, Integer> entry : platosMap.entrySet()) {
+                	int idPlato = pDAO.obtenerIdPlatoPorNombre(entry.getKey());
+                	
+                	Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, idPlato, entry.getValue());
+                	
+                	ppDAO.crearPedidoPlato(ppDTO);
+                	
+                }
+                
+                Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+                mpDAO.eliminarPorMesa(numeroMesa);*/
                 
                 tablaProductos.getItems().clear();
                 precioTotal.clear();
                 entregado.clear();
                 
-                Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
-                mpDAO.eliminarPorMesa(numeroMesa);
                 
             }
             
@@ -394,13 +416,13 @@ public class PedidoMesaViewControlador {
             String total = precioTotal.getText();
             
             dcvc.setPedidoController(this, numeroMesa);
-            dcvc.mostrarCuentaPrincipal(tablaProductos.getItems(), total);
+            dcvc.mostrarCuentaPrincipal(tablaProductos.getItems());
     	}  
     }
     
     
     @FXML
-    public void editar(ActionEvent event) throws IOException {
+    public void editar(ActionEvent event) throws IOException, SQLException {
     	
     	PlatoDTO seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
     	
@@ -419,6 +441,11 @@ public class PedidoMesaViewControlador {
         	Stage stage = new Stage();
     		stage.setScene(new Scene(root));
     		stage.showAndWait();
+    		
+    		Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, seleccionado.getIdPlato(), seleccionado.getCantidad(), seleccionado.getPrecio());
+    		
+    		Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
+    		mpDAO.actualizarMesaPlato(mpDTO);
     		
     		tablaProductos.refresh();
         	

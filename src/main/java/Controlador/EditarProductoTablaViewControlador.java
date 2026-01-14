@@ -41,7 +41,6 @@ public class EditarProductoTablaViewControlador {
 	    textoErrorPrecio.setVisible(false);
 	    
 	    
-	    //------ VALIDAR CANTIDAD ------
 	    if (txtCantidad.getText().isEmpty()) {
 	        textoErrorCantidad.setText("Este campo es obligatorio");
 	        textoErrorCantidad.setVisible(true);
@@ -62,7 +61,6 @@ public class EditarProductoTablaViewControlador {
 	    
 	    
 	    
-	    //------ VALIDAR PRECIO ------
 	    if (txtPrecio.getText().isEmpty()) {
 	        textoErrorPrecio.setText("Este campo es obligatorio");
 	        textoErrorPrecio.setVisible(true);
