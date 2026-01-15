@@ -5,14 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class Main extends Application {
-
+	
+    @Override
     public void start(Stage stage) throws IOException {
-
-
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Main.fxml"));
         Image icon = new Image(getClass().getResourceAsStream("/Imagenes/logoRestaurapp1.png"));
         stage.getIcons().add(icon);
@@ -20,18 +18,9 @@ public class Main extends Application {
         stage.setTitle("Restaurapp");
         stage.setScene(scene);
         stage.show();
-
-
-
-
     }
-
-    /*public static void main(String[] args) {
-
-        try (Connection conn = ConexionBD.getConnection()) {
-            System.out.println("Conexión establecida");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
+    
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
