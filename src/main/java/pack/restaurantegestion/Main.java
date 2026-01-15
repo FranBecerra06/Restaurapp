@@ -17,6 +17,7 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1280, 725);
         stage.setTitle("Restaurapp");
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
     
