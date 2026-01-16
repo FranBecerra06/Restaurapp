@@ -135,7 +135,7 @@ public class NotificacionPedidoViewControlador {
 	                    if(existePlato > 0) {
 	                    	mpDAO.actualizarCantidad(numeroMesa, plato.getIdPlato(), existePlato + cantidad);
 	                    }else {
-	                    	Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, plato.getIdPlato(), cantidad);
+	                    	Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, plato.getIdPlato(), cantidad, plato.getPrecio());
 		                    mpDAO.crearMesaPlato(mpDTO);
 	                    }
 	                }

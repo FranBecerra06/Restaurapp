@@ -118,7 +118,7 @@ public class MesaCamareroViewControlador {
 			return;
 		}
 		
-		if(!cvc.getTablaProductos().getItems().isEmpty()) {
+		if(cvc != null && !cvc.getTablaProductos().getItems().isEmpty()) {
 			Alert alert = new Alert(Alert.AlertType.WARNING);
     		alert.setTitle("Advertencia");
     		alert.setHeaderText("Se perderán todos los productos de la tabla");
