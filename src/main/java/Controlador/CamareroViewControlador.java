@@ -285,13 +285,6 @@ public class CamareroViewControlador {
                 
                 PedidoDTO pDTO = new PedidoDTO(1, null, fecha, total, observacion);
                 
-                /*pDTO.setIdCamarero(1);
-                pDTO.setIdMesa(null);
-                pDTO.setTotal(total);
-                pDTO.setObservaciones("");
-                pDTO.setFecha(LocalDateTime.now());
-                pDTO.setObservaciones(observacion);*/
-                
                 PedidoDAO p = new PedidoDAO();
                 
                 p.crearPedido(pDTO);
@@ -303,6 +296,16 @@ public class CamareroViewControlador {
                 
                 Pedido_PlatoDAO ppDAO = new Pedido_PlatoDAO();
                 
+                int cantidadOtro = 0;
+                
+                for(PlatoDTO platoOtro : tablaProductos.getItems()) {
+                	if(platoOtro.getNombre().equalsIgnoreCase("otro")) {
+                		cantidadOtro += platoOtro.getCantidad();
+                	}
+                }
+                
+                boolean otroInsertado = false;
+                
                 for (PlatoDTO plato : tablaProductos.getItems()) {
                 	
                 	PlatoDAO pDAO = new PlatoDAO();
@@ -310,8 +313,22 @@ public class CamareroViewControlador {
                 	if(!plato.getNombre().isEmpty()) {
                 		
                 		int id_plato = pDAO.obtenerIdPlatoPorNombre(plato.getNombre());
-                    	
-                        Pedido_PlatoDTO ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
+                		
+                		Pedido_PlatoDTO ppDTO;
+                		
+                		if(plato.getNombre().equalsIgnoreCase("otro")) {
+                			
+                			if(otroInsertado) {
+                				continue;
+                			}
+                			
+                			ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, cantidadOtro);
+                			
+                			otroInsertado = true;
+                			
+                		}else {
+                			ppDTO = new Pedido_PlatoDTO(idUltimoPedido, id_plato, plato.getCantidad());
+                		}
                         
                         System.out.println(ppDTO.getId_pedido() + "" + ppDTO.getId_plato() + "" + ppDTO.getCantidad());
                         

@@ -244,7 +244,7 @@ public class DividirCuentaViewControlador {
 	    if (seleccionado != null) {
 	        PlatoDTO nuevo = null;
 	        for (PlatoDTO p : tablaDividir.getItems()) {
-	            if (p.getNombre().equals(seleccionado.getNombre())) {
+	            if (p.getNombre().equals(seleccionado.getNombre()) && p.getNombre() != "otro") {
 	                nuevo = p;
 	                break;
 	            }
@@ -287,7 +287,7 @@ public class DividirCuentaViewControlador {
 	    if (seleccionado != null) {
 	    	PlatoDTO existente = null;
 	        for (PlatoDTO p : tablaPrincipal.getItems()) {
-	            if (p.getNombre().equals(seleccionado.getNombre())) {
+	            if (p.getNombre().equals(seleccionado.getNombre()) && p.getNombre() != "otro") {
 	                existente = p;
 	                break;
 	            }
@@ -327,7 +327,35 @@ public class DividirCuentaViewControlador {
 	        boolean confirmado = confirmar("Hay platos en la tabla dividir.\nSi vuelves, se descartarán.\n¿Deseas continuar?");
 	        if (!confirmado) return;
 	    }
-
+	    
+	    
+	    if(!cobrar) {
+			for(PlatoDTO p : tablaDividir.getItems()) {
+				
+				PlatoDTO existe = null;
+				
+				for(PlatoDTO productoUnico : tablaPrincipal.getItems()) {
+					if(productoUnico.getNombre().equals(p.getNombre()) && productoUnico.getNombre() != "otro") {
+						existe = productoUnico;
+						break;
+					}
+				}
+				
+				if(existe != null) {
+					existe.setCantidad(existe.getCantidad() + p.getCantidad());
+				}else {
+					PlatoDTO nuevo = new PlatoDTO(p.getNombre(), p.getCantidad(), p.getPrecio());
+					tablaPrincipal.getItems().add(nuevo);
+				}
+				
+			}
+			tablaDividir.getItems().clear();
+			
+			actualizarPrecioTotalPrincipal();
+		    actualizarPrecioTotalDividir();
+	    }
+	    
+	    
 	    try {
 	        if (numeroMesa > 0) {
 	            Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
