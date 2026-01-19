@@ -244,7 +244,7 @@ public class DividirCuentaViewControlador {
 	    if (seleccionado != null) {
 	        PlatoDTO nuevo = null;
 	        for (PlatoDTO p : tablaDividir.getItems()) {
-	            if (p.getNombre().equals(seleccionado.getNombre()) && p.getNombre() != "otro") {
+	            if (p.getNombre().equals(seleccionado.getNombre()) && !p.getNombre().equalsIgnoreCase("otro") && p.getPrecio() == seleccionado.getPrecio()) {
 	                nuevo = p;
 	                break;
 	            }
@@ -287,7 +287,7 @@ public class DividirCuentaViewControlador {
 	    if (seleccionado != null) {
 	    	PlatoDTO existente = null;
 	        for (PlatoDTO p : tablaPrincipal.getItems()) {
-	            if (p.getNombre().equals(seleccionado.getNombre()) && p.getNombre() != "otro") {
+	            if (p.getNombre().equals(seleccionado.getNombre()) && !p.getNombre().equalsIgnoreCase("otro") && p.getPrecio() == seleccionado.getPrecio()) {
 	                existente = p;
 	                break;
 	            }
@@ -335,7 +335,7 @@ public class DividirCuentaViewControlador {
 				PlatoDTO existe = null;
 				
 				for(PlatoDTO productoUnico : tablaPrincipal.getItems()) {
-					if(productoUnico.getNombre().equals(p.getNombre()) && productoUnico.getNombre() != "otro") {
+					if(productoUnico.getNombre().equals(p.getNombre()) && !productoUnico.getNombre().equals("otro") && productoUnico.getPrecio() == p.getPrecio()) {
 						existe = productoUnico;
 						break;
 					}
@@ -355,33 +355,6 @@ public class DividirCuentaViewControlador {
 		    actualizarPrecioTotalDividir();
 	    }
 	    
-	    
-	    try {
-	        if (numeroMesa > 0) {
-	            Mesa_PlatoDAO mpDAO = new Mesa_PlatoDAO();
-	            
-	            for (PlatoDTO p : tablaPrincipal.getItems()) {
-	                int cantidadEnBD = mpDAO.obtenerCantidad(numeroMesa, p.getIdPlato());
-	                if (cantidadEnBD > 0) {
-	                    mpDAO.actualizarCantidad(numeroMesa, p.getIdPlato(), p.getCantidad());
-	                } else {
-	                    Mesa_PlatoDTO mpDTO = new Mesa_PlatoDTO(numeroMesa, p.getIdPlato(), p.getCantidad(), p.getPrecio());
-	                    mpDAO.crearMesaPlato(mpDTO);
-	                }
-	            }
-	            
-	            for (PlatoDTO p : tablaDividir.getItems()) {
-	                mpDAO.eliminarMesaPlato(numeroMesa, p.getIdPlato());
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        Alert alert = new Alert(Alert.AlertType.ERROR);
-	        alert.setTitle("Error BD");
-	        alert.setHeaderText("Error al sincronizar la mesa");
-	        alert.setContentText(e.getMessage());
-	        alert.showAndWait();
-	    }
 	    
 	    if (pmvc != null) {
 
@@ -405,8 +378,7 @@ public class DividirCuentaViewControlador {
 	    tablaDividir.getItems().clear();
 	    actualizarPrecioTotalPrincipal();
 	    actualizarPrecioTotalDividir();
-
-	    // 5️⃣ Cerrar ventana
+	    
 	    Stage st = (Stage) totalPrincipal.getScene().getWindow();
 	    st.close();
 	}
