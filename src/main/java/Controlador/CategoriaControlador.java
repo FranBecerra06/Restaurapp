@@ -121,6 +121,15 @@ public class CategoriaControlador implements Initializable {
         seleccionada.setNombre(nuevoNombre);
 
         try {
+        	
+        	for(CategoriaDTO comprobar : listaCategorias.getItems()) {
+        		if(comprobar.getNombre().equalsIgnoreCase(nuevoNombre) && comprobar.getIdCategoria() != seleccionada.getIdCategoria()) {
+        			mostrarAlerta("Advertencia", "La categoría \"" + comprobar.getNombre() + "\" ya existe", Alert.AlertType.WARNING);
+        			return;
+        		}
+        	}
+        	
+        	
             if (categoriaDAO.modificarCategoria(seleccionada)) {
             	mostrarAlerta("Éxito", "Categoria modificado correctamente.", Alert.AlertType.INFORMATION);
                 listaCategorias.refresh();
